@@ -1,92 +1,18 @@
-# es_extended LEGACY / BROKEN / WONTFIX
+# es_reworked 
 
-### Things hapenning here now https://github.com/ESX-Org/es_extended/tree/develop (WIP)
+Project is a fork of **es_extended** and is an custom version based on [v1-final](https://github.com/ThymonA/es_reworked/releases/tag/v1-final). **es_reworked** will be rewritten and improved to release a better version of [v1-final](https://github.com/ThymonA/es_reworked/releases/tag/v1-final). Script made for **es_extended** `v1`, `v1.1` or `v1-final` will not be compatible with **es_reworked**.
 
-es_extended is a roleplay framework for FiveM. The to-go framework for creating an economy based roleplay server on FiveM and most popular on the platform, too!
-
-Featuring many extra resources to fit roleplaying servers, here's a taste of what's available:
-
-- esx_ambulancejob: play as a medic to revive players who are bleeding out. Complete with garages and respawn & bleedout system
-- esx_policejob: patrol the city and arrest players commiting crime, with armory, outfit room and garages
-- esx_vehicleshop: roleplay working in an vehicle dealership where you sell cars to players
-
-ESX was initially developed by Gizz back in 2017 for his friend as the were creating an FiveM server and there wasn't any economy roleplaying frameworks available. The original code was written within a week or two and later open sourced, it has ever since been improved and parts been rewritten to further improve on it.
-
-## Links & Read more
-
-- [ESX Forum](https://forum.esx-framework.org/)
-- [ESX Documentation](https://wiki.esx-framework.org/)
-- [ESX Development Discord](https://discord.me/esx)
-- [FiveM Native Reference](https://runtime.fivem.net/doc/reference.html)
-
-## Features
-
-- Weight based inventory system
-- Weapons support, including support for attachments and tints
-- Supports different money accounts (defaulted with cash, bank and black money)
-- Many official resources available in our GitHub
-- Job system, with grades and clothes support
-- Supports multiple languages, most strings are localized
-- Easy to use API for developers to easily integrate ESX to their projects
-- Register your own commands easily, with argument validation, chat suggestion and using FXServer ACL
-
-## Requirements
-
-- [mysql-async](https://github.com/brouznouf/fivem-mysql-async)
-- [async](https://github.com/ESX-Org/async)
-
-
-## Download & Installation
-
-
-### Using Git
-
-```
-cd resources
-git clone https://github.com/ESX-Org/es_extended [essential]/es_extended
-git clone https://github.com/ESX-Org/esx_menu_default [esx]/[ui]/esx_menu_default
-git clone https://github.com/ESX-Org/esx_menu_dialog [esx]/[ui]/esx_menu_dialog
-git clone https://github.com/ESX-Org/esx_menu_list [esx]/[ui]/esx_menu_list
-```
-
-### Manually
-
-- Download https://github.com/ESX-Org/es_extended/releases/latest
-- Put it in the `resource/[essential]` directory
-- Download https://github.com/ESX-Org/esx_menu_default/releases/latest
-- Put it in the `resource/[esx]/[ui]` directory
-- Download https://github.com/ESX-Org/esx_menu_dialog/releases/latest
-- Put it in the `resource/[esx]/[ui]` directory
-- Download https://github.com/ESX-Org/esx_menu_list/releases/latest
-- Put it in the `resource/[esx]/[ui]` directory
-
-### Installation
-
-- Import `es_extended.sql` in your database
-- Configure your `server.cfg` to look like this
-
-```
-add_principal group.admin group.user
-add_ace resource.es_extended command.add_ace allow
-add_ace resource.es_extended command.add_principal allow
-add_ace resource.es_extended command.remove_principal allow
-add_ace resource.es_extended command.stop allow
-
-start mysql-async
-start es_extended
-
-start esx_menu_default
-start esx_menu_list
-start esx_menu_dialog
-```
+## Status
+| **Project is still under development and hasn't been released yet.**
 
 ## Legal
+---
+### **License**
 
-### License
-
-es_extended - ESX framework for FiveM
+es_reworked - ESX framework for FiveM
 
 Copyright (C) 2015-2020 Jérémie N'gadi
+Copyright (C) 2020-2020 Thymon Arens
 
 This program Is free software: you can redistribute it And/Or modify it under the terms Of the GNU General Public License As published by the Free Software Foundation, either version 3 Of the License, Or (at your option) any later version.
 
