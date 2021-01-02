@@ -1,17 +1,17 @@
 local function CreateWalletClass(walletInfo)
-    walletInfo = ESR.Ensure(walletInfo, {})
+    walletInfo = ESXR.Ensure(walletInfo, {})
 
     ---@class xWallet
     local xWallet = {
         __class = 'xWallet',
         __type = 'xWallet',
-        id = ESR.Ensure(walletInfo.id, 0),
-        name = ESR.Ensure(walletInfo.name, 'unknown'),
-        label = ESR.Ensure(walletInfo.label, 'Unknown')
+        id = ESXR.Ensure(walletInfo.id, 0),
+        name = ESXR.Ensure(walletInfo.name, 'unknown'),
+        label = ESXR.Ensure(walletInfo.label, 'Unknown')
     }
 
-    if (ESR.Wallets ~= nil and ESR.Wallets[xWallet.id] ~= nil) then
-        return ESR.Ensure(ESR.Wallets[xWallet.id], {})
+    if (ESXR.Wallets ~= nil and ESXR.Wallets[xWallet.id] ~= nil) then
+        return ESXR.Ensure(ESXR.Wallets[xWallet.id], {})
     end
 
     if (xWallet.id <= 0) then
@@ -19,14 +19,14 @@ local function CreateWalletClass(walletInfo)
         return
     end
 
-    if (ESR.Wallets == nil) then ESR.Wallets = ESR.Ensure(ESR.Wallets, {}) end
-    if (ESR.References == nil) then ESR.References = ESR.Ensure(ESR.References, {}) end
-    if (ESR.References.Wallets == nil) then ESR.References.Wallets = ESR.Ensure(ESR.References.Wallets, {}) end
+    if (ESXR.Wallets == nil) then ESXR.Wallets = ESXR.Ensure(ESXR.Wallets, {}) end
+    if (ESXR.References == nil) then ESXR.References = ESXR.Ensure(ESXR.References, {}) end
+    if (ESXR.References.Wallets == nil) then ESXR.References.Wallets = ESXR.Ensure(ESXR.References.Wallets, {}) end
 
-    ESR.Wallets[xWallet.id] = xWallet
-    ESR.References.Wallets[xWallet.name] = xWallet.id
+    ESXR.Wallets[xWallet.id] = xWallet
+    ESXR.References.Wallets[xWallet.name] = xWallet.id
 
-    return ESR.Wallets[xWallet.id]
+    return ESXR.Wallets[xWallet.id]
 end
 
 --- Assign local as global variable

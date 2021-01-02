@@ -1,73 +1,73 @@
 local function CreateJobClass(jobInfo)
-    jobInfo = ESR.Ensure(jobInfo, {})
+    jobInfo = ESXR.Ensure(jobInfo, {})
 
     ---@class xJob
     local xJob = {
         __class = 'xJob',
         __type = 'xJob',
-        id = ESR.Ensure(jobInfo.id, 0),
-        name = ESR.Ensure(jobInfo.name, 'unknown'),
-        label = ESR.Ensure(jobInfo.label, 'Unknown'),
-        whitelisted = ESR.Ensure(jobInfo.whitelisted, false),
+        id = ESXR.Ensure(jobInfo.id, 0),
+        name = ESXR.Ensure(jobInfo.name, 'unknown'),
+        label = ESXR.Ensure(jobInfo.label, 'Unknown'),
+        whitelisted = ESXR.Ensure(jobInfo.whitelisted, false),
         grades = {}
     }
 
-    if (ESR.Jobs ~= nil and ESR.Jobs[xJob.id] ~= nil) then
-        return ESR.Ensure(ESR.Jobs[xJob.id], {})
+    if (ESXR.Jobs ~= nil and ESXR.Jobs[xJob.id] ~= nil) then
+        return ESXR.Ensure(ESXR.Jobs[xJob.id], {})
     end
 
-    for k, v in pairs(ESR.Ensure(jobInfo.grades, {})) do
-        v = ESR.Ensure(v, {})
+    for k, v in pairs(ESXR.Ensure(jobInfo.grades, {})) do
+        v = ESXR.Ensure(v, {})
 
         local xGrade = {
             __class = 'xJobGrade',
             __type = 'xJobGrade',
-            job_id = ESR.Ensure(xJob.id, 0),
-            grade = ESR.Ensure(v.grade, 0),
-            name = ESR.Ensure(v.name, 'unknown'),
-            label = ESR.Ensure(v.label, 'Unknown'),
-            salary = ESR.Ensure(v.salary, 250)
+            job_id = ESXR.Ensure(xJob.id, 0),
+            grade = ESXR.Ensure(v.grade, 0),
+            name = ESXR.Ensure(v.name, 'unknown'),
+            label = ESXR.Ensure(v.label, 'Unknown'),
+            salary = ESXR.Ensure(v.salary, 250)
         }
 
         xJob.grades[xGrade.grade] = xGrade
     end
 
-    if (ESR.Jobs == nil) then ESR.Jobs = ESR.Ensure(ESR.Jobs, {}) end
-    if (ESR.References == nil) then ESR.References = ESR.Ensure(ESR.References, {}) end
-    if (ESR.References.Jobs == nil) then ESR.References.Jobs = ESR.Ensure(ESR.References.Jobs, {}) end
+    if (ESXR.Jobs == nil) then ESXR.Jobs = ESXR.Ensure(ESXR.Jobs, {}) end
+    if (ESXR.References == nil) then ESXR.References = ESXR.Ensure(ESXR.References, {}) end
+    if (ESXR.References.Jobs == nil) then ESXR.References.Jobs = ESXR.Ensure(ESXR.References.Jobs, {}) end
 
-    ESR.Jobs[xJob.id] = xJob
-    ESR.References.Jobs[xJob.name] = xJob.id
+    ESXR.Jobs[xJob.id] = xJob
+    ESXR.References.Jobs[xJob.name] = xJob.id
 
-    return ESR.Jobs[xJob.id]
+    return ESXR.Jobs[xJob.id]
 end
 
 local function CreateJobObject(jobId, gradeId)
-    jobId = ESR.Ensure(jobId, 0)
-    gradeId = ESR.Ensure(gradeId, 0)
+    jobId = ESXR.Ensure(jobId, 0)
+    gradeId = ESXR.Ensure(gradeId, 0)
 
     if (jobId <= 0) then
         return nil
     end
 
-    if (ESR.Jobs == nil) then
-        ESR.Jobs = ESR.Ensure(ESR.Jobs, {})
+    if (ESXR.Jobs == nil) then
+        ESXR.Jobs = ESXR.Ensure(ESXR.Jobs, {})
     end
 
-    local job = ESR.Ensure(ESR.Jobs[jobId], {})
-    local grades = ESR.Ensure(job.grades, {})
-    local grade = ESR.Ensure(grades[gradeId], {})
+    local job = ESXR.Ensure(ESXR.Jobs[jobId], {})
+    local grades = ESXR.Ensure(job.grades, {})
+    local grade = ESXR.Ensure(grades[gradeId], {})
 
     return {
-        id = ESR.Ensure(job.id, 0),
-        name = ESR.Ensure(job.name, 'unknown'),
-        label = ESR.Ensure(job.label, 'Unknown'),
-        whitelisted = ESR.Ensure(job.whitelisted, false),
+        id = ESXR.Ensure(job.id, 0),
+        name = ESXR.Ensure(job.name, 'unknown'),
+        label = ESXR.Ensure(job.label, 'Unknown'),
+        whitelisted = ESXR.Ensure(job.whitelisted, false),
         grade = {
-            grade = ESR.Ensure(grade.grade, 0),
-            name = ESR.Ensure(grade.name, 'unknown'),
-            label = ESR.Ensure(grade.label, 'Unknown'),
-            salary = ESR.Ensure(grade.salary, 250)
+            grade = ESXR.Ensure(grade.grade, 0),
+            name = ESXR.Ensure(grade.name, 'unknown'),
+            label = ESXR.Ensure(grade.label, 'Unknown'),
+            salary = ESXR.Ensure(grade.salary, 250)
         }
     }
 end

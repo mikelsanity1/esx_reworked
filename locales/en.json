@@ -211,5 +211,8 @@
     "storage_inventory": "Inventory",
     "storage_safe": "Safe",
     
-    "loaded": "Has loaded an updated the database, players can now connect with the server"
+    "loaded": "Has loaded an updated the database, players can now connect with the server",
+    "connecting_title": "Connecting with %s",
+    "connecting_description": "You are currently connecting with %s please wait...",
+    "connecting_error": "[ERROR] You cannot join because of an unknown error, please contact the server owners"
 }

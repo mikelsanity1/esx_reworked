@@ -27,7 +27,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.updateCoords = function(coords)
-		self.coords = {x = ESR.Math.Round(coords.x, 1), y = ESR.Math.Round(coords.y, 1), z = ESR.Math.Round(coords.z, 1), heading = ESR.Math.Round(coords.heading or 0.0, 1)}
+		self.coords = {x = ESXR.Math.Round(coords.x, 1), y = ESXR.Math.Round(coords.y, 1), z = ESXR.Math.Round(coords.z, 1), heading = ESXR.Math.Round(coords.heading or 0.0, 1)}
 	end
 
 	self.getCoords = function(vector)
@@ -43,7 +43,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.setMoney = function(money)
-		money = ESR.Math.Round(money)
+		money = ESXR.Math.Round(money)
 		self.setAccountMoney('money', money)
 	end
 
@@ -52,12 +52,12 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.addMoney = function(money)
-		money = ESR.Math.Round(money)
+		money = ESXR.Math.Round(money)
 		self.addAccountMoney('money', money)
 	end
 
 	self.removeMoney = function(money)
-		money = ESR.Math.Round(money)
+		money = ESXR.Math.Round(money)
 		self.removeAccountMoney('money', money)
 	end
 
@@ -168,7 +168,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 			if account then
 				local prevMoney = account.money
-				local newMoney = ESR.Math.Round(money)
+				local newMoney = ESXR.Math.Round(money)
 				account.money = newMoney
 
 				self.triggerEvent('esx:setAccountMoney', account)
@@ -181,7 +181,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			local account = self.getAccount(accountName)
 
 			if account then
-				local newMoney = account.money + ESR.Math.Round(money)
+				local newMoney = account.money + ESXR.Math.Round(money)
 				account.money = newMoney
 
 				self.triggerEvent('esx:setAccountMoney', account)
@@ -194,7 +194,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			local account = self.getAccount(accountName)
 
 			if account then
-				local newMoney = account.money - ESR.Math.Round(money)
+				local newMoney = account.money - ESXR.Math.Round(money)
 				account.money = newMoney
 
 				self.triggerEvent('esx:setAccountMoney', account)
@@ -216,7 +216,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local item = self.getInventoryItem(name)
 
 		if item then
-			count = ESR.Math.Round(count)
+			count = ESXR.Math.Round(count)
 			item.count = item.count + count
 			self.weight = self.weight + (item.weight * count)
 
@@ -229,7 +229,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local item = self.getInventoryItem(name)
 
 		if item then
-			count = ESR.Math.Round(count)
+			count = ESXR.Math.Round(count)
 			local newCount = item.count - count
 
 			if newCount >= 0 then
@@ -246,7 +246,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local item = self.getInventoryItem(name)
 
 		if item and count >= 0 then
-			count = ESR.Math.Round(count)
+			count = ESXR.Math.Round(count)
 
 			if count > item.count then
 				self.addInventoryItem(item.name, count - item.count)
@@ -265,7 +265,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.canCarryItem = function(name, count)
-		local currentWeight, itemWeight = self.weight, ESR.Items[name].weight
+		local currentWeight, itemWeight = self.weight, ESXR.Items[name].weight
 		local newWeight = currentWeight + (itemWeight * count)
 
 		return newWeight <= self.maxWeight
@@ -276,8 +276,8 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local testItemObject = self.getInventoryItem(testItem)
 
 		if firstItemObject.count >= firstItemCount then
-			local weightWithoutFirstItem = ESR.Math.Round(self.weight - (firstItemObject.weight * firstItemCount))
-			local weightWithTestItem = ESR.Math.Round(weightWithoutFirstItem + (testItemObject.weight * testItemCount))
+			local weightWithoutFirstItem = ESXR.Math.Round(self.weight - (firstItemObject.weight * firstItemCount))
+			local weightWithTestItem = ESXR.Math.Round(weightWithoutFirstItem + (testItemObject.weight * testItemCount))
 
 			return weightWithTestItem <= self.maxWeight
 		end
@@ -294,8 +294,8 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		grade = tostring(grade)
 		local lastJob = json.decode(json.encode(self.job))
 
-		if ESR.DoesJobExist(job, grade) then
-			local jobObject, gradeObject = ESR.Jobs[job], ESR.Jobs[job].grades[grade]
+		if ESXR.DoesJobExist(job, grade) then
+			local jobObject, gradeObject = ESXR.Jobs[job], ESXR.Jobs[job].grades[grade]
 
 			self.job.id    = jobObject.id
 			self.job.name  = jobObject.name
@@ -321,13 +321,13 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			TriggerEvent('esx:setJob', self.source, self.job, lastJob)
 			self.triggerEvent('esx:setJob', self.job)
 		else
-			print(('[es_reworked] [^3WARNING^7] Ignoring invalid .setJob() usage for "%s"'):format(self.identifier))
+			print(('[esx_reworked] [^3WARNING^7] Ignoring invalid .setJob() usage for "%s"'):format(self.identifier))
 		end
 	end
 
 	self.addWeapon = function(weaponName, ammo)
 		if not self.hasWeapon(weaponName) then
-			local weaponLabel = ESR.GetWeaponLabel(weaponName)
+			local weaponLabel = ESXR.GetWeaponLabel(weaponName)
 
 			table.insert(self.loadout, {
 				name = weaponName,
@@ -346,7 +346,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local loadoutNum, weapon = self.getWeapon(weaponName)
 
 		if weapon then
-			local component = ESR.GetWeaponComponent(weaponName, weaponComponent)
+			local component = ESXR.GetWeaponComponent(weaponName, weaponComponent)
 
 			if component then
 				if not self.hasWeaponComponent(weaponName, weaponComponent) then
@@ -381,7 +381,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local loadoutNum, weapon = self.getWeapon(weaponName)
 
 		if weapon then
-			local weaponNum, weaponObject = ESR.GetWeapon(weaponName)
+			local weaponNum, weaponObject = ESXR.GetWeapon(weaponName)
 
 			if weaponObject.tints and weaponObject.tints[weaponTintIndex] then
 				self.loadout[loadoutNum].tintIndex = weaponTintIndex
@@ -427,7 +427,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local loadoutNum, weapon = self.getWeapon(weaponName)
 
 		if weapon then
-			local component = ESR.GetWeaponComponent(weaponName, weaponComponent)
+			local component = ESXR.GetWeaponComponent(weaponName, weaponComponent)
 
 			if component then
 				if self.hasWeaponComponent(weaponName, weaponComponent) then

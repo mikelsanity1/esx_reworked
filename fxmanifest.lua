@@ -14,9 +14,13 @@ server_scripts {
 	'config/shared_config.lua',
 	'shared/locale.lua',
 	'config/server_config.lua',
+	'shared/events.lua',
 
 	'server/classes/*.lua',
+	'server/helpers/*.lua',
 	'server/load.lua',
+	'server/events.lua',
+	'server/main.lua',
 
 	'shared/exports.lua'
 }
@@ -26,7 +30,8 @@ client_scripts {
 	'shared/functions.lua',
 	'config/shared_config.lua',
 	'shared/locale.lua',
-	'config/client_config.lua'
+	'config/client_config.lua',
+	'shared/events.lua'
 }
 
 ui_page {

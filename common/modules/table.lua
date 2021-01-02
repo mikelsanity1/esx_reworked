@@ -1,7 +1,7 @@
-ESR.Table = {}
+ESXR.Table = {}
 
 -- nil proof alternative to #table
-function ESR.Table.SizeOf(t)
+function ESXR.Table.SizeOf(t)
 	local count = 0
 
 	for _,_ in pairs(t) do
@@ -11,13 +11,13 @@ function ESR.Table.SizeOf(t)
 	return count
 end
 
-function ESR.Table.Set(t)
+function ESXR.Table.Set(t)
 	local set = {}
 	for k,v in ipairs(t) do set[v] = true end
 	return set
 end
 
-function ESR.Table.IndexOf(t, value)
+function ESXR.Table.IndexOf(t, value)
 	for i=1, #t, 1 do
 		if t[i] == value then
 			return i
@@ -27,7 +27,7 @@ function ESR.Table.IndexOf(t, value)
 	return -1
 end
 
-function ESR.Table.LastIndexOf(t, value)
+function ESXR.Table.LastIndexOf(t, value)
 	for i=#t, 1, -1 do
 		if t[i] == value then
 			return i
@@ -37,7 +37,7 @@ function ESR.Table.LastIndexOf(t, value)
 	return -1
 end
 
-function ESR.Table.Find(t, cb)
+function ESXR.Table.Find(t, cb)
 	for i=1, #t, 1 do
 		if cb(t[i]) then
 			return t[i]
@@ -47,7 +47,7 @@ function ESR.Table.Find(t, cb)
 	return nil
 end
 
-function ESR.Table.FindIndex(t, cb)
+function ESXR.Table.FindIndex(t, cb)
 	for i=1, #t, 1 do
 		if cb(t[i]) then
 			return i
@@ -57,7 +57,7 @@ function ESR.Table.FindIndex(t, cb)
 	return -1
 end
 
-function ESR.Table.Filter(t, cb)
+function ESXR.Table.Filter(t, cb)
 	local newTable = {}
 
 	for i=1, #t, 1 do
@@ -69,7 +69,7 @@ function ESR.Table.Filter(t, cb)
 	return newTable
 end
 
-function ESR.Table.Map(t, cb)
+function ESXR.Table.Map(t, cb)
 	local newTable = {}
 
 	for i=1, #t, 1 do
@@ -79,7 +79,7 @@ function ESR.Table.Map(t, cb)
 	return newTable
 end
 
-function ESR.Table.Reverse(t)
+function ESXR.Table.Reverse(t)
 	local newTable = {}
 
 	for i=#t, 1, -1 do
@@ -89,7 +89,7 @@ function ESR.Table.Reverse(t)
 	return newTable
 end
 
-function ESR.Table.Clone(t)
+function ESXR.Table.Clone(t)
 	if type(t) ~= 'table' then return t end
 
 	local meta = getmetatable(t)
@@ -97,7 +97,7 @@ function ESR.Table.Clone(t)
 
 	for k,v in pairs(t) do
 		if type(v) == 'table' then
-			target[k] = ESR.Table.Clone(v)
+			target[k] = ESXR.Table.Clone(v)
 		else
 			target[k] = v
 		end
@@ -108,8 +108,8 @@ function ESR.Table.Clone(t)
 	return target
 end
 
-function ESR.Table.Concat(t1, t2)
-	local t3 = ESR.Table.Clone(t1)
+function ESXR.Table.Concat(t1, t2)
+	local t3 = ESXR.Table.Clone(t1)
 
 	for i=1, #t2, 1 do
 		table.insert(t3, t2[i])
@@ -118,7 +118,7 @@ function ESR.Table.Concat(t1, t2)
 	return t3
 end
 
-function ESR.Table.Join(t, sep)
+function ESXR.Table.Join(t, sep)
 	local sep = sep or ','
 	local str = ''
 
@@ -135,7 +135,7 @@ end
 
 -- Credit: https://stackoverflow.com/a/15706820
 -- Description: sort function for pairs
-function ESR.Table.Sort(t, order)
+function ESXR.Table.Sort(t, order)
 	-- collect the keys
 	local keys = {}
 

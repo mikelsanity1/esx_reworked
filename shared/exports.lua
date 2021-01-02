@@ -1,13 +1,13 @@
 exports('GetConfiguration', function()
-    return ESR.Ensure(Configuration, {})
+    return ESXR.Ensure(Configuration, {})
 end)
 
 exports('GetSharedObject', function()
-    return ESR
+    return ESXR
 end)
 
 exports('IsLoaded', function()
-    return ESR.Ensure(ESR.IsLoaded, false)
+    return ESXR.Ensure(ESXR.IsLoaded, false)
 end)
 
 exports('GetTranslations', LoadTranslations)

@@ -68,7 +68,7 @@ _G.LoadTranslations = function()
 
 	local configuration = Ensure(Configuration, {})
 	local language = Ensure(configuration.DefaultLanguage, 'en')
-	local trans = Locale.ResourceName == 'es_reworked' and {} or exports['es_reworked']:GetTranslations()
+	local trans = Locale.ResourceName == 'esx_reworked' and {} or exports['esx_reworked']:GetTranslations()
 
 	trans = Ensure(trans, {})
 

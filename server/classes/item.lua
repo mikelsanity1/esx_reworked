@@ -1,18 +1,18 @@
 local function CreateItemClass(itemInfo)
-    itemInfo = ESR.Ensure(itemInfo, {})
+    itemInfo = ESXR.Ensure(itemInfo, {})
 
     ---@class xItem
     local xItem = {
         __class = 'xItem',
         __type = 'xItem',
-        id = ESR.Ensure(itemInfo.id, 0),
-        name = ESR.Ensure(itemInfo.name, 'unknown'),
-        label = ESR.Ensure(itemInfo.label, 'Unknown'),
-        weight = ESR.Ensure(itemInfo.weight, 0.25)
+        id = ESXR.Ensure(itemInfo.id, 0),
+        name = ESXR.Ensure(itemInfo.name, 'unknown'),
+        label = ESXR.Ensure(itemInfo.label, 'Unknown'),
+        weight = ESXR.Ensure(itemInfo.weight, 0.25)
     }
 
-    if (ESR.Items ~= nil and ESR.Items[xItem.id] ~= nil) then
-        return ESR.Ensure(ESR.Items[xItem.id], {})
+    if (ESXR.Items ~= nil and ESXR.Items[xItem.id] ~= nil) then
+        return ESXR.Ensure(ESXR.Items[xItem.id], {})
     end
 
     if (xItem.id <= 0) then
@@ -20,14 +20,14 @@ local function CreateItemClass(itemInfo)
         return
     end
 
-    if (ESR.Items == nil) then ESR.Items = ESR.Ensure(ESR.Items, {}) end
-    if (ESR.References == nil) then ESR.References = ESR.Ensure(ESR.References, {}) end
-    if (ESR.References.Items == nil) then ESR.References.Items = ESR.Ensure(ESR.References.Items, {}) end
+    if (ESXR.Items == nil) then ESXR.Items = ESXR.Ensure(ESXR.Items, {}) end
+    if (ESXR.References == nil) then ESXR.References = ESXR.Ensure(ESXR.References, {}) end
+    if (ESXR.References.Items == nil) then ESXR.References.Items = ESXR.Ensure(ESXR.References.Items, {}) end
 
-    ESR.Items[xItem.id] = xItem
-    ESR.References.Items[xItem.name] = xItem.id
+    ESXR.Items[xItem.id] = xItem
+    ESXR.References.Items[xItem.name] = xItem.id
 
-    return ESR.Items[xItem.id]
+    return ESXR.Items[xItem.id]
 end
 
 --- Assign local as global variable

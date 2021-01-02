@@ -1,17 +1,17 @@
 local function CreateStorageClass(storageInfo)
-    storageInfo = ESR.Ensure(storageInfo, {})
+    storageInfo = ESXR.Ensure(storageInfo, {})
 
     ---@class xStorage
     local xStorage = {
         __class = 'xItem',
         __type = 'xItem',
-        id = ESR.Ensure(storageInfo.id, 0),
-        name = ESR.Ensure(storageInfo.name, 'unknown'),
-        label = ESR.Ensure(storageInfo.label, 'Unknown')
+        id = ESXR.Ensure(storageInfo.id, 0),
+        name = ESXR.Ensure(storageInfo.name, 'unknown'),
+        label = ESXR.Ensure(storageInfo.label, 'Unknown')
     }
 
-    if (ESR.Storages ~= nil and ESR.Storages[xStorage.id] ~= nil) then
-        return ESR.Ensure(ESR.Storages[xStorage.id], {})
+    if (ESXR.Storages ~= nil and ESXR.Storages[xStorage.id] ~= nil) then
+        return ESXR.Ensure(ESXR.Storages[xStorage.id], {})
     end
 
     if (xStorage.id <= 0) then
@@ -19,14 +19,14 @@ local function CreateStorageClass(storageInfo)
         return
     end
 
-    if (ESR.Storages == nil) then ESR.Storages = ESR.Ensure(ESR.Storages, {}) end
-    if (ESR.References == nil) then ESR.References = ESR.Ensure(ESR.References, {}) end
-    if (ESR.References.Storages == nil) then ESR.References.Storages = ESR.Ensure(ESR.References.Storages, {}) end
+    if (ESXR.Storages == nil) then ESXR.Storages = ESXR.Ensure(ESXR.Storages, {}) end
+    if (ESXR.References == nil) then ESXR.References = ESXR.Ensure(ESXR.References, {}) end
+    if (ESXR.References.Storages == nil) then ESXR.References.Storages = ESXR.Ensure(ESXR.References.Storages, {}) end
 
-    ESR.Storages[xStorage.id] = xStorage
-    ESR.References.Storages[xStorage.name] = xStorage.id
+    ESXR.Storages[xStorage.id] = xStorage
+    ESXR.References.Storages[xStorage.name] = xStorage.id
 
-    return ESR.Storages[xStorage.id]
+    return ESXR.Storages[xStorage.id]
 end
 
 --- Assign local as global variable

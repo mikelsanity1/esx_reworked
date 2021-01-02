@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `es_reworked`;
-USE `es_reworked`;
+CREATE DATABASE IF NOT EXISTS `esx_reworked`;
+USE `esx_reworked`;
 
 CREATE TABLE `jobs` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -106,6 +106,29 @@ CREATE TABLE `job_wallets` (
 	PRIMARY KEY (`wallet_id`, `job_id`),
 	CONSTRAINT `fk_job_wallets_wallet_id` FOREIGN KEY (`wallet_id`) REFERENCES `wallets`(`id`),
 	CONSTRAINT `fk_job_wallets_job_id` FOREIGN KEY (`job_id`) REFERENCES `jobs`(`id`)
+);
+
+CREATE TABLE `player_identifiers` (
+	`id` INT AUTO_INCREMENT PRIMARY KEY,
+	`name` VARCHAR(50) NOT NULL DEFAULT 'Unknown',
+	`steam` VARCHAR(50) NULL DEFAULT NULL,
+	`license` VARCHAR(50) NULL DEFAULT NULL,
+	`license2` VARCHAR(50) NULL DEFAULT NULL,
+	`xbl` VARCHAR(50) NULL DEFAULT NULL,
+	`live` VARCHAR(50) NULL DEFAULT NULL,
+	`discord` VARCHAR(50) NULL DEFAULT NULL,
+	`fivem` VARCHAR(50) NULL DEFAULT NULL,
+	`ip` VARCHAR(50) NULL DEFAULT NULL,
+	`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `player_tokens` (
+	`id` INT AUTO_INCREMENT PRIMARY KEY,
+	`identifier_id` INT NOT NULL,
+	`prefix` INT NOT NULL DEFAULT 0,
+	`value` VARCHAR(100) NULL DEFAULT NULL,
+
+	CONSTRAINT `fk_player_tokens_identifier_id` FOREIGN KEY (`identifier_id`) REFERENCES `player_identifiers`(`id`)
 );
 
 INSERT INTO `jobs` (`name`, `label`, `whitelisted`) VALUES ('unemployed', 'Unemployed', 0);

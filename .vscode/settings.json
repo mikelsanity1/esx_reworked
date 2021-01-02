@@ -30,6 +30,14 @@
         "Wait",
         "TriggerClientEvent",
         "DropPlayer",
-        "ExecuteCommand"
+        "ExecuteCommand",
+        "GetNumPlayerIdentifiers",
+        "GetPlayerName",
+        "GetPlayerIdentifier",
+        "GetNumPlayerTokens",
+        "GetPlayerToken",
+        "GetInvokingResource",
+        "AddEventHandler",
+        "source"
     ]
 }

@@ -1,55 +1,55 @@
-ESR.PlayerData                = {}
-ESR.PlayerLoaded              = false
-ESR.CurrentRequestId          = 0
-ESR.ServerCallbacks           = {}
-ESR.TimeoutCallbacks          = {}
+ESXR.PlayerData                = {}
+ESXR.PlayerLoaded              = false
+ESXR.CurrentRequestId          = 0
+ESXR.ServerCallbacks           = {}
+ESXR.TimeoutCallbacks          = {}
 
-ESR.UI                        = {}
-ESR.UI.HUD                    = {}
-ESR.UI.HUD.RegisteredElements = {}
-ESR.UI.Menu                   = {}
-ESR.UI.Menu.RegisteredTypes   = {}
-ESR.UI.Menu.Opened            = {}
+ESXR.UI                        = {}
+ESXR.UI.HUD                    = {}
+ESXR.UI.HUD.RegisteredElements = {}
+ESXR.UI.Menu                   = {}
+ESXR.UI.Menu.RegisteredTypes   = {}
+ESXR.UI.Menu.Opened            = {}
 
-ESR.Game                      = {}
-ESR.Game.Utils                = {}
+ESXR.Game                      = {}
+ESXR.Game.Utils                = {}
 
-ESR.Scaleform                 = {}
-ESR.Scaleform.Utils           = {}
+ESXR.Scaleform                 = {}
+ESXR.Scaleform.Utils           = {}
 
-ESR.Streaming                 = {}
+ESXR.Streaming                 = {}
 
-ESR.SetTimeout = function(msec, cb)
-	table.insert(ESR.TimeoutCallbacks, {
+ESXR.SetTimeout = function(msec, cb)
+	table.insert(ESXR.TimeoutCallbacks, {
 		time = GetGameTimer() + msec,
 		cb   = cb
 	})
-	return #ESR.TimeoutCallbacks
+	return #ESXR.TimeoutCallbacks
 end
 
-ESR.ClearTimeout = function(i)
-	ESR.TimeoutCallbacks[i] = nil
+ESXR.ClearTimeout = function(i)
+	ESXR.TimeoutCallbacks[i] = nil
 end
 
-ESR.IsPlayerLoaded = function()
-	return ESR.PlayerLoaded
+ESXR.IsPlayerLoaded = function()
+	return ESXR.PlayerLoaded
 end
 
-ESR.GetPlayerData = function()
-	return ESR.PlayerData
+ESXR.GetPlayerData = function()
+	return ESXR.PlayerData
 end
 
-ESR.SetPlayerData = function(key, val)
-	ESR.PlayerData[key] = val
+ESXR.SetPlayerData = function(key, val)
+	ESXR.PlayerData[key] = val
 end
 
-ESR.ShowNotification = function(msg)
+ESXR.ShowNotification = function(msg)
 	SetNotificationTextEntry('STRING')
 	AddTextComponentString(msg)
 	DrawNotification(0,1)
 end
 
-ESR.ShowAdvancedNotification = function(sender, subject, msg, textureDict, iconType, flash, saveToBrief, hudColorIndex)
+ESXR.ShowAdvancedNotification = function(sender, subject, msg, textureDict, iconType, flash, saveToBrief, hudColorIndex)
 	if saveToBrief == nil then saveToBrief = true end
 	AddTextEntry('esxAdvancedNotification', msg)
 	BeginTextCommandThefeedPost('esxAdvancedNotification')
@@ -58,7 +58,7 @@ ESR.ShowAdvancedNotification = function(sender, subject, msg, textureDict, iconT
 	EndTextCommandThefeedPostTicker(flash or false, saveToBrief)
 end
 
-ESR.ShowHelpNotification = function(msg, thisFrame, beep, duration)
+ESXR.ShowHelpNotification = function(msg, thisFrame, beep, duration)
 	AddTextEntry('esxHelpNotification', msg)
 
 	if thisFrame then
@@ -70,7 +70,7 @@ ESR.ShowHelpNotification = function(msg, thisFrame, beep, duration)
 	end
 end
 
-ESR.ShowFloatingHelpNotification = function(msg, coords)
+ESXR.ShowFloatingHelpNotification = function(msg, coords)
 	AddTextEntry('esxFloatingHelpNotification', msg)
 	SetFloatingHelpTextWorldPosition(1, coords)
 	SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
@@ -78,30 +78,30 @@ ESR.ShowFloatingHelpNotification = function(msg, coords)
 	EndTextCommandDisplayHelp(2, false, false, -1)
 end
 
-ESR.TriggerServerCallback = function(name, cb, ...)
-	ESR.ServerCallbacks[ESR.CurrentRequestId] = cb
+ESXR.TriggerServerCallback = function(name, cb, ...)
+	ESXR.ServerCallbacks[ESXR.CurrentRequestId] = cb
 
-	TriggerServerEvent('esx:triggerServerCallback', name, ESR.CurrentRequestId, ...)
+	TriggerServerEvent('esx:triggerServerCallback', name, ESXR.CurrentRequestId, ...)
 
-	if ESR.CurrentRequestId < 65535 then
-		ESR.CurrentRequestId = ESR.CurrentRequestId + 1
+	if ESXR.CurrentRequestId < 65535 then
+		ESXR.CurrentRequestId = ESXR.CurrentRequestId + 1
 	else
-		ESR.CurrentRequestId = 0
+		ESXR.CurrentRequestId = 0
 	end
 end
 
-ESR.UI.HUD.SetDisplay = function(opacity)
+ESXR.UI.HUD.SetDisplay = function(opacity)
 	SendNUIMessage({
 		action  = 'setHUDDisplay',
 		opacity = opacity
 	})
 end
 
-ESR.UI.HUD.RegisterElement = function(name, index, priority, html, data)
+ESXR.UI.HUD.RegisterElement = function(name, index, priority, html, data)
 	local found = false
 
-	for i=1, #ESR.UI.HUD.RegisteredElements, 1 do
-		if ESR.UI.HUD.RegisteredElements[i] == name then
+	for i=1, #ESXR.UI.HUD.RegisteredElements, 1 do
+		if ESXR.UI.HUD.RegisteredElements[i] == name then
 			found = true
 			break
 		end
@@ -111,7 +111,7 @@ ESR.UI.HUD.RegisterElement = function(name, index, priority, html, data)
 		return
 	end
 
-	table.insert(ESR.UI.HUD.RegisteredElements, name)
+	table.insert(ESXR.UI.HUD.RegisteredElements, name)
 
 	SendNUIMessage({
 		action    = 'insertHUDElement',
@@ -122,13 +122,13 @@ ESR.UI.HUD.RegisterElement = function(name, index, priority, html, data)
 		data      = data
 	})
 
-	ESR.UI.HUD.UpdateElement(name, data)
+	ESXR.UI.HUD.UpdateElement(name, data)
 end
 
-ESR.UI.HUD.RemoveElement = function(name)
-	for i=1, #ESR.UI.HUD.RegisteredElements, 1 do
-		if ESR.UI.HUD.RegisteredElements[i] == name then
-			table.remove(ESR.UI.HUD.RegisteredElements, i)
+ESXR.UI.HUD.RemoveElement = function(name)
+	for i=1, #ESXR.UI.HUD.RegisteredElements, 1 do
+		if ESXR.UI.HUD.RegisteredElements[i] == name then
+			table.remove(ESXR.UI.HUD.RegisteredElements, i)
 			break
 		end
 	end
@@ -139,7 +139,7 @@ ESR.UI.HUD.RemoveElement = function(name)
 	})
 end
 
-ESR.UI.HUD.UpdateElement = function(name, data)
+ESXR.UI.HUD.UpdateElement = function(name, data)
 	SendNUIMessage({
 		action = 'updateHUDElement',
 		name   = name,
@@ -147,14 +147,14 @@ ESR.UI.HUD.UpdateElement = function(name, data)
 	})
 end
 
-ESR.UI.Menu.RegisterType = function(type, open, close)
-	ESR.UI.Menu.RegisteredTypes[type] = {
+ESXR.UI.Menu.RegisterType = function(type, open, close)
+	ESXR.UI.Menu.RegisteredTypes[type] = {
 		open   = open,
 		close  = close
 	}
 end
 
-ESR.UI.Menu.Open = function(type, namespace, name, data, submit, cancel, change, close)
+ESXR.UI.Menu.Open = function(type, namespace, name, data, submit, cancel, change, close)
 	local menu = {}
 
 	menu.type      = type
@@ -167,12 +167,12 @@ ESR.UI.Menu.Open = function(type, namespace, name, data, submit, cancel, change,
 
 	menu.close = function()
 
-		ESR.UI.Menu.RegisteredTypes[type].close(namespace, name)
+		ESXR.UI.Menu.RegisteredTypes[type].close(namespace, name)
 
-		for i=1, #ESR.UI.Menu.Opened, 1 do
-			if ESR.UI.Menu.Opened[i] then
-				if ESR.UI.Menu.Opened[i].type == type and ESR.UI.Menu.Opened[i].namespace == namespace and ESR.UI.Menu.Opened[i].name == name then
-					ESR.UI.Menu.Opened[i] = nil
+		for i=1, #ESXR.UI.Menu.Opened, 1 do
+			if ESXR.UI.Menu.Opened[i] then
+				if ESXR.UI.Menu.Opened[i].type == type and ESXR.UI.Menu.Opened[i].namespace == namespace and ESXR.UI.Menu.Opened[i].name == name then
+					ESXR.UI.Menu.Opened[i] = nil
 				end
 			end
 		end
@@ -204,7 +204,7 @@ ESR.UI.Menu.Open = function(type, namespace, name, data, submit, cancel, change,
 	end
 
 	menu.refresh = function()
-		ESR.UI.Menu.RegisteredTypes[type].open(namespace, name, menu.data)
+		ESXR.UI.Menu.RegisteredTypes[type].open(namespace, name, menu.data)
 	end
 
 	menu.setElement = function(i, key, val)
@@ -233,51 +233,51 @@ ESR.UI.Menu.Open = function(type, namespace, name, data, submit, cancel, change,
 		end
 	end
 
-	table.insert(ESR.UI.Menu.Opened, menu)
-	ESR.UI.Menu.RegisteredTypes[type].open(namespace, name, data)
+	table.insert(ESXR.UI.Menu.Opened, menu)
+	ESXR.UI.Menu.RegisteredTypes[type].open(namespace, name, data)
 
 	return menu
 end
 
-ESR.UI.Menu.Close = function(type, namespace, name)
-	for i=1, #ESR.UI.Menu.Opened, 1 do
-		if ESR.UI.Menu.Opened[i] then
-			if ESR.UI.Menu.Opened[i].type == type and ESR.UI.Menu.Opened[i].namespace == namespace and ESR.UI.Menu.Opened[i].name == name then
-				ESR.UI.Menu.Opened[i].close()
-				ESR.UI.Menu.Opened[i] = nil
+ESXR.UI.Menu.Close = function(type, namespace, name)
+	for i=1, #ESXR.UI.Menu.Opened, 1 do
+		if ESXR.UI.Menu.Opened[i] then
+			if ESXR.UI.Menu.Opened[i].type == type and ESXR.UI.Menu.Opened[i].namespace == namespace and ESXR.UI.Menu.Opened[i].name == name then
+				ESXR.UI.Menu.Opened[i].close()
+				ESXR.UI.Menu.Opened[i] = nil
 			end
 		end
 	end
 end
 
-ESR.UI.Menu.CloseAll = function()
-	for i=1, #ESR.UI.Menu.Opened, 1 do
-		if ESR.UI.Menu.Opened[i] then
-			ESR.UI.Menu.Opened[i].close()
-			ESR.UI.Menu.Opened[i] = nil
+ESXR.UI.Menu.CloseAll = function()
+	for i=1, #ESXR.UI.Menu.Opened, 1 do
+		if ESXR.UI.Menu.Opened[i] then
+			ESXR.UI.Menu.Opened[i].close()
+			ESXR.UI.Menu.Opened[i] = nil
 		end
 	end
 end
 
-ESR.UI.Menu.GetOpened = function(type, namespace, name)
-	for i=1, #ESR.UI.Menu.Opened, 1 do
-		if ESR.UI.Menu.Opened[i] then
-			if ESR.UI.Menu.Opened[i].type == type and ESR.UI.Menu.Opened[i].namespace == namespace and ESR.UI.Menu.Opened[i].name == name then
-				return ESR.UI.Menu.Opened[i]
+ESXR.UI.Menu.GetOpened = function(type, namespace, name)
+	for i=1, #ESXR.UI.Menu.Opened, 1 do
+		if ESXR.UI.Menu.Opened[i] then
+			if ESXR.UI.Menu.Opened[i].type == type and ESXR.UI.Menu.Opened[i].namespace == namespace and ESXR.UI.Menu.Opened[i].name == name then
+				return ESXR.UI.Menu.Opened[i]
 			end
 		end
 	end
 end
 
-ESR.UI.Menu.GetOpenedMenus = function()
-	return ESR.UI.Menu.Opened
+ESXR.UI.Menu.GetOpenedMenus = function()
+	return ESXR.UI.Menu.Opened
 end
 
-ESR.UI.Menu.IsOpen = function(type, namespace, name)
-	return ESR.UI.Menu.GetOpened(type, namespace, name) ~= nil
+ESXR.UI.Menu.IsOpen = function(type, namespace, name)
+	return ESXR.UI.Menu.GetOpened(type, namespace, name) ~= nil
 end
 
-ESR.UI.ShowInventoryItemNotification = function(add, item, count)
+ESXR.UI.ShowInventoryItemNotification = function(add, item, count)
 	SendNUIMessage({
 		action = 'inventoryNotification',
 		add    = add,
@@ -286,7 +286,7 @@ ESR.UI.ShowInventoryItemNotification = function(add, item, count)
 	})
 end
 
-ESR.Game.GetPedMugshot = function(ped, transparent)
+ESXR.Game.GetPedMugshot = function(ped, transparent)
 	if DoesEntityExist(ped) then
 		local mugshot
 
@@ -306,7 +306,7 @@ ESR.Game.GetPedMugshot = function(ped, transparent)
 	end
 end
 
-ESR.Game.Teleport = function(entity, coords, cb)
+ESXR.Game.Teleport = function(entity, coords, cb)
 	if DoesEntityExist(entity) then
 		RequestCollisionAtCoord(coords.x, coords.y, coords.z)
 		local timeout = 0
@@ -329,11 +329,11 @@ ESR.Game.Teleport = function(entity, coords, cb)
 	end
 end
 
-ESR.Game.SpawnObject = function(model, coords, cb)
+ESXR.Game.SpawnObject = function(model, coords, cb)
 	local model = (type(model) == 'number' and model or GetHashKey(model))
 
 	Citizen.CreateThread(function()
-		ESR.Streaming.RequestModel(model)
+		ESXR.Streaming.RequestModel(model)
 		local obj = CreateObject(model, coords.x, coords.y, coords.z, true, false, true)
 		SetModelAsNoLongerNeeded(model)
 
@@ -343,11 +343,11 @@ ESR.Game.SpawnObject = function(model, coords, cb)
 	end)
 end
 
-ESR.Game.SpawnLocalObject = function(model, coords, cb)
+ESXR.Game.SpawnLocalObject = function(model, coords, cb)
 	local model = (type(model) == 'number' and model or GetHashKey(model))
 
 	Citizen.CreateThread(function()
-		ESR.Streaming.RequestModel(model)
+		ESXR.Streaming.RequestModel(model)
 		local obj = CreateObject(model, coords.x, coords.y, coords.z, false, false, true)
 		SetModelAsNoLongerNeeded(model)
 
@@ -357,21 +357,21 @@ ESR.Game.SpawnLocalObject = function(model, coords, cb)
 	end)
 end
 
-ESR.Game.DeleteVehicle = function(vehicle)
+ESXR.Game.DeleteVehicle = function(vehicle)
 	SetEntityAsMissionEntity(vehicle, false, true)
 	DeleteVehicle(vehicle)
 end
 
-ESR.Game.DeleteObject = function(object)
+ESXR.Game.DeleteObject = function(object)
 	SetEntityAsMissionEntity(object, false, true)
 	DeleteObject(object)
 end
 
-ESR.Game.SpawnVehicle = function(modelName, coords, heading, cb)
+ESXR.Game.SpawnVehicle = function(modelName, coords, heading, cb)
 	local model = (type(modelName) == 'number' and modelName or GetHashKey(modelName))
 
 	Citizen.CreateThread(function()
-		ESR.Streaming.RequestModel(model)
+		ESXR.Streaming.RequestModel(model)
 
 		local vehicle = CreateVehicle(model, coords.x, coords.y, coords.z, heading, true, false)
 		local networkId = NetworkGetNetworkIdFromEntity(vehicle)
@@ -397,11 +397,11 @@ ESR.Game.SpawnVehicle = function(modelName, coords, heading, cb)
 	end)
 end
 
-ESR.Game.SpawnLocalVehicle = function(modelName, coords, heading, cb)
+ESXR.Game.SpawnLocalVehicle = function(modelName, coords, heading, cb)
 	local model = (type(modelName) == 'number' and modelName or GetHashKey(modelName))
 
 	Citizen.CreateThread(function()
-		ESR.Streaming.RequestModel(model)
+		ESXR.Streaming.RequestModel(model)
 
 		local vehicle = CreateVehicle(model, coords.x, coords.y, coords.z, heading, false, false)
 		local timeout = 0
@@ -425,14 +425,14 @@ ESR.Game.SpawnLocalVehicle = function(modelName, coords, heading, cb)
 	end)
 end
 
-ESR.Game.IsVehicleEmpty = function(vehicle)
+ESXR.Game.IsVehicleEmpty = function(vehicle)
 	local passengers = GetVehicleNumberOfPassengers(vehicle)
 	local driverSeatFree = IsVehicleSeatFree(vehicle, -1)
 
 	return passengers == 0 and driverSeatFree
 end
 
-ESR.Game.GetObjects = function()
+ESXR.Game.GetObjects = function()
 	local objects = {}
 
 	for object in EnumerateObjects() do
@@ -442,7 +442,7 @@ ESR.Game.GetObjects = function()
 	return objects
 end
 
-ESR.Game.GetPeds = function(onlyOtherPeds)
+ESXR.Game.GetPeds = function(onlyOtherPeds)
 	local peds, myPed = {}, PlayerPedId()
 
 	for ped in EnumeratePeds() do
@@ -454,7 +454,7 @@ ESR.Game.GetPeds = function(onlyOtherPeds)
 	return peds
 end
 
-ESR.Game.GetVehicles = function()
+ESXR.Game.GetVehicles = function()
 	local vehicles = {}
 
 	for vehicle in EnumerateVehicles() do
@@ -464,7 +464,7 @@ ESR.Game.GetVehicles = function()
 	return vehicles
 end
 
-ESR.Game.GetPlayers = function(onlyOtherPlayers, returnKeyValue, returnPeds)
+ESXR.Game.GetPlayers = function(onlyOtherPlayers, returnKeyValue, returnPeds)
 	local players, myPlayer = {}, PlayerId()
 
 	for k,player in ipairs(GetActivePlayers()) do
@@ -482,15 +482,15 @@ ESR.Game.GetPlayers = function(onlyOtherPlayers, returnKeyValue, returnPeds)
 	return players
 end
 
-ESR.Game.GetClosestObject = function(coords, modelFilter) return ESR.Game.GetClosestEntity(ESR.Game.GetObjects(), false, coords, modelFilter) end
-ESR.Game.GetClosestPed = function(coords, modelFilter) return ESR.Game.GetClosestEntity(ESR.Game.GetPeds(true), false, coords, modelFilter) end
-ESR.Game.GetClosestPlayer = function(coords) return ESR.Game.GetClosestEntity(ESR.Game.GetPlayers(true, true), true, coords, nil) end
-ESR.Game.GetClosestVehicle = function(coords, modelFilter) return ESR.Game.GetClosestEntity(ESR.Game.GetVehicles(), false, coords, modelFilter) end
-ESR.Game.GetPlayersInArea = function(coords, maxDistance) return EnumerateEntitiesWithinDistance(ESR.Game.GetPlayers(true, true), true, coords, maxDistance) end
-ESR.Game.GetVehiclesInArea = function(coords, maxDistance) return EnumerateEntitiesWithinDistance(ESR.Game.GetVehicles(), false, coords, maxDistance) end
-ESR.Game.IsSpawnPointClear = function(coords, maxDistance) return #ESR.Game.GetVehiclesInArea(coords, maxDistance) == 0 end
+ESXR.Game.GetClosestObject = function(coords, modelFilter) return ESXR.Game.GetClosestEntity(ESXR.Game.GetObjects(), false, coords, modelFilter) end
+ESXR.Game.GetClosestPed = function(coords, modelFilter) return ESXR.Game.GetClosestEntity(ESXR.Game.GetPeds(true), false, coords, modelFilter) end
+ESXR.Game.GetClosestPlayer = function(coords) return ESXR.Game.GetClosestEntity(ESXR.Game.GetPlayers(true, true), true, coords, nil) end
+ESXR.Game.GetClosestVehicle = function(coords, modelFilter) return ESXR.Game.GetClosestEntity(ESXR.Game.GetVehicles(), false, coords, modelFilter) end
+ESXR.Game.GetPlayersInArea = function(coords, maxDistance) return EnumerateEntitiesWithinDistance(ESXR.Game.GetPlayers(true, true), true, coords, maxDistance) end
+ESXR.Game.GetVehiclesInArea = function(coords, maxDistance) return EnumerateEntitiesWithinDistance(ESXR.Game.GetVehicles(), false, coords, maxDistance) end
+ESXR.Game.IsSpawnPointClear = function(coords, maxDistance) return #ESXR.Game.GetVehiclesInArea(coords, maxDistance) == 0 end
 
-ESR.Game.GetClosestEntity = function(entities, isPlayerEntities, coords, modelFilter)
+ESXR.Game.GetClosestEntity = function(entities, isPlayerEntities, coords, modelFilter)
 	local closestEntity, closestEntityDistance, filteredEntities = -1, -1, nil
 
 	if coords then
@@ -521,7 +521,7 @@ ESR.Game.GetClosestEntity = function(entities, isPlayerEntities, coords, modelFi
 	return closestEntity, closestEntityDistance
 end
 
-ESR.Game.GetVehicleInDirection = function()
+ESXR.Game.GetVehicleInDirection = function()
 	local playerPed    = PlayerPedId()
 	local playerCoords = GetEntityCoords(playerPed)
 	local inDirection  = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
@@ -535,7 +535,7 @@ ESR.Game.GetVehicleInDirection = function()
 	return nil
 end
 
-ESR.Game.GetVehicleProperties = function(vehicle)
+ESXR.Game.GetVehicleProperties = function(vehicle)
 	if DoesEntityExist(vehicle) then
 		local colorPrimary, colorSecondary = GetVehicleColours(vehicle)
 		local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
@@ -551,15 +551,15 @@ ESR.Game.GetVehicleProperties = function(vehicle)
 		return {
 			model             = GetEntityModel(vehicle),
 
-			plate             = ESR.Math.Trim(GetVehicleNumberPlateText(vehicle)),
+			plate             = ESXR.Math.Trim(GetVehicleNumberPlateText(vehicle)),
 			plateIndex        = GetVehicleNumberPlateTextIndex(vehicle),
 
-			bodyHealth        = ESR.Math.Round(GetVehicleBodyHealth(vehicle), 1),
-			engineHealth      = ESR.Math.Round(GetVehicleEngineHealth(vehicle), 1),
-			tankHealth        = ESR.Math.Round(GetVehiclePetrolTankHealth(vehicle), 1),
+			bodyHealth        = ESXR.Math.Round(GetVehicleBodyHealth(vehicle), 1),
+			engineHealth      = ESXR.Math.Round(GetVehicleEngineHealth(vehicle), 1),
+			tankHealth        = ESXR.Math.Round(GetVehiclePetrolTankHealth(vehicle), 1),
 
-			fuelLevel         = ESR.Math.Round(GetVehicleFuelLevel(vehicle), 1),
-			dirtLevel         = ESR.Math.Round(GetVehicleDirtLevel(vehicle), 1),
+			fuelLevel         = ESXR.Math.Round(GetVehicleFuelLevel(vehicle), 1),
+			dirtLevel         = ESXR.Math.Round(GetVehicleDirtLevel(vehicle), 1),
 			color1            = colorPrimary,
 			color2            = colorSecondary,
 
@@ -636,7 +636,7 @@ ESR.Game.GetVehicleProperties = function(vehicle)
 	end
 end
 
-ESR.Game.SetVehicleProperties = function(vehicle, props)
+ESXR.Game.SetVehicleProperties = function(vehicle, props)
 	if DoesEntityExist(vehicle) then
 		local colorPrimary, colorSecondary = GetVehicleColours(vehicle)
 		local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
@@ -728,7 +728,7 @@ ESR.Game.SetVehicleProperties = function(vehicle, props)
 	end
 end
 
-ESR.Game.Utils.DrawText3D = function(coords, text, size, font)
+ESXR.Game.Utils.DrawText3D = function(coords, text, size, font)
 	coords = vector3(coords.x, coords.y, coords.z)
 
 	local camCoords = GetGameplayCamCoords()
@@ -756,13 +756,13 @@ ESR.Game.Utils.DrawText3D = function(coords, text, size, font)
 	ClearDrawOrigin()
 end
 
-ESR.ShowInventory = function()
+ESXR.ShowInventory = function()
 	local playerPed = PlayerPedId()
 	local elements, currentWeight = {}, 0
 
-	for k,v in pairs(ESR.PlayerData.accounts) do
+	for k,v in pairs(ESXR.PlayerData.accounts) do
 		if v.money > 0 then
-			local formattedMoney = _U('locale_currency', ESR.Math.GroupDigits(v.money))
+			local formattedMoney = _U('locale_currency', ESXR.Math.GroupDigits(v.money))
 			local canDrop = v.name ~= 'bank'
 
 			table.insert(elements, {
@@ -777,7 +777,7 @@ ESR.ShowInventory = function()
 		end
 	end
 
-	for k,v in ipairs(ESR.PlayerData.inventory) do
+	for k,v in ipairs(ESXR.PlayerData.inventory) do
 		if v.count > 0 then
 			currentWeight = currentWeight + (v.weight * v.count)
 
@@ -819,15 +819,15 @@ ESR.ShowInventory = function()
 		end
 	end
 
-	ESR.UI.Menu.CloseAll()
+	ESXR.UI.Menu.CloseAll()
 
-	ESR.UI.Menu.Open('default', GetCurrentResourceName(), 'inventory', {
-		title    = _U('inventory', currentWeight, ESR.PlayerData.maxWeight),
+	ESXR.UI.Menu.Open('default', GetCurrentResourceName(), 'inventory', {
+		title    = _U('inventory', currentWeight, ESXR.PlayerData.maxWeight),
 		align    = 'bottom-right',
 		elements = elements
 	}, function(data, menu)
 		menu.close()
-		local player, distance = ESR.Game.GetClosestPlayer()
+		local player, distance = ESXR.Game.GetClosestPlayer()
 		elements = {}
 
 		if data.current.usable then
@@ -848,7 +848,7 @@ ESR.ShowInventory = function()
 
 		table.insert(elements, {label = _U('return'), action = 'return'})
 
-		ESR.UI.Menu.Open('default', GetCurrentResourceName(), 'inventory_item', {
+		ESXR.UI.Menu.Open('default', GetCurrentResourceName(), 'inventory_item', {
 			title    = data.current.label,
 			align    = 'bottom-right',
 			elements = elements,
@@ -856,7 +856,7 @@ ESR.ShowInventory = function()
 			local item, type = data1.current.value, data1.current.type
 
 			if data1.current.action == 'give' then
-				local playersNearby = ESR.Game.GetPlayersInArea(GetEntityCoords(playerPed), 3.0)
+				local playersNearby = ESXR.Game.GetPlayersInArea(GetEntityCoords(playerPed), 3.0)
 
 				if #playersNearby > 0 then
 					local players = {}
@@ -866,7 +866,7 @@ ESR.ShowInventory = function()
 						players[GetPlayerServerId(playerNearby)] = true
 					end
 
-					ESR.TriggerServerCallback('esx:getPlayerNames', function(returnedPlayers)
+					ESXR.TriggerServerCallback('esx:getPlayerNames', function(returnedPlayers)
 						for playerId,playerName in pairs(returnedPlayers) do
 							table.insert(elements, {
 								label = playerName,
@@ -874,14 +874,14 @@ ESR.ShowInventory = function()
 							})
 						end
 
-						ESR.UI.Menu.Open('default', GetCurrentResourceName(), 'give_item_to', {
+						ESXR.UI.Menu.Open('default', GetCurrentResourceName(), 'give_item_to', {
 							title    = _U('give_to'),
 							align    = 'bottom-right',
 							elements = elements
 						}, function(data2, menu2)
 							local selectedPlayer, selectedPlayerId = GetPlayerFromServerId(data2.current.playerId), data2.current.playerId
-							playersNearby = ESR.Game.GetPlayersInArea(GetEntityCoords(playerPed), 3.0)
-							playersNearby = ESR.Table.Set(playersNearby)
+							playersNearby = ESXR.Game.GetPlayersInArea(GetEntityCoords(playerPed), 3.0)
+							playersNearby = ESXR.Table.Set(playersNearby)
 
 							if playersNearby[selectedPlayer] then
 								local selectedPlayerPed = GetPlayerPed(selectedPlayer)
@@ -892,7 +892,7 @@ ESR.ShowInventory = function()
 										menu2.close()
 										menu1.close()
 									else
-										ESR.UI.Menu.Open('dialog', GetCurrentResourceName(), 'inventory_item_count_give', {
+										ESXR.UI.Menu.Open('dialog', GetCurrentResourceName(), 'inventory_item_count_give', {
 											title = _U('amount')
 										}, function(data3, menu3)
 											local quantity = tonumber(data3.value)
@@ -903,17 +903,17 @@ ESR.ShowInventory = function()
 												menu2.close()
 												menu1.close()
 											else
-												ESR.ShowNotification(_U('amount_invalid'))
+												ESXR.ShowNotification(_U('amount_invalid'))
 											end
 										end, function(data3, menu3)
 											menu3.close()
 										end)
 									end
 								else
-									ESR.ShowNotification(_U('in_vehicle'))
+									ESXR.ShowNotification(_U('in_vehicle'))
 								end
 							else
-								ESR.ShowNotification(_U('players_nearby'))
+								ESXR.ShowNotification(_U('players_nearby'))
 								menu2.close()
 							end
 						end, function(data2, menu2)
@@ -921,12 +921,12 @@ ESR.ShowInventory = function()
 						end)
 					end, players)
 				else
-					ESR.ShowNotification(_U('players_nearby'))
+					ESXR.ShowNotification(_U('players_nearby'))
 				end
 			elseif data1.current.action == 'remove' then
 				if IsPedOnFoot(playerPed) and not IsPedFalling(playerPed) then
 					local dict, anim = 'weapons@first_person@aim_rng@generic@projectile@sticky_bomb@', 'plant_floor'
-					ESR.Streaming.RequestAnimDict(dict)
+					ESXR.Streaming.RequestAnimDict(dict)
 
 					if type == 'item_weapon' then
 						menu1.close()
@@ -934,7 +934,7 @@ ESR.ShowInventory = function()
 						Citizen.Wait(1000)
 						TriggerServerEvent('esx:removeInventoryItem', type, item)
 					else
-						ESR.UI.Menu.Open('dialog', GetCurrentResourceName(), 'inventory_item_count_remove', {
+						ESXR.UI.Menu.Open('dialog', GetCurrentResourceName(), 'inventory_item_count_remove', {
 							title = _U('amount')
 						}, function(data2, menu2)
 							local quantity = tonumber(data2.value)
@@ -946,7 +946,7 @@ ESR.ShowInventory = function()
 								Citizen.Wait(1000)
 								TriggerServerEvent('esx:removeInventoryItem', type, item, quantity)
 							else
-								ESR.ShowNotification(_U('amount_invalid'))
+								ESXR.ShowNotification(_U('amount_invalid'))
 							end
 						end, function(data2, menu2)
 							menu2.close()
@@ -956,17 +956,17 @@ ESR.ShowInventory = function()
 			elseif data1.current.action == 'use' then
 				TriggerServerEvent('esx:useItem', item)
 			elseif data1.current.action == 'return' then
-				ESR.UI.Menu.CloseAll()
-				ESR.ShowInventory()
+				ESXR.UI.Menu.CloseAll()
+				ESXR.ShowInventory()
 			elseif data1.current.action == 'give_ammo' then
-				local closestPlayer, closestDistance = ESR.Game.GetClosestPlayer()
+				local closestPlayer, closestDistance = ESXR.Game.GetClosestPlayer()
 				local closestPed = GetPlayerPed(closestPlayer)
 				local pedAmmo = GetAmmoInPedWeapon(playerPed, GetHashKey(item))
 
 				if IsPedOnFoot(closestPed) and not IsPedFalling(closestPed) then
 					if closestPlayer ~= -1 and closestDistance < 3.0 then
 						if pedAmmo > 0 then
-							ESR.UI.Menu.Open('dialog', GetCurrentResourceName(), 'inventory_item_count_give', {
+							ESXR.UI.Menu.Open('dialog', GetCurrentResourceName(), 'inventory_item_count_give', {
 								title = _U('amountammo')
 							}, function(data2, menu2)
 								local quantity = tonumber(data2.value)
@@ -977,27 +977,27 @@ ESR.ShowInventory = function()
 										menu2.close()
 										menu1.close()
 									else
-										ESR.ShowNotification(_U('noammo'))
+										ESXR.ShowNotification(_U('noammo'))
 									end
 								else
-									ESR.ShowNotification(_U('amount_invalid'))
+									ESXR.ShowNotification(_U('amount_invalid'))
 								end
 							end, function(data2, menu2)
 								menu2.close()
 							end)
 						else
-							ESR.ShowNotification(_U('noammo'))
+							ESXR.ShowNotification(_U('noammo'))
 						end
 					else
-						ESR.ShowNotification(_U('players_nearby'))
+						ESXR.ShowNotification(_U('players_nearby'))
 					end
 				else
-					ESR.ShowNotification(_U('in_vehicle'))
+					ESXR.ShowNotification(_U('in_vehicle'))
 				end
 			end
 		end, function(data1, menu1)
-			ESR.UI.Menu.CloseAll()
-			ESR.ShowInventory()
+			ESXR.UI.Menu.CloseAll()
+			ESXR.ShowInventory()
 		end)
 	end, function(data, menu)
 		menu.close()
@@ -1006,23 +1006,23 @@ end
 
 RegisterNetEvent('esx:serverCallback')
 AddEventHandler('esx:serverCallback', function(requestId, ...)
-	ESR.ServerCallbacks[requestId](...)
-	ESR.ServerCallbacks[requestId] = nil
+	ESXR.ServerCallbacks[requestId](...)
+	ESXR.ServerCallbacks[requestId] = nil
 end)
 
 RegisterNetEvent('esx:showNotification')
 AddEventHandler('esx:showNotification', function(msg)
-	ESR.ShowNotification(msg)
+	ESXR.ShowNotification(msg)
 end)
 
 RegisterNetEvent('esx:showAdvancedNotification')
 AddEventHandler('esx:showAdvancedNotification', function(sender, subject, msg, textureDict, iconType, flash, saveToBrief, hudColorIndex)
-	ESR.ShowAdvancedNotification(sender, subject, msg, textureDict, iconType, flash, saveToBrief, hudColorIndex)
+	ESXR.ShowAdvancedNotification(sender, subject, msg, textureDict, iconType, flash, saveToBrief, hudColorIndex)
 end)
 
 RegisterNetEvent('esx:showHelpNotification')
 AddEventHandler('esx:showHelpNotification', function(msg, thisFrame, beep, duration)
-	ESR.ShowHelpNotification(msg, thisFrame, beep, duration)
+	ESXR.ShowHelpNotification(msg, thisFrame, beep, duration)
 end)
 
 -- SetTimeout
@@ -1031,11 +1031,11 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local currTime = GetGameTimer()
 
-		for i=1, #ESR.TimeoutCallbacks, 1 do
-			if ESR.TimeoutCallbacks[i] then
-				if currTime >= ESR.TimeoutCallbacks[i].time then
-					ESR.TimeoutCallbacks[i].cb()
-					ESR.TimeoutCallbacks[i] = nil
+		for i=1, #ESXR.TimeoutCallbacks, 1 do
+			if ESXR.TimeoutCallbacks[i] then
+				if currTime >= ESXR.TimeoutCallbacks[i].time then
+					ESXR.TimeoutCallbacks[i].cb()
+					ESXR.TimeoutCallbacks[i] = nil
 				end
 			end
 		end

@@ -4,21 +4,21 @@ for i = 48,  57 do table.insert(Charset, string.char(i)) end
 for i = 65,  90 do table.insert(Charset, string.char(i)) end
 for i = 97, 122 do table.insert(Charset, string.char(i)) end
 
-ESR.GetRandomString = function(length)
+ESXR.GetRandomString = function(length)
 	math.randomseed(GetGameTimer())
 
 	if length > 0 then
-		return ESR.GetRandomString(length - 1) .. Charset[math.random(1, #Charset)]
+		return ESXR.GetRandomString(length - 1) .. Charset[math.random(1, #Charset)]
 	else
 		return ''
 	end
 end
 
-ESR.GetConfig = function()
+ESXR.GetConfig = function()
 	return Config
 end
 
-ESR.GetWeapon = function(weaponName)
+ESXR.GetWeapon = function(weaponName)
 	weaponName = string.upper(weaponName)
 
 	for k,v in ipairs(Config.Weapons) do
@@ -28,7 +28,7 @@ ESR.GetWeapon = function(weaponName)
 	end
 end
 
-ESR.GetWeaponFromHash = function(weaponHash)
+ESXR.GetWeaponFromHash = function(weaponHash)
 	for k,v in ipairs(Config.Weapons) do
 		if GetHashKey(v.name) == weaponHash then
 			return v
@@ -36,11 +36,11 @@ ESR.GetWeaponFromHash = function(weaponHash)
 	end
 end
 
-ESR.GetWeaponList = function()
+ESXR.GetWeaponList = function()
 	return Config.Weapons
 end
 
-ESR.GetWeaponLabel = function(weaponName)
+ESXR.GetWeaponLabel = function(weaponName)
 	weaponName = string.upper(weaponName)
 
 	for k,v in ipairs(Config.Weapons) do
@@ -50,7 +50,7 @@ ESR.GetWeaponLabel = function(weaponName)
 	end
 end
 
-ESR.GetWeaponComponent = function(weaponName, weaponComponent)
+ESXR.GetWeaponComponent = function(weaponName, weaponComponent)
 	weaponName = string.upper(weaponName)
 	local weapons = Config.Weapons
 
@@ -65,7 +65,7 @@ ESR.GetWeaponComponent = function(weaponName, weaponComponent)
 	end
 end
 
-ESR.DumpTable = function(table, nb)
+ESXR.DumpTable = function(table, nb)
 	if nb == nil then
 		nb = 0
 	end
@@ -82,7 +82,7 @@ ESR.DumpTable = function(table, nb)
 			for i = 1, nb, 1 do
 				s = s .. "    "
 			end
-			s = s .. '['..k..'] = ' .. ESR.DumpTable(v, nb + 1) .. ',\n'
+			s = s .. '['..k..'] = ' .. ESXR.DumpTable(v, nb + 1) .. ',\n'
 		end
 
 		for i = 1, nb, 1 do
@@ -95,6 +95,6 @@ ESR.DumpTable = function(table, nb)
 	end
 end
 
-ESR.Round = function(value, numDecimalPlaces)
-	return ESR.Math.Round(value, numDecimalPlaces)
+ESXR.Round = function(value, numDecimalPlaces)
+	return ESXR.Math.Round(value, numDecimalPlaces)
 end

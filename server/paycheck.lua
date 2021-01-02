@@ -1,9 +1,9 @@
-ESR.StartPayCheck = function()
+ESXR.StartPayCheck = function()
 	function payCheck()
-		local xPlayers = ESR.GetPlayers()
+		local xPlayers = ESXR.GetPlayers()
 
 		for i=1, #xPlayers, 1 do
-			local xPlayer = ESR.GetPlayerFromId(xPlayers[i])
+			local xPlayer = ESXR.GetPlayerFromId(xPlayers[i])
 			local job     = xPlayer.job.grade_name
 			local salary  = xPlayer.job.grade_salary
 

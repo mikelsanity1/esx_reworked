@@ -13,8 +13,8 @@ end)
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(playerData)
-	ESR.PlayerLoaded = true
-	ESR.PlayerData = playerData
+	ESXR.PlayerLoaded = true
+	ESXR.PlayerData = playerData
 
 	-- check if player is coming from loading screen
 	if GetEntityModel(PlayerPedId()) == GetHashKey('PLAYER_ZERO') then
@@ -45,7 +45,7 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 	if Config.EnableHud then
 		for k,v in ipairs(playerData.accounts) do
 			local accountTpl = '<div><img src="img/accounts/' .. v.name .. '.png"/>&nbsp;{{money}}</div>'
-			ESR.UI.HUD.RegisterElement('account_' .. v.name, k, 0, accountTpl, {money = ESR.Math.GroupDigits(v.money)})
+			ESXR.UI.HUD.RegisterElement('account_' .. v.name, k, 0, accountTpl, {money = ESXR.Math.GroupDigits(v.money)})
 		end
 
 		local jobTpl = '<div>{{job_label}} - {{grade_label}}</div>'
@@ -54,13 +54,13 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 			jobTpl = '<div>{{job_label}}</div>'
 		end
 
-		ESR.UI.HUD.RegisterElement('job', #playerData.accounts, 0, jobTpl, {
+		ESXR.UI.HUD.RegisterElement('job', #playerData.accounts, 0, jobTpl, {
 			job_label = playerData.job.label,
 			grade_label = playerData.job.grade_label
 		})
 	end
 
-	ESR.Game.Teleport(PlayerPedId(), {
+	ESXR.Game.Teleport(PlayerPedId(), {
 		x = playerData.coords.x,
 		y = playerData.coords.y,
 		z = playerData.coords.z + 0.25,
@@ -83,13 +83,13 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 end)
 
 RegisterNetEvent('esx:setMaxWeight')
-AddEventHandler('esx:setMaxWeight', function(newMaxWeight) ESR.PlayerData.maxWeight = newMaxWeight end)
+AddEventHandler('esx:setMaxWeight', function(newMaxWeight) ESXR.PlayerData.maxWeight = newMaxWeight end)
 
 AddEventHandler('esx:onPlayerSpawn', function() isDead = false end)
 AddEventHandler('esx:onPlayerDeath', function() isDead = true end)
 
 AddEventHandler('skinchanger:modelLoaded', function()
-	while not ESR.PlayerLoaded do
+	while not ESXR.PlayerLoaded do
 		Citizen.Wait(100)
 	end
 
@@ -101,7 +101,7 @@ AddEventHandler('esx:restoreLoadout', function()
 	local ammoTypes = {}
 	RemoveAllPedWeapons(playerPed, true)
 
-	for k,v in ipairs(ESR.PlayerData.loadout) do
+	for k,v in ipairs(ESXR.PlayerData.loadout) do
 		local weaponName = v.name
 		local weaponHash = GetHashKey(weaponName)
 
@@ -111,7 +111,7 @@ AddEventHandler('esx:restoreLoadout', function()
 		local ammoType = GetPedAmmoTypeFromWeapon(playerPed, weaponHash)
 
 		for k2,v2 in ipairs(v.components) do
-			local componentHash = ESR.GetWeaponComponent(weaponName, v2).hash
+			local componentHash = ESXR.GetWeaponComponent(weaponName, v2).hash
 			GiveWeaponComponentToPed(playerPed, weaponHash, componentHash)
 		end
 
@@ -124,61 +124,61 @@ end)
 
 RegisterNetEvent('esx:setAccountMoney')
 AddEventHandler('esx:setAccountMoney', function(account)
-	for k,v in ipairs(ESR.PlayerData.accounts) do
+	for k,v in ipairs(ESXR.PlayerData.accounts) do
 		if v.name == account.name then
-			ESR.PlayerData.accounts[k] = account
+			ESXR.PlayerData.accounts[k] = account
 			break
 		end
 	end
 
 	if Config.EnableHud then
-		ESR.UI.HUD.UpdateElement('account_' .. account.name, {
-			money = ESR.Math.GroupDigits(account.money)
+		ESXR.UI.HUD.UpdateElement('account_' .. account.name, {
+			money = ESXR.Math.GroupDigits(account.money)
 		})
 	end
 end)
 
 RegisterNetEvent('esx:addInventoryItem')
 AddEventHandler('esx:addInventoryItem', function(item, count, showNotification)
-	for k,v in ipairs(ESR.PlayerData.inventory) do
+	for k,v in ipairs(ESXR.PlayerData.inventory) do
 		if v.name == item then
-			ESR.UI.ShowInventoryItemNotification(true, v.label, count - v.count)
-			ESR.PlayerData.inventory[k].count = count
+			ESXR.UI.ShowInventoryItemNotification(true, v.label, count - v.count)
+			ESXR.PlayerData.inventory[k].count = count
 			break
 		end
 	end
 
 	if showNotification then
-		ESR.UI.ShowInventoryItemNotification(true, item, count)
+		ESXR.UI.ShowInventoryItemNotification(true, item, count)
 	end
 
-	if ESR.UI.Menu.IsOpen('default', 'es_reworked', 'inventory') then
-		ESR.ShowInventory()
+	if ESXR.UI.Menu.IsOpen('default', 'esx_reworked', 'inventory') then
+		ESXR.ShowInventory()
 	end
 end)
 
 RegisterNetEvent('esx:removeInventoryItem')
 AddEventHandler('esx:removeInventoryItem', function(item, count, showNotification)
-	for k,v in ipairs(ESR.PlayerData.inventory) do
+	for k,v in ipairs(ESXR.PlayerData.inventory) do
 		if v.name == item then
-			ESR.UI.ShowInventoryItemNotification(false, v.label, v.count - count)
-			ESR.PlayerData.inventory[k].count = count
+			ESXR.UI.ShowInventoryItemNotification(false, v.label, v.count - count)
+			ESXR.PlayerData.inventory[k].count = count
 			break
 		end
 	end
 
 	if showNotification then
-		ESR.UI.ShowInventoryItemNotification(false, item, count)
+		ESXR.UI.ShowInventoryItemNotification(false, item, count)
 	end
 
-	if ESR.UI.Menu.IsOpen('default', 'es_reworked', 'inventory') then
-		ESR.ShowInventory()
+	if ESXR.UI.Menu.IsOpen('default', 'esx_reworked', 'inventory') then
+		ESXR.ShowInventory()
 	end
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	ESR.PlayerData.job = job
+	ESXR.PlayerData.job = job
 end)
 
 RegisterNetEvent('esx:addWeapon')
@@ -193,7 +193,7 @@ RegisterNetEvent('esx:addWeaponComponent')
 AddEventHandler('esx:addWeaponComponent', function(weaponName, weaponComponent)
 	local playerPed = PlayerPedId()
 	local weaponHash = GetHashKey(weaponName)
-	local componentHash = ESR.GetWeaponComponent(weaponName, weaponComponent).hash
+	local componentHash = ESXR.GetWeaponComponent(weaponName, weaponComponent).hash
 
 	GiveWeaponComponentToPed(playerPed, weaponHash, componentHash)
 end)
@@ -227,7 +227,7 @@ RegisterNetEvent('esx:removeWeaponComponent')
 AddEventHandler('esx:removeWeaponComponent', function(weaponName, weaponComponent)
 	local playerPed = PlayerPedId()
 	local weaponHash = GetHashKey(weaponName)
-	local componentHash = ESR.GetWeaponComponent(weaponName, weaponComponent).hash
+	local componentHash = ESXR.GetWeaponComponent(weaponName, weaponComponent).hash
 
 	RemoveWeaponComponentFromPed(playerPed, weaponHash, componentHash)
 end)
@@ -241,13 +241,13 @@ AddEventHandler('esx:teleport', function(coords)
 	coords.y = coords.y + 0.0
 	coords.z = coords.z + 0.0
 
-	ESR.Game.Teleport(playerPed, coords)
+	ESXR.Game.Teleport(playerPed, coords)
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	if Config.EnableHud then
-		ESR.UI.HUD.UpdateElement('job', {
+		ESXR.UI.HUD.UpdateElement('job', {
 			job_label = job.label,
 			grade_label = job.grade_label
 		})
@@ -262,7 +262,7 @@ AddEventHandler('esx:spawnVehicle', function(vehicleName)
 		local playerPed = PlayerPedId()
 		local playerCoords, playerHeading = GetEntityCoords(playerPed), GetEntityHeading(playerPed)
 
-		ESR.Game.SpawnVehicle(model, playerCoords, playerHeading, function(vehicle)
+		ESXR.Game.SpawnVehicle(model, playerCoords, playerHeading, function(vehicle)
 			TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 		end)
 	else
@@ -288,18 +288,18 @@ AddEventHandler('esx:createPickup', function(pickupId, label, coords, type, name
 
 	if type == 'item_weapon' then
 		local weaponHash = GetHashKey(name)
-		ESR.Streaming.RequestWeaponAsset(weaponHash)
+		ESXR.Streaming.RequestWeaponAsset(weaponHash)
 		local pickupObject = CreateWeaponObject(weaponHash, 50, coords.x, coords.y, coords.z, true, 1.0, 0)
 		SetWeaponObjectTintIndex(pickupObject, tintIndex)
 
 		for k,v in ipairs(components) do
-			local component = ESR.GetWeaponComponent(name, v)
+			local component = ESXR.GetWeaponComponent(name, v)
 			GiveWeaponComponentToWeaponObject(pickupObject, component.hash)
 		end
 
 		setObjectProperties(pickupObject)
 	else
-		ESR.Game.SpawnLocalObject('prop_money_bag_01', coords, setObjectProperties)
+		ESXR.Game.SpawnLocalObject('prop_money_bag_01', coords, setObjectProperties)
 	end
 end)
 
@@ -322,7 +322,7 @@ end)
 RegisterNetEvent('esx:removePickup')
 AddEventHandler('esx:removePickup', function(pickupId)
 	if pickups[pickupId] and pickups[pickupId].obj then
-		ESR.Game.DeleteObject(pickups[pickupId].obj)
+		ESXR.Game.DeleteObject(pickups[pickupId].obj)
 		pickups[pickupId] = nil
 	end
 end)
@@ -333,7 +333,7 @@ AddEventHandler('esx:deleteVehicle', function(radius)
 
 	if radius and tonumber(radius) then
 		radius = tonumber(radius) + 0.01
-		local vehicles = ESR.Game.GetVehiclesInArea(GetEntityCoords(playerPed), radius)
+		local vehicles = ESXR.Game.GetVehiclesInArea(GetEntityCoords(playerPed), radius)
 
 		for k,entity in ipairs(vehicles) do
 			local attempt = 0
@@ -345,11 +345,11 @@ AddEventHandler('esx:deleteVehicle', function(radius)
 			end
 
 			if DoesEntityExist(entity) and NetworkHasControlOfEntity(entity) then
-				ESR.Game.DeleteVehicle(entity)
+				ESXR.Game.DeleteVehicle(entity)
 			end
 		end
 	else
-		local vehicle, attempt = ESR.Game.GetVehicleInDirection(), 0
+		local vehicle, attempt = ESXR.Game.GetVehicleInDirection(), 0
 
 		if IsPedInAnyVehicle(playerPed, true) then
 			vehicle = GetVehiclePedIsIn(playerPed, false)
@@ -362,7 +362,7 @@ AddEventHandler('esx:deleteVehicle', function(radius)
 		end
 
 		if DoesEntityExist(vehicle) and NetworkHasControlOfEntity(vehicle) then
-			ESR.Game.DeleteVehicle(vehicle)
+			ESXR.Game.DeleteVehicle(vehicle)
 		end
 	end
 end)
@@ -375,16 +375,16 @@ if Config.EnableHud then
 
 			if IsPauseMenuActive() and not isPaused then
 				isPaused = true
-				ESR.UI.HUD.SetDisplay(0.0)
+				ESXR.UI.HUD.SetDisplay(0.0)
 			elseif not IsPauseMenuActive() and isPaused then
 				isPaused = false
-				ESR.UI.HUD.SetDisplay(1.0)
+				ESXR.UI.HUD.SetDisplay(1.0)
 			end
 		end
 	end)
 
 	AddEventHandler('esx:loadingScreenOff', function()
-		ESR.UI.HUD.SetDisplay(1.0)
+		ESXR.UI.HUD.SetDisplay(1.0)
 	end)
 end
 
@@ -401,7 +401,7 @@ function StartServerSyncLoops()
 
 				if IsPedShooting(playerPed) then
 					local _,weaponHash = GetCurrentPedWeapon(playerPed, true)
-					local weapon = ESR.GetWeaponFromHash(weaponHash)
+					local weapon = ESXR.GetWeaponFromHash(weaponHash)
 
 					if weapon then
 						local ammoCount = GetAmmoInPedWeapon(playerPed, weaponHash)
@@ -414,7 +414,7 @@ function StartServerSyncLoops()
 
 	-- sync current player coords with server
 	Citizen.CreateThread(function()
-		local previousCoords = vector3(ESR.PlayerData.coords.x, ESR.PlayerData.coords.y, ESR.PlayerData.coords.z)
+		local previousCoords = vector3(ESXR.PlayerData.coords.x, ESXR.PlayerData.coords.y, ESXR.PlayerData.coords.z)
 
 		while true do
 			Citizen.Wait(1000)
@@ -426,8 +426,8 @@ function StartServerSyncLoops()
 
 				if distance > 1 then
 					previousCoords = playerCoords
-					local playerHeading = ESR.Math.Round(GetEntityHeading(playerPed), 1)
-					local formattedCoords = {x = ESR.Math.Round(playerCoords.x, 1), y = ESR.Math.Round(playerCoords.y, 1), z = ESR.Math.Round(playerCoords.z, 1), heading = playerHeading}
+					local playerHeading = ESXR.Math.Round(GetEntityHeading(playerPed), 1)
+					local formattedCoords = {x = ESXR.Math.Round(playerCoords.x, 1), y = ESXR.Math.Round(playerCoords.y, 1), z = ESXR.Math.Round(playerCoords.z, 1), heading = playerHeading}
 					TriggerServerEvent('esx:updateCoords', formattedCoords)
 				end
 			end
@@ -440,8 +440,8 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 
 		if IsControlJustReleased(0, 289) then
-			if IsInputDisabled(0) and not isDead and not ESR.UI.Menu.IsOpen('default', 'es_reworked', 'inventory') then
-				ESR.ShowInventory()
+			if IsInputDisabled(0) and not isDead and not ESXR.UI.Menu.IsOpen('default', 'esx_reworked', 'inventory') then
+				ESXR.ShowInventory()
 			end
 		end
 	end
@@ -453,7 +453,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
 		local playerCoords, letSleep = GetEntityCoords(playerPed), true
-		local closestPlayer, closestDistance = ESR.Game.GetClosestPlayer(playerCoords)
+		local closestPlayer, closestDistance = ESXR.Game.GetClosestPlayer(playerCoords)
 
 		for pickupId,pickup in pairs(pickups) do
 			local distance = #(playerCoords - pickup.coords)
@@ -468,7 +468,7 @@ Citizen.CreateThread(function()
 							pickup.inRange = true
 
 							local dict, anim = 'weapons@first_person@aim_rng@generic@projectile@sticky_bomb@', 'plant_floor'
-							ESR.Streaming.RequestAnimDict(dict)
+							ESXR.Streaming.RequestAnimDict(dict)
 							TaskPlayAnim(playerPed, dict, anim, 8.0, 1.0, 1000, 16, 0.0, false, false, false)
 							Citizen.Wait(1000)
 
@@ -480,7 +480,7 @@ Citizen.CreateThread(function()
 					label = ('%s~n~%s'):format(label, _U('threw_pickup_prompt'))
 				end
 
-				ESR.Game.Utils.DrawText3D({
+				ESXR.Game.Utils.DrawText3D({
 					x = pickup.coords.x,
 					y = pickup.coords.y,
 					z = pickup.coords.z + 0.25

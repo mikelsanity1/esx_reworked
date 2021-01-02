@@ -1,4 +1,4 @@
-function ESR.Streaming.RequestModel(modelHash, cb)
+function ESXR.Streaming.RequestModel(modelHash, cb)
 	modelHash = (type(modelHash) == 'number' and modelHash or GetHashKey(modelHash))
 
 	if not HasModelLoaded(modelHash) and IsModelInCdimage(modelHash) then
@@ -14,7 +14,7 @@ function ESR.Streaming.RequestModel(modelHash, cb)
 	end
 end
 
-function ESR.Streaming.RequestStreamedTextureDict(textureDict, cb)
+function ESXR.Streaming.RequestStreamedTextureDict(textureDict, cb)
 	if not HasStreamedTextureDictLoaded(textureDict) then
 		RequestStreamedTextureDict(textureDict)
 
@@ -28,7 +28,7 @@ function ESR.Streaming.RequestStreamedTextureDict(textureDict, cb)
 	end
 end
 
-function ESR.Streaming.RequestNamedPtfxAsset(assetName, cb)
+function ESXR.Streaming.RequestNamedPtfxAsset(assetName, cb)
 	if not HasNamedPtfxAssetLoaded(assetName) then
 		RequestNamedPtfxAsset(assetName)
 
@@ -42,7 +42,7 @@ function ESR.Streaming.RequestNamedPtfxAsset(assetName, cb)
 	end
 end
 
-function ESR.Streaming.RequestAnimSet(animSet, cb)
+function ESXR.Streaming.RequestAnimSet(animSet, cb)
 	if not HasAnimSetLoaded(animSet) then
 		RequestAnimSet(animSet)
 
@@ -56,7 +56,7 @@ function ESR.Streaming.RequestAnimSet(animSet, cb)
 	end
 end
 
-function ESR.Streaming.RequestAnimDict(animDict, cb)
+function ESXR.Streaming.RequestAnimDict(animDict, cb)
 	if not HasAnimDictLoaded(animDict) then
 		RequestAnimDict(animDict)
 
@@ -70,7 +70,7 @@ function ESR.Streaming.RequestAnimDict(animDict, cb)
 	end
 end
 
-function ESR.Streaming.RequestWeaponAsset(weaponHash, cb)
+function ESXR.Streaming.RequestWeaponAsset(weaponHash, cb)
 	if not HasWeaponAssetLoaded(weaponHash) then
 		RequestWeaponAsset(weaponHash)
 

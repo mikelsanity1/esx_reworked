@@ -1,14 +1,14 @@
 (() => {
 
-	ESR = {};
-	ESR.HUDElements = [];
+	ESXR = {};
+	ESXR.HUDElements = [];
 
-	ESR.setHUDDisplay = function (opacity) {
+	ESXR.setHUDDisplay = function (opacity) {
 		$('#hud').css('opacity', opacity);
 	};
 
-	ESR.insertHUDElement = function (name, index, priority, html, data) {
-		ESR.HUDElements.push({
+	ESXR.insertHUDElement = function (name, index, priority, html, data) {
+		ESXR.HUDElements.push({
 			name: name,
 			index: index,
 			priority: priority,
@@ -16,41 +16,41 @@
 			data: data
 		});
 
-		ESR.HUDElements.sort((a, b) => {
+		ESXR.HUDElements.sort((a, b) => {
 			return a.index - b.index || b.priority - a.priority;
 		});
 	};
 
-	ESR.updateHUDElement = function (name, data) {
-		for (let i = 0; i < ESR.HUDElements.length; i++) {
-			if (ESR.HUDElements[i].name == name) {
-				ESR.HUDElements[i].data = data;
+	ESXR.updateHUDElement = function (name, data) {
+		for (let i = 0; i < ESXR.HUDElements.length; i++) {
+			if (ESXR.HUDElements[i].name == name) {
+				ESXR.HUDElements[i].data = data;
 			}
 		}
 
-		ESR.refreshHUD();
+		ESXR.refreshHUD();
 	};
 
-	ESR.deleteHUDElement = function (name) {
-		for (let i = 0; i < ESR.HUDElements.length; i++) {
-			if (ESR.HUDElements[i].name == name) {
-				ESR.HUDElements.splice(i, 1);
+	ESXR.deleteHUDElement = function (name) {
+		for (let i = 0; i < ESXR.HUDElements.length; i++) {
+			if (ESXR.HUDElements[i].name == name) {
+				ESXR.HUDElements.splice(i, 1);
 			}
 		}
 
-		ESR.refreshHUD();
+		ESXR.refreshHUD();
 	};
 
-	ESR.refreshHUD = function () {
+	ESXR.refreshHUD = function () {
 		$('#hud').html('');
 
-		for (let i = 0; i < ESR.HUDElements.length; i++) {
-			let html = Mustache.render(ESR.HUDElements[i].html, ESR.HUDElements[i].data);
+		for (let i = 0; i < ESXR.HUDElements.length; i++) {
+			let html = Mustache.render(ESXR.HUDElements[i].html, ESXR.HUDElements[i].data);
 			$('#hud').append(html);
 		}
 	};
 
-	ESR.inventoryNotification = function (add, label, count) {
+	ESXR.inventoryNotification = function (add, label, count) {
 		let notif = '';
 
 		if (add) {
@@ -76,27 +76,27 @@
 	window.onData = (data) => {
 		switch (data.action) {
 			case 'setHUDDisplay': {
-				ESR.setHUDDisplay(data.opacity);
+				ESXR.setHUDDisplay(data.opacity);
 				break;
 			}
 
 			case 'insertHUDElement': {
-				ESR.insertHUDElement(data.name, data.index, data.priority, data.html, data.data);
+				ESXR.insertHUDElement(data.name, data.index, data.priority, data.html, data.data);
 				break;
 			}
 
 			case 'updateHUDElement': {
-				ESR.updateHUDElement(data.name, data.data);
+				ESXR.updateHUDElement(data.name, data.data);
 				break;
 			}
 
 			case 'deleteHUDElement': {
-				ESR.deleteHUDElement(data.name);
+				ESXR.deleteHUDElement(data.name);
 				break;
 			}
 
 			case 'inventoryNotification': {
-				ESR.inventoryNotification(data.add, data.item, data.count);
+				ESXR.inventoryNotification(data.add, data.item, data.count);
 			}
 		}
 	};

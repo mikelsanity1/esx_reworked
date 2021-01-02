@@ -1,5 +1,5 @@
-ESR.Scaleform.ShowFreemodeMessage = function(title, msg, sec)
-	local scaleform = ESR.Scaleform.Utils.RequestScaleformMovie('MP_BIG_MESSAGE_FREEMODE')
+ESXR.Scaleform.ShowFreemodeMessage = function(title, msg, sec)
+	local scaleform = ESXR.Scaleform.Utils.RequestScaleformMovie('MP_BIG_MESSAGE_FREEMODE')
 
 	BeginScaleformMovieMethod(scaleform, 'SHOW_SHARD_WASTED_MP_MESSAGE')
 	PushScaleformMovieMethodParameterString(title)
@@ -16,8 +16,8 @@ ESR.Scaleform.ShowFreemodeMessage = function(title, msg, sec)
 	SetScaleformMovieAsNoLongerNeeded(scaleform)
 end
 
-ESR.Scaleform.ShowBreakingNews = function(title, msg, bottom, sec)
-	local scaleform = ESR.Scaleform.Utils.RequestScaleformMovie('BREAKING_NEWS')
+ESXR.Scaleform.ShowBreakingNews = function(title, msg, bottom, sec)
+	local scaleform = ESXR.Scaleform.Utils.RequestScaleformMovie('BREAKING_NEWS')
 
 	BeginScaleformMovieMethod(scaleform, 'SET_TEXT')
 	PushScaleformMovieMethodParameterString(msg)
@@ -47,8 +47,8 @@ ESR.Scaleform.ShowBreakingNews = function(title, msg, bottom, sec)
 	SetScaleformMovieAsNoLongerNeeded(scaleform)
 end
 
-ESR.Scaleform.ShowPopupWarning = function(title, msg, bottom, sec)
-	local scaleform = ESR.Scaleform.Utils.RequestScaleformMovie('POPUP_WARNING')
+ESXR.Scaleform.ShowPopupWarning = function(title, msg, bottom, sec)
+	local scaleform = ESXR.Scaleform.Utils.RequestScaleformMovie('POPUP_WARNING')
 
 	BeginScaleformMovieMethod(scaleform, 'SHOW_POPUP_WARNING')
 
@@ -70,8 +70,8 @@ ESR.Scaleform.ShowPopupWarning = function(title, msg, bottom, sec)
 	SetScaleformMovieAsNoLongerNeeded(scaleform)
 end
 
-ESR.Scaleform.ShowTrafficMovie = function(sec)
-	local scaleform = ESR.Scaleform.Utils.RequestScaleformMovie('TRAFFIC_CAM')
+ESXR.Scaleform.ShowTrafficMovie = function(sec)
+	local scaleform = ESXR.Scaleform.Utils.RequestScaleformMovie('TRAFFIC_CAM')
 
 	BeginScaleformMovieMethod(scaleform, 'PLAY_CAM_MOVIE')
 
@@ -87,7 +87,7 @@ ESR.Scaleform.ShowTrafficMovie = function(sec)
 	SetScaleformMovieAsNoLongerNeeded(scaleform)
 end
 
-ESR.Scaleform.Utils.RequestScaleformMovie = function(movie)
+ESXR.Scaleform.Utils.RequestScaleformMovie = function(movie)
 	local scaleform = RequestScaleformMovie(movie)
 
 	while not HasScaleformMovieLoaded(scaleform) do

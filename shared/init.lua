@@ -1,6 +1,6 @@
 _G.Configuration = {}
 
-_G.ESR = {
+_G.ESXR = {
     Players = {},
     Jobs = {},
     Wallets = {},

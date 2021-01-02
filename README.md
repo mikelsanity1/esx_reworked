@@ -1,6 +1,8 @@
-# es_reworked 
+# ESX Reworked | Reworked ESX v1-final 
 
-Project is a fork of **es_extended** and is an custom version based on [v1-final](https://github.com/ThymonA/es_reworked/releases/tag/v1-final). **es_reworked** will be rewritten and improved to release a better version of [v1-final](https://github.com/ThymonA/es_reworked/releases/tag/v1-final). Script made for **es_extended** `v1`, `v1.1` or `v1-final` will not be compatible with **es_reworked**.
+[![N|ESXReworked](https://i.imgur.com/JHJt60T.png)](https://github.com/ThymonA/esx_reworked)
+
+Project is a fork of **es_extended** and is an custom version based on [v1-final](https://github.com/ThymonA/esx_reworked/releases/tag/v1-final). **esx_reworked** will be rewritten and improved to release a better version of [v1-final](https://github.com/ThymonA/esx_reworked/releases/tag/v1-final). Script made for **es_extended** `v1`, `v1.1` or `v1-final` will not be compatible with **esx_reworked**.
 
 ## Status
 | **Project is still under development and hasn't been released yet.**
@@ -9,7 +11,7 @@ Project is a fork of **es_extended** and is an custom version based on [v1-final
 ---
 ### **License**
 
-es_reworked - ESX framework for FiveM
+esx_reworked - ESX framework for FiveM
 
 Copyright (C) 2015-2020 Jérémie N'gadi
 Copyright (C) 2020-2020 Thymon Arens

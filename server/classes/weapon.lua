@@ -1,23 +1,23 @@
 local function CreateWeaponClass(weaponInfo)
-    weaponInfo = ESR.Ensure(weaponInfo, {})
+    weaponInfo = ESXR.Ensure(weaponInfo, {})
 
     ---@class xWeapon
     local xWeapon = {
         __class = 'xWeapon',
         __type = 'xWeapon',
-        id = ESR.Ensure(weaponInfo.id, 0),
-        uuid = ESR.Ensure(weaponInfo.uuid, 'unknown'),
-        playerId = ESR.Ensure(weaponInfo.player_id, -1),
-        storageId = ESR.Ensure(weaponInfo.storage_id, -1),
-        jobId = ESR.Ensure(weaponInfo.job_id, -1),
-        model = ESR.Ensure(weaponInfo.model, 'unknown'),
-        bullets = ESR.Ensure(weaponInfo.bullets, 120),
-        components = ESR.Ensure(weaponInfo.components, {}),
-        ownerType = ESR.Ensure(weaponInfo.player_id, -1) > 0 and 'player' or 'job'
+        id = ESXR.Ensure(weaponInfo.id, 0),
+        uuid = ESXR.Ensure(weaponInfo.uuid, 'unknown'),
+        playerId = ESXR.Ensure(weaponInfo.player_id, -1),
+        storageId = ESXR.Ensure(weaponInfo.storage_id, -1),
+        jobId = ESXR.Ensure(weaponInfo.job_id, -1),
+        model = ESXR.Ensure(weaponInfo.model, 'unknown'),
+        bullets = ESXR.Ensure(weaponInfo.bullets, 120),
+        components = ESXR.Ensure(weaponInfo.components, {}),
+        ownerType = ESXR.Ensure(weaponInfo.player_id, -1) > 0 and 'player' or 'job'
     }
 
-    if (ESR.Weapons ~= nil and ESR.Weapons[xWeapon.id] ~= nil) then
-        return ESR.Ensure(ESR.Weapons[xWeapon.id], {})
+    if (ESXR.Weapons ~= nil and ESXR.Weapons[xWeapon.id] ~= nil) then
+        return ESXR.Ensure(ESXR.Weapons[xWeapon.id], {})
     end
 
     if (xWeapon.jobId <= 0 and xWeapon.playerId <= 0) then
@@ -30,7 +30,7 @@ local function CreateWeaponClass(weaponInfo)
     end
 
     function xWeapon:AddBullets(amount)
-        amount = ESR.Ensure(amount, 0)
+        amount = ESXR.Ensure(amount, 0)
 
         if (amount <= 0) then return end
 
@@ -40,7 +40,7 @@ local function CreateWeaponClass(weaponInfo)
     end
 
     function xWeapon:RemoveBullets(amount)
-        amount = ESR.Ensure(amount, 0)
+        amount = ESXR.Ensure(amount, 0)
 
         if (amount <= 0) then return end
 
@@ -52,24 +52,24 @@ local function CreateWeaponClass(weaponInfo)
 
     function xWeapon:GetOwner()
         if (self.playerId > 0) then
-            return ESR.GetPlayerById(self.playerId), self.ownerType
+            return ESXR.GetPlayerById(self.playerId), self.ownerType
         end
 
-        return ESR.GetJobById(self.jobId), self.ownerType
+        return ESXR.GetJobById(self.jobId), self.ownerType
     end
 
     function xWeapon:GetStorage()
-        return ESR.GetStorageById(self.storageId)
+        return ESXR.GetStorageById(self.storageId)
     end
 
     function xWeapon:ChangeStorage(input)
-        local inputType = ESR.TypeOf(input)
+        local inputType = ESXR.TypeOf(input)
         local storageId = 0
 
         if (inputType == 'xStorage' or inputType == 'table') then
-            storageId = ESR.Ensure(input.id, 0)
+            storageId = ESXR.Ensure(input.id, 0)
         else
-            storageId = ESR.Ensure(input, 0)
+            storageId = ESXR.Ensure(input, 0)
         end
 
         if (storageId <= 0) then
@@ -88,7 +88,7 @@ local function CreateWeaponClass(weaponInfo)
     end
 
     function xWeapon:Save(callback)
-        callback = ESR.Ensure(callback, function() end)
+        callback = ESXR.Ensure(callback, function() end)
 
         MySQL.Async.execute('UPDATE `weapons` SET `playerId` = @playerId, `jobId` = @jobId, `bullets` = @bullets, `storageId` = @storageId, `components` = @components WHERE `id` = @id', {
             ['id'] = self.id or 0,
@@ -96,23 +96,23 @@ local function CreateWeaponClass(weaponInfo)
             ['jobId'] = self.jobId > 0 and self.jobId or nil,
             ['bullets'] = self.bullets or 120,
             ['storageId'] = self.storageId > 0 and self.storageId or nil,
-            ['components'] = ESR.Endode(self.components) or '[]'
+            ['components'] = ESXR.Encode(self.components) or '[]'
         }, function() callback() end)
     end
 
-    if (ESR.Weapons == nil) then ESR.Weapons = ESR.Ensure(ESR.Weapons, {}) end
-    if (ESR.References == nil) then ESR.References = ESR.Ensure(ESR.References, {}) end
-    if (ESR.References.Weapons == nil) then ESR.References.Weapons = ESR.Ensure(ESR.References.Weapons, {}) end
+    if (ESXR.Weapons == nil) then ESXR.Weapons = ESXR.Ensure(ESXR.Weapons, {}) end
+    if (ESXR.References == nil) then ESXR.References = ESXR.Ensure(ESXR.References, {}) end
+    if (ESXR.References.Weapons == nil) then ESXR.References.Weapons = ESXR.Ensure(ESXR.References.Weapons, {}) end
 
-    ESR.Weapons[xWeapon.id] = xWeapon
-    ESR.References.Weapons[xWeapon.uuid] = xWeapon.id
+    ESXR.Weapons[xWeapon.id] = xWeapon
+    ESXR.References.Weapons[xWeapon.uuid] = xWeapon.id
 
-    return ESR.Weapons[xWeapon.id]
+    return ESXR.Weapons[xWeapon.id]
 end
 
 local function GenerateNewWeaponAsync(model, owner, storage, callback)
-    model = ESR.Ensure(model, 'unknown')
-    callback = ESR.Ensure(callback, function() end)
+    model = ESXR.Ensure(model, 'unknown')
+    callback = ESXR.Ensure(callback, function() end)
 
     local jobId, playerId, ownerType = GetNewWeaponOwners(owner, -1, -1, 'unknown')
 
@@ -121,12 +121,12 @@ local function GenerateNewWeaponAsync(model, owner, storage, callback)
         return
     end
 
-    local storageId, storageType = 0, ESR.TypeOf(storage)
+    local storageId, storageType = 0, ESXR.TypeOf(storage)
 
     if (storageType == 'xStorage' or storageType == 'table') then
-        storageId = ESR.Ensure(storage.id, 0)
+        storageId = ESXR.Ensure(storage.id, 0)
     else
-        storageId = ESR.Ensure(storage, 0)
+        storageId = ESXR.Ensure(storage, 0)
     end
 
     if (storageId <= 0) then
@@ -140,20 +140,20 @@ local function GenerateNewWeaponAsync(model, owner, storage, callback)
         ['model'] = model,
         ['storageId'] = storageId
     }, function(result)
-        result = ESR.Ensure(result, 0)
+        result = ESXR.Ensure(result, 0)
 
         if (result > 0) then
             MySQL.Async.fetchAll('SELECT BIN_TO_UUID(`uuid`) AS `uuid`, `player_id`, `job_id`, `model`, `bullets`, `storage_id`, `components` FROM `weapons` WHERE `id` = @id LIMIT 1', {
                 ['id'] = result
             }, function(rows)
-                rows = ESR.Ensure(rows, {})
+                rows = ESXR.Ensure(rows, {})
 
                 if (#rows <= 0) then
                     error(('Added weapon not found in `weapons` matching ID: %s'):format(result))
                     return
                 end
 
-                local weapon = ESR.Ensure(rows[1], {})
+                local weapon = ESXR.Ensure(rows[1], {})
 
                 callback(CreateWeaponClass(weapon))
             end)
@@ -162,14 +162,14 @@ local function GenerateNewWeaponAsync(model, owner, storage, callback)
 end
 
 local function GetNewWeaponOwners(input, _jobId, _playerId, _ownerType)
-    _jobId = ESR.Ensure(_jobId, -1)
-    _playerId = ESR.Ensure(_playerId, -1)
-    _ownerType = ESR.Ensure(_ownerType, 'unknown')
+    _jobId = ESXR.Ensure(_jobId, -1)
+    _playerId = ESXR.Ensure(_playerId, -1)
+    _ownerType = ESXR.Ensure(_ownerType, 'unknown')
 
-    local inputType = ESR.TypeOf(input)
+    local inputType = ESXR.TypeOf(input)
 
     if (inputType == 'xPlayer') then
-        local playerId = ESR.Ensure(input.id, 0)
+        local playerId = ESXR.Ensure(input.id, 0)
 
         if (playerId <= 0) then
             return _jobId, _playerId, _ownerType
@@ -179,7 +179,7 @@ local function GetNewWeaponOwners(input, _jobId, _playerId, _ownerType)
     end
 
     if (inputType == 'xJob') then
-        local jobId = ESR.Ensure(input.id, 0)
+        local jobId = ESXR.Ensure(input.id, 0)
 
         if (jobId <= 0) then
             return _jobId, _playerId, _ownerType
@@ -189,7 +189,7 @@ local function GetNewWeaponOwners(input, _jobId, _playerId, _ownerType)
     end
 
     if (inputType == 'table') then
-        local rawId = ESR.Ensure(input.id, 0)
+        local rawId = ESXR.Ensure(input.id, 0)
 
         if (rawId <= 0) then
             return _jobId, _playerId, _ownerType
@@ -205,8 +205,8 @@ local function GetNewWeaponOwners(input, _jobId, _playerId, _ownerType)
     end
 
     if (inputType == 'string') then
-        if (ESR.StartsWith(input, 'job')) then
-            local jobId = ESR.Ensure(string.sub(input, 4), 0)
+        if (ESXR.StartsWith(input, 'job')) then
+            local jobId = ESXR.Ensure(string.sub(input, 4), 0)
 
             if (jobId <= 0) then
                 return _jobId, _playerId, _ownerType
@@ -215,8 +215,8 @@ local function GetNewWeaponOwners(input, _jobId, _playerId, _ownerType)
             return jobId, -1, 'job'
         end
 
-        if (ESR.StartsWith(input, 'player')) then
-            local playerId = ESR.Ensure(string.sub(input, 7), 0)
+        if (ESXR.StartsWith(input, 'player')) then
+            local playerId = ESXR.Ensure(string.sub(input, 7), 0)
 
             if (playerId <= 0) then
                 return _jobId, _playerId, _ownerType
