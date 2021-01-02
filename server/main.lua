@@ -5,7 +5,7 @@ end)
 
 RegisterNetEvent('esx:onPlayerJoined')
 AddEventHandler('esx:onPlayerJoined', function()
-	if not ESX.Players[source] then
+	if not ESR.Players[source] then
 		onPlayerJoined(source)
 	end
 end)
@@ -21,7 +21,7 @@ function onPlayerJoined(playerId)
 	end
 
 	if identifier then
-		if ESX.GetPlayerFromIdentifier(identifier) then
+		if ESR.GetPlayerFromIdentifier(identifier) then
 			DropPlayer(playerId, ('there was an error loading your character!\nError code: identifier-active-ingame\n\nThis error is caused by a player on this server who has the same identifier as you have. Make sure you are not playing on the same Rockstar account.\n\nYour Rockstar identifier: %s'):format(identifier))
 		else
 			MySQL.Async.fetchScalar('SELECT 1 FROM users WHERE identifier = @identifier', {
@@ -63,7 +63,7 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
 	end
 
 	if identifier then
-		if ESX.GetPlayerFromIdentifier(identifier) then
+		if ESR.GetPlayerFromIdentifier(identifier) then
 			deferrals.done(('There was an error loading your character!\nError code: identifier-active\n\nThis error is caused by a player on this server who has the same identifier as you have. Make sure you are not playing on the same Rockstar account.\n\nYour Rockstar identifier: %s'):format(identifier))
 		else
 			deferrals.done()
@@ -111,12 +111,12 @@ function loadESXPlayer(identifier, playerId)
 			end
 
 			-- Job
-			if ESX.DoesJobExist(job, grade) then
-				jobObject, gradeObject = ESX.Jobs[job], ESX.Jobs[job].grades[grade]
+			if ESR.DoesJobExist(job, grade) then
+				jobObject, gradeObject = ESR.Jobs[job], ESR.Jobs[job].grades[grade]
 			else
-				print(('[es_extended] [^3WARNING^7] Ignoring invalid job for %s [job: %s, grade: %s]'):format(identifier, job, grade))
+				print(('[es_reworked] [^3WARNING^7] Ignoring invalid job for %s [job: %s, grade: %s]'):format(identifier, job, grade))
 				job, grade = 'unemployed', '0'
-				jobObject, gradeObject = ESX.Jobs[job], ESX.Jobs[job].grades[grade]
+				jobObject, gradeObject = ESR.Jobs[job], ESR.Jobs[job].grades[grade]
 			end
 
 			userData.job.id = jobObject.id
@@ -139,17 +139,17 @@ function loadESXPlayer(identifier, playerId)
 				local inventory = json.decode(result[1].inventory)
 
 				for name,count in pairs(inventory) do
-					local item = ESX.Items[name]
+					local item = ESR.Items[name]
 
 					if item then
 						foundItems[name] = count
 					else
-						print(('[es_extended] [^3WARNING^7] Ignoring invalid item "%s" for "%s"'):format(name, identifier))
+						print(('[es_reworked] [^3WARNING^7] Ignoring invalid item "%s" for "%s"'):format(name, identifier))
 					end
 				end
 			end
 
-			for name,item in pairs(ESX.Items) do
+			for name,item in pairs(ESR.Items) do
 				local count = foundItems[name] or 0
 				if count > 0 then userData.weight = userData.weight + (item.weight * count) end
 
@@ -158,7 +158,7 @@ function loadESXPlayer(identifier, playerId)
 					count = count,
 					label = item.label,
 					weight = item.weight,
-					usable = ESX.UsableItemsCallbacks[name] ~= nil,
+					usable = ESR.UsableItemsCallbacks[name] ~= nil,
 					rare = item.rare,
 					canRemove = item.canRemove
 				})
@@ -180,7 +180,7 @@ function loadESXPlayer(identifier, playerId)
 				local loadout = json.decode(result[1].loadout)
 
 				for name,weapon in pairs(loadout) do
-					local label = ESX.GetWeaponLabel(name)
+					local label = ESR.GetWeaponLabel(name)
 
 					if label then
 						if not weapon.components then weapon.components = {} end
@@ -201,7 +201,7 @@ function loadESXPlayer(identifier, playerId)
 			if result[1].position and result[1].position ~= '' then
 				userData.coords = json.decode(result[1].position)
 			else
-				print('[es_extended] [^3WARNING^7] Column "position" in "users" table is missing required default value. Using backup coords, fix your database.')
+				print('[es_reworked] [^3WARNING^7] Column "position" in "users" table is missing required default value. Using backup coords, fix your database.')
 				userData.coords = {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
 			end
 
@@ -211,7 +211,7 @@ function loadESXPlayer(identifier, playerId)
 
 	Async.parallel(tasks, function(results)
 		local xPlayer = CreateExtendedPlayer(playerId, identifier, userData.group, userData.accounts, userData.inventory, userData.weight, userData.job, userData.loadout, userData.playerName, userData.coords)
-		ESX.Players[playerId] = xPlayer
+		ESR.Players[playerId] = xPlayer
 		TriggerEvent('esx:playerLoaded', playerId, xPlayer)
 
 		xPlayer.triggerEvent('esx:playerLoaded', {
@@ -225,9 +225,9 @@ function loadESXPlayer(identifier, playerId)
 			money = xPlayer.getMoney()
 		})
 
-		xPlayer.triggerEvent('esx:createMissingPickups', ESX.Pickups)
-		xPlayer.triggerEvent('esx:registerSuggestions', ESX.RegisteredCommands)
-		print(('[es_extended] [^2INFO^7] A player with name "%s^7" has connected to the server with assigned player id %s'):format(xPlayer.getName(), playerId))
+		xPlayer.triggerEvent('esx:createMissingPickups', ESR.Pickups)
+		xPlayer.triggerEvent('esx:registerSuggestions', ESR.RegisteredCommands)
+		print(('[es_reworked] [^2INFO^7] A player with name "%s^7" has connected to the server with assigned player id %s'):format(xPlayer.getName(), playerId))
 	end)
 end
 
@@ -241,20 +241,20 @@ end)
 
 AddEventHandler('playerDropped', function(reason)
 	local playerId = source
-	local xPlayer = ESX.GetPlayerFromId(playerId)
+	local xPlayer = ESR.GetPlayerFromId(playerId)
 
 	if xPlayer then
 		TriggerEvent('esx:playerDropped', playerId, reason)
 
-		ESX.SavePlayer(xPlayer, function()
-			ESX.Players[playerId] = nil
+		ESR.SavePlayer(xPlayer, function()
+			ESR.Players[playerId] = nil
 		end)
 	end
 end)
 
 RegisterNetEvent('esx:updateCoords')
 AddEventHandler('esx:updateCoords', function(coords)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = ESR.GetPlayerFromId(source)
 
 	if xPlayer then
 		xPlayer.updateCoords(coords)
@@ -263,7 +263,7 @@ end)
 
 RegisterNetEvent('esx:updateWeaponAmmo')
 AddEventHandler('esx:updateWeaponAmmo', function(weaponName, ammoCount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = ESR.GetPlayerFromId(source)
 
 	if xPlayer then
 		xPlayer.updateWeaponAmmo(weaponName, ammoCount)
@@ -273,8 +273,8 @@ end)
 RegisterNetEvent('esx:giveInventoryItem')
 AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCount)
 	local playerId = source
-	local sourceXPlayer = ESX.GetPlayerFromId(playerId)
-	local targetXPlayer = ESX.GetPlayerFromId(target)
+	local sourceXPlayer = ESR.GetPlayerFromId(playerId)
+	local targetXPlayer = ESR.GetPlayerFromId(target)
 
 	if type == 'item_standard' then
 		local sourceItem = sourceXPlayer.getInventoryItem(itemName)
@@ -297,18 +297,18 @@ AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCo
 			sourceXPlayer.removeAccountMoney(itemName, itemCount)
 			targetXPlayer.addAccountMoney   (itemName, itemCount)
 
-			sourceXPlayer.showNotification(_U('gave_account_money', ESX.Math.GroupDigits(itemCount), Config.Accounts[itemName], targetXPlayer.name))
-			targetXPlayer.showNotification(_U('received_account_money', ESX.Math.GroupDigits(itemCount), Config.Accounts[itemName], sourceXPlayer.name))
+			sourceXPlayer.showNotification(_U('gave_account_money', ESR.Math.GroupDigits(itemCount), Config.Accounts[itemName], targetXPlayer.name))
+			targetXPlayer.showNotification(_U('received_account_money', ESR.Math.GroupDigits(itemCount), Config.Accounts[itemName], sourceXPlayer.name))
 		else
 			sourceXPlayer.showNotification(_U('imp_invalid_amount'))
 		end
 	elseif type == 'item_weapon' then
 		if sourceXPlayer.hasWeapon(itemName) then
-			local weaponLabel = ESX.GetWeaponLabel(itemName)
+			local weaponLabel = ESR.GetWeaponLabel(itemName)
 
 			if not targetXPlayer.hasWeapon(itemName) then
 				local _, weapon = sourceXPlayer.getWeapon(itemName)
-				local _, weaponObject = ESX.GetWeapon(itemName)
+				local _, weaponObject = ESR.GetWeapon(itemName)
 				itemCount = weapon.ammo
 
 				sourceXPlayer.removeWeapon(itemName)
@@ -332,7 +332,7 @@ AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCo
 			local weaponNum, weapon = sourceXPlayer.getWeapon(itemName)
 
 			if targetXPlayer.hasWeapon(itemName) then
-				local _, weaponObject = ESX.GetWeapon(itemName)
+				local _, weaponObject = ESR.GetWeapon(itemName)
 
 				if weaponObject.ammo then
 					local ammoLabel = weaponObject.ammo.label
@@ -356,7 +356,7 @@ end)
 RegisterNetEvent('esx:removeInventoryItem')
 AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 	local playerId = source
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = ESR.GetPlayerFromId(source)
 
 	if type == 'item_standard' then
 		if itemCount == nil or itemCount < 1 then
@@ -369,7 +369,7 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 			else
 				xPlayer.removeInventoryItem(itemName, itemCount)
 				local pickupLabel = ('~y~%s~s~ [~b~%s~s~]'):format(xItem.label, itemCount)
-				ESX.CreatePickup('item_standard', itemName, itemCount, pickupLabel, playerId)
+				ESR.CreatePickup('item_standard', itemName, itemCount, pickupLabel, playerId)
 				xPlayer.showNotification(_U('threw_standard', itemCount, xItem.label))
 			end
 		end
@@ -383,9 +383,9 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 				xPlayer.showNotification(_U('imp_invalid_amount'))
 			else
 				xPlayer.removeAccountMoney(itemName, itemCount)
-				local pickupLabel = ('~y~%s~s~ [~g~%s~s~]'):format(account.label, _U('locale_currency', ESX.Math.GroupDigits(itemCount)))
-				ESX.CreatePickup('item_account', itemName, itemCount, pickupLabel, playerId)
-				xPlayer.showNotification(_U('threw_account', ESX.Math.GroupDigits(itemCount), string.lower(account.label)))
+				local pickupLabel = ('~y~%s~s~ [~g~%s~s~]'):format(account.label, _U('locale_currency', ESR.Math.GroupDigits(itemCount)))
+				ESR.CreatePickup('item_account', itemName, itemCount, pickupLabel, playerId)
+				xPlayer.showNotification(_U('threw_account', ESR.Math.GroupDigits(itemCount), string.lower(account.label)))
 			end
 		end
 	elseif type == 'item_weapon' then
@@ -393,8 +393,8 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 
 		if xPlayer.hasWeapon(itemName) then
 			local _, weapon = xPlayer.getWeapon(itemName)
-			local _, weaponObject = ESX.GetWeapon(itemName)
-			local components, pickupLabel = ESX.Table.Clone(weapon.components)
+			local _, weaponObject = ESR.GetWeapon(itemName)
+			local components, pickupLabel = ESR.Table.Clone(weapon.components)
 			xPlayer.removeWeapon(itemName)
 
 			if weaponObject.ammo and weapon.ammo > 0 then
@@ -406,18 +406,18 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 				xPlayer.showNotification(_U('threw_weapon', weapon.label))
 			end
 
-			ESX.CreatePickup('item_weapon', itemName, weapon.ammo, pickupLabel, playerId, components, weapon.tintIndex)
+			ESR.CreatePickup('item_weapon', itemName, weapon.ammo, pickupLabel, playerId, components, weapon.tintIndex)
 		end
 	end
 end)
 
 RegisterNetEvent('esx:useItem')
 AddEventHandler('esx:useItem', function(itemName)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = ESR.GetPlayerFromId(source)
 	local count = xPlayer.getInventoryItem(itemName).count
 
 	if count > 0 then
-		ESX.UseItem(source, itemName)
+		ESR.UseItem(source, itemName)
 	else
 		xPlayer.showNotification(_U('act_imp'))
 	end
@@ -425,7 +425,7 @@ end)
 
 RegisterNetEvent('esx:onPickup')
 AddEventHandler('esx:onPickup', function(pickupId)
-	local pickup, xPlayer, success = ESX.Pickups[pickupId], ESX.GetPlayerFromId(source)
+	local pickup, xPlayer, success = ESR.Pickups[pickupId], ESR.GetPlayerFromId(source)
 
 	if pickup then
 		if pickup.type == 'item_standard' then
@@ -453,14 +453,14 @@ AddEventHandler('esx:onPickup', function(pickupId)
 		end
 
 		if success then
-			ESX.Pickups[pickupId] = nil
+			ESR.Pickups[pickupId] = nil
 			TriggerClientEvent('esx:removePickup', -1, pickupId)
 		end
 	end
 end)
 
-ESX.RegisterServerCallback('esx:getPlayerData', function(source, cb)
-	local xPlayer = ESX.GetPlayerFromId(source)
+ESR.RegisterServerCallback('esx:getPlayerData', function(source, cb)
+	local xPlayer = ESR.GetPlayerFromId(source)
 
 	cb({
 		identifier   = xPlayer.identifier,
@@ -472,8 +472,8 @@ ESX.RegisterServerCallback('esx:getPlayerData', function(source, cb)
 	})
 end)
 
-ESX.RegisterServerCallback('esx:getOtherPlayerData', function(source, cb, target)
-	local xPlayer = ESX.GetPlayerFromId(target)
+ESR.RegisterServerCallback('esx:getOtherPlayerData', function(source, cb, target)
+	local xPlayer = ESR.GetPlayerFromId(target)
 
 	cb({
 		identifier   = xPlayer.identifier,
@@ -485,11 +485,11 @@ ESX.RegisterServerCallback('esx:getOtherPlayerData', function(source, cb, target
 	})
 end)
 
-ESX.RegisterServerCallback('esx:getPlayerNames', function(source, cb, players)
+ESR.RegisterServerCallback('esx:getPlayerNames', function(source, cb, players)
 	players[source] = nil
 
 	for playerId,v in pairs(players) do
-		local xPlayer = ESX.GetPlayerFromId(playerId)
+		local xPlayer = ESR.GetPlayerFromId(playerId)
 
 		if xPlayer then
 			players[playerId] = xPlayer.getName()
@@ -501,5 +501,5 @@ ESX.RegisterServerCallback('esx:getPlayerNames', function(source, cb, players)
 	cb(players)
 end)
 
-ESX.StartDBSync()
-ESX.StartPayCheck()
+ESR.StartDBSync()
+ESR.StartPayCheck()

@@ -1,14 +1,14 @@
 (() => {
 
-	ESX = {};
-	ESX.HUDElements = [];
+	ESR = {};
+	ESR.HUDElements = [];
 
-	ESX.setHUDDisplay = function (opacity) {
+	ESR.setHUDDisplay = function (opacity) {
 		$('#hud').css('opacity', opacity);
 	};
 
-	ESX.insertHUDElement = function (name, index, priority, html, data) {
-		ESX.HUDElements.push({
+	ESR.insertHUDElement = function (name, index, priority, html, data) {
+		ESR.HUDElements.push({
 			name: name,
 			index: index,
 			priority: priority,
@@ -16,41 +16,41 @@
 			data: data
 		});
 
-		ESX.HUDElements.sort((a, b) => {
+		ESR.HUDElements.sort((a, b) => {
 			return a.index - b.index || b.priority - a.priority;
 		});
 	};
 
-	ESX.updateHUDElement = function (name, data) {
-		for (let i = 0; i < ESX.HUDElements.length; i++) {
-			if (ESX.HUDElements[i].name == name) {
-				ESX.HUDElements[i].data = data;
+	ESR.updateHUDElement = function (name, data) {
+		for (let i = 0; i < ESR.HUDElements.length; i++) {
+			if (ESR.HUDElements[i].name == name) {
+				ESR.HUDElements[i].data = data;
 			}
 		}
 
-		ESX.refreshHUD();
+		ESR.refreshHUD();
 	};
 
-	ESX.deleteHUDElement = function (name) {
-		for (let i = 0; i < ESX.HUDElements.length; i++) {
-			if (ESX.HUDElements[i].name == name) {
-				ESX.HUDElements.splice(i, 1);
+	ESR.deleteHUDElement = function (name) {
+		for (let i = 0; i < ESR.HUDElements.length; i++) {
+			if (ESR.HUDElements[i].name == name) {
+				ESR.HUDElements.splice(i, 1);
 			}
 		}
 
-		ESX.refreshHUD();
+		ESR.refreshHUD();
 	};
 
-	ESX.refreshHUD = function () {
+	ESR.refreshHUD = function () {
 		$('#hud').html('');
 
-		for (let i = 0; i < ESX.HUDElements.length; i++) {
-			let html = Mustache.render(ESX.HUDElements[i].html, ESX.HUDElements[i].data);
+		for (let i = 0; i < ESR.HUDElements.length; i++) {
+			let html = Mustache.render(ESR.HUDElements[i].html, ESR.HUDElements[i].data);
 			$('#hud').append(html);
 		}
 	};
 
-	ESX.inventoryNotification = function (add, label, count) {
+	ESR.inventoryNotification = function (add, label, count) {
 		let notif = '';
 
 		if (add) {
@@ -76,27 +76,27 @@
 	window.onData = (data) => {
 		switch (data.action) {
 			case 'setHUDDisplay': {
-				ESX.setHUDDisplay(data.opacity);
+				ESR.setHUDDisplay(data.opacity);
 				break;
 			}
 
 			case 'insertHUDElement': {
-				ESX.insertHUDElement(data.name, data.index, data.priority, data.html, data.data);
+				ESR.insertHUDElement(data.name, data.index, data.priority, data.html, data.data);
 				break;
 			}
 
 			case 'updateHUDElement': {
-				ESX.updateHUDElement(data.name, data.data);
+				ESR.updateHUDElement(data.name, data.data);
 				break;
 			}
 
 			case 'deleteHUDElement': {
-				ESX.deleteHUDElement(data.name);
+				ESR.deleteHUDElement(data.name);
 				break;
 			}
 
 			case 'inventoryNotification': {
-				ESX.inventoryNotification(data.add, data.item, data.count);
+				ESR.inventoryNotification(data.add, data.item, data.count);
 			}
 		}
 	};

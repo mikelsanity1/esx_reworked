@@ -7,65 +7,26 @@ description 'ES Extended'
 version '1.2.0'
 
 server_scripts {
-	'@async/async.lua',
-	'@mysql-async/lib/MySQL.lua',
+	'@fivem-mysql/lib/MySQL.lua',
 
-	'locale.lua',
-	'locales/de.lua',
-	'locales/br.lua',
-	'locales/fr.lua',
-	'locales/en.lua',
-	'locales/fi.lua',
-	'locales/sv.lua',
-	'locales/pl.lua',
-	'locales/cs.lua',
-	'locales/sc.lua',
-	'locales/tc.lua',
+	'shared/init.lua',
+	'shared/functions.lua',
+	'config/shared_config.lua',
+	'shared/locale.lua',
+	'config/server_config.lua',
 
-	'config.lua',
-	'config.weapons.lua',
+	'server/classes/*.lua',
+	'server/load.lua',
 
-	'server/common.lua',
-	'server/classes/player.lua',
-	'server/functions.lua',
-	'server/paycheck.lua',
-	'server/main.lua',
-	'server/commands.lua',
-
-	'common/modules/math.lua',
-	'common/modules/table.lua',
-	'common/functions.lua'
+	'shared/exports.lua'
 }
 
 client_scripts {
-	'locale.lua',
-	'locales/de.lua',
-	'locales/br.lua',
-	'locales/fr.lua',
-	'locales/en.lua',
-	'locales/fi.lua',
-	'locales/sv.lua',
-	'locales/pl.lua',
-	'locales/cs.lua',
-	'locales/sc.lua',
-	'locales/tc.lua',
-
-	'config.lua',
-	'config.weapons.lua',
-
-	'client/common.lua',
-	'client/entityiter.lua',
-	'client/functions.lua',
-	'client/wrapper.lua',
-	'client/main.lua',
-
-	'client/modules/death.lua',
-	'client/modules/scaleform.lua',
-	'client/modules/streaming.lua',
-
-	'common/modules/math.lua',
-	'common/modules/table.lua',
-	'common/functions.lua'
+	'shared/init.lua',
+	'shared/functions.lua',
+	'config/shared_config.lua',
+	'shared/locale.lua',
+	'config/client_config.lua'
 }
 
 ui_page {
@@ -73,6 +34,8 @@ ui_page {
 }
 
 files {
+	'locales/*.json',
+
 	'locale.js',
 	'html/ui.html',
 
@@ -90,15 +53,6 @@ files {
 	'html/img/accounts/money.png'
 }
 
-exports {
-	'getSharedObject'
-}
-
-server_exports {
-	'getSharedObject'
-}
-
 dependencies {
-	'mysql-async',
-	'async'
+	'fivem-mysql'
 }

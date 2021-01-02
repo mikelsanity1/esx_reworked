@@ -1,38 +1,38 @@
-ESX.Trace = function(msg)
+ESR.Trace = function(msg)
 	if Config.EnableDebug then
-		print(('[es_extended] [^2TRACE^7] %s^7'):format(msg))
+		print(('[es_reworked] [^2TRACE^7] %s^7'):format(msg))
 	end
 end
 
-ESX.SetTimeout = function(msec, cb)
-	local id = ESX.TimeoutCount + 1
+ESR.SetTimeout = function(msec, cb)
+	local id = ESR.TimeoutCount + 1
 
 	SetTimeout(msec, function()
-		if ESX.CancelledTimeouts[id] then
-			ESX.CancelledTimeouts[id] = nil
+		if ESR.CancelledTimeouts[id] then
+			ESR.CancelledTimeouts[id] = nil
 		else
 			cb()
 		end
 	end)
 
-	ESX.TimeoutCount = id
+	ESR.TimeoutCount = id
 
 	return id
 end
 
-ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
+ESR.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 	if type(name) == 'table' then
 		for k,v in ipairs(name) do
-			ESX.RegisterCommand(v, group, cb, allowConsole, suggestion)
+			ESR.RegisterCommand(v, group, cb, allowConsole, suggestion)
 		end
 
 		return
 	end
 
-	if ESX.RegisteredCommands[name] then
-		print(('[es_extended] [^3WARNING^7] An command "%s" is already registered, overriding command'):format(name))
+	if ESR.RegisteredCommands[name] then
+		print(('[es_reworked] [^3WARNING^7] An command "%s" is already registered, overriding command'):format(name))
 
-		if ESX.RegisteredCommands[name].suggestion then
+		if ESR.RegisteredCommands[name].suggestion then
 			TriggerClientEvent('chat:removeSuggestion', -1, ('/%s'):format(name))
 		end
 	end
@@ -44,15 +44,15 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 		TriggerClientEvent('chat:addSuggestion', -1, ('/%s'):format(name), suggestion.help, suggestion.arguments)
 	end
 
-	ESX.RegisteredCommands[name] = {group = group, cb = cb, allowConsole = allowConsole, suggestion = suggestion}
+	ESR.RegisteredCommands[name] = {group = group, cb = cb, allowConsole = allowConsole, suggestion = suggestion}
 
 	RegisterCommand(name, function(playerId, args, rawCommand)
-		local command = ESX.RegisteredCommands[name]
+		local command = ESR.RegisteredCommands[name]
 
 		if not command.allowConsole and playerId == 0 then
-			print(('[es_extended] [^3WARNING^7] %s'):format(_U('commanderror_console')))
+			print(('[es_reworked] [^3WARNING^7] %s'):format(_U('commanderror_console')))
 		else
-			local xPlayer, error = ESX.GetPlayerFromId(playerId), nil
+			local xPlayer, error = ESR.GetPlayerFromId(playerId), nil
 
 			if command.suggestion then
 				if command.suggestion.validate then
@@ -80,7 +80,7 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 								if args[k] == 'me' then targetPlayer = playerId end
 
 								if targetPlayer then
-									local xTargetPlayer = ESX.GetPlayerFromId(targetPlayer)
+									local xTargetPlayer = ESR.GetPlayerFromId(targetPlayer)
 
 									if xTargetPlayer then
 										if v.type == 'player' then
@@ -97,13 +97,13 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 							elseif v.type == 'string' then
 								newArgs[v.name] = args[k]
 							elseif v.type == 'item' then
-								if ESX.Items[args[k]] then
+								if ESR.Items[args[k]] then
 									newArgs[v.name] = args[k]
 								else
 									error = _U('commanderror_invaliditem')
 								end
 							elseif v.type == 'weapon' then
-								if ESX.GetWeapon(args[k]) then
+								if ESR.GetWeapon(args[k]) then
 									newArgs[v.name] = string.upper(args[k])
 								else
 									error = _U('commanderror_invalidweapon')
@@ -122,14 +122,14 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 
 			if error then
 				if playerId == 0 then
-					print(('[es_extended] [^3WARNING^7] %s^7'):format(error))
+					print(('[es_reworked] [^3WARNING^7] %s^7'):format(error))
 				else
 					xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', error}})
 				end
 			else
 				cb(xPlayer or false, args, function(msg)
 					if playerId == 0 then
-						print(('[es_extended] [^3WARNING^7] %s^7'):format(msg))
+						print(('[es_reworked] [^3WARNING^7] %s^7'):format(msg))
 					else
 						xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', msg}})
 					end
@@ -147,23 +147,23 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 	end
 end
 
-ESX.ClearTimeout = function(id)
-	ESX.CancelledTimeouts[id] = true
+ESR.ClearTimeout = function(id)
+	ESR.CancelledTimeouts[id] = true
 end
 
-ESX.RegisterServerCallback = function(name, cb)
-	ESX.ServerCallbacks[name] = cb
+ESR.RegisterServerCallback = function(name, cb)
+	ESR.ServerCallbacks[name] = cb
 end
 
-ESX.TriggerServerCallback = function(name, requestId, source, cb, ...)
-	if ESX.ServerCallbacks[name] then
-		ESX.ServerCallbacks[name](source, cb, ...)
+ESR.TriggerServerCallback = function(name, requestId, source, cb, ...)
+	if ESR.ServerCallbacks[name] then
+		ESR.ServerCallbacks[name](source, cb, ...)
 	else
-		print(('[es_extended] [^3WARNING^7] Server callback "%s" does not exist. Make sure that the server sided file really is loading, an error in that file might cause it to not load.'):format(name))
+		print(('[es_reworked] [^3WARNING^7] Server callback "%s" does not exist. Make sure that the server sided file really is loading, an error in that file might cause it to not load.'):format(name))
 	end
 end
 
-ESX.SavePlayer = function(xPlayer, cb)
+ESR.SavePlayer = function(xPlayer, cb)
 	local asyncTasks = {}
 
 	table.insert(asyncTasks, function(cb2)
@@ -182,7 +182,7 @@ ESX.SavePlayer = function(xPlayer, cb)
 	end)
 
 	Async.parallel(asyncTasks, function(results)
-		print(('[es_extended] [^2INFO^7] Saved player "%s^7"'):format(xPlayer.getName()))
+		print(('[es_reworked] [^2INFO^7] Saved player "%s^7"'):format(xPlayer.getName()))
 
 		if cb then
 			cb()
@@ -190,94 +190,112 @@ ESX.SavePlayer = function(xPlayer, cb)
 	end)
 end
 
-ESX.SavePlayers = function(cb)
-	local xPlayers, asyncTasks = ESX.GetPlayers(), {}
+ESR.SavePlayers = function(cb)
+	local xPlayers, asyncTasks = ESR.GetPlayers(), {}
 
 	for i=1, #xPlayers, 1 do
 		table.insert(asyncTasks, function(cb2)
-			local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
-			ESX.SavePlayer(xPlayer, cb2)
+			local xPlayer = ESR.GetPlayerFromId(xPlayers[i])
+			ESR.SavePlayer(xPlayer, cb2)
 		end)
 	end
 
 	Async.parallelLimit(asyncTasks, 8, function(results)
-		print(('[es_extended] [^2INFO^7] Saved %s player(s)'):format(#xPlayers))
+		print(('[es_reworked] [^2INFO^7] Saved %s player(s)'):format(#xPlayers))
 		if cb then
 			cb()
 		end
 	end)
 end
 
-ESX.StartDBSync = function()
+ESR.StartDBSync = function()
 	function saveData()
-		ESX.SavePlayers()
+		ESR.SavePlayers()
 		SetTimeout(10 * 60 * 1000, saveData)
 	end
 
 	SetTimeout(10 * 60 * 1000, saveData)
 end
 
-ESX.GetPlayers = function()
+ESR.GetPlayers = function()
 	local sources = {}
 
-	for k,v in pairs(ESX.Players) do
+	for k,v in pairs(ESR.Players) do
 		table.insert(sources, k)
 	end
 
 	return sources
 end
 
-ESX.GetPlayerFromId = function(source)
-	return ESX.Players[tonumber(source)]
+ESR.GetPlayerById = function(playerId)
+	playerId = ESR.Ensure(playerId, 0)
+
+	if (playerId <= 0) then return end
 end
 
-ESX.GetPlayerFromIdentifier = function(identifier)
-	for k,v in pairs(ESX.Players) do
+ESR.GetJobById = function(jobId)
+	jobId = ESR.Ensure(jobId, 0)
+
+	if (jobId <= 0) then return end
+end
+
+ESR.GetStorageById = function(storageId)
+	storageId = ESR.Ensure(storageId, 0)
+
+	if (storageId <= 0) then return end
+end
+
+ESR.GetPlayerFromId = function(source)
+	return ESR.Players[tonumber(source)]
+end
+
+ESR.GetPlayerFromIdentifier = function(identifier)
+	for k,v in pairs(ESR.Players) do
 		if v.identifier == identifier then
 			return v
 		end
 	end
 end
 
-ESX.RegisterUsableItem = function(item, cb)
-	ESX.UsableItemsCallbacks[item] = cb
+ESR.RegisterUsableItem = function(item, cb)
+	ESR.UsableItemsCallbacks[item] = cb
 end
 
-ESX.UseItem = function(source, item)
-	ESX.UsableItemsCallbacks[item](source, item)
+ESR.UseItem = function(source, item)
+	ESR.UsableItemsCallbacks[item](source, item)
 end
 
-ESX.GetItemLabel = function(item)
-	if ESX.Items[item] then
-		return ESX.Items[item].label
+ESR.GetItemLabel = function(item)
+	if ESR.Items[item] then
+		return ESR.Items[item].label
 	end
 end
 
-ESX.CreatePickup = function(type, name, count, label, playerId, components, tintIndex)
-	local pickupId = (ESX.PickupId == 65635 and 0 or ESX.PickupId + 1)
-	local xPlayer = ESX.GetPlayerFromId(playerId)
+ESR.CreatePickup = function(type, name, count, label, playerId, components, tintIndex)
+	local pickupId = (ESR.PickupId == 65635 and 0 or ESR.PickupId + 1)
+	local xPlayer = ESR.GetPlayerFromId(playerId)
 	local coords = xPlayer.getCoords()
 
-	ESX.Pickups[pickupId] = {
+	ESR.Pickups[pickupId] = {
 		type = type, name = name,
 		count = count, label = label,
 		coords = coords
 	}
 
 	if type == 'item_weapon' then
-		ESX.Pickups[pickupId].components = components
-		ESX.Pickups[pickupId].tintIndex = tintIndex
+		ESR.Pickups[pickupId].components = components
+		ESR.Pickups[pickupId].tintIndex = tintIndex
 	end
 
 	TriggerClientEvent('esx:createPickup', -1, pickupId, label, coords, type, name, components, tintIndex)
-	ESX.PickupId = pickupId
+	ESR.PickupId = pickupId
 end
 
-ESX.DoesJobExist = function(job, grade)
+ESR.DoesJobExist = function(job, grade)
 	grade = tostring(grade)
 
 	if job and grade then
-		if ESX.Jobs[job] and ESX.Jobs[job].grades[grade] then
+		if ESR.Jobs[job] and ESR.Jobs[job].grades[grade] then
 			return true
 		end
 	end
