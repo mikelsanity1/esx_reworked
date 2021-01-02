@@ -3,6 +3,13 @@ local function CreatePlayerClass(playerInfo, source)
 
     local identifierType = ESXR.GetIdentifierType()
     local pos = ESXR.Ensure(playerInfo.position, {})
+    local playerId = ESXR.Ensure(playerInfo.id, 0)
+
+    if (ESXR.Players ~= nil and ESXR.Players[playerId] ~= nil) then
+        ESXR.Players[playerId].source = ESXR.Ensure(source, ESXR.Players[playerId].source)
+
+        return ESXR.Players[playerId]
+    end
 
     ---@class xPlayer
     local xPlayer = {
@@ -10,7 +17,7 @@ local function CreatePlayerClass(playerInfo, source)
         __type = 'xPlayer',
         loaded = false,
         source = ESXR.Ensure(source, -1),
-        id = ESXR.Ensure(playerInfo.id, 0),
+        id = playerId,
         identifier = ESXR.Ensure(playerInfo.identifier, 'none'),
         name = ESXR.Ensure(playerInfo.name, 'Unknown'),
         group = ESXR.Ensure(playerInfo.group, 'user'),
@@ -27,12 +34,6 @@ local function CreatePlayerClass(playerInfo, source)
         tokens = {},
     }
 
-    if (ESXR.Players ~= nil and ESXR.Players[xPlayer.id] ~= nil) then
-        ESXR.Players[xPlayer.id].source = ESXR.Ensure(source, ESXR.Players[xPlayer.id].source)
-
-        return ESXR.Ensure(ESXR.Players[xPlayer.id], {})
-    end
-
     if (xPlayer.id <= 0) then
         error('xPlayer must have an valid `id` and must exsist in `players` table')
         return
@@ -41,7 +42,9 @@ local function CreatePlayerClass(playerInfo, source)
     ExecuteCommand(('add_principal identifier.%s:%s group.%s'):format(identifierType, xPlayer.identifier, xPlayer.group))
 
     function xPlayer:IsOnline()
-        return ESXR.Ensure(self.source, 0) > 0
+        local src = ESXR.Ensure(self.source, 0)
+
+        return src > 0 and src < 65535
     end
 
     function xPlayer:IsLoaded()
@@ -291,6 +294,8 @@ local function CreatePlayerClass(playerInfo, source)
     ESXR.References.Players[xPlayer.identifier] = xPlayer.id
 
     LoadPlayerDataAsync(xPlayer.id)
+
+    ESXR.Print(('^7Player "^3%s^7" has been loaded!'):format(xPlayer.name))
 
     return ESXR.Players[xPlayer.id]
 end

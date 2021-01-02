@@ -213,10 +213,13 @@
     
     "loaded": "Has loaded an updated the database, players can now connect with the server",
     "not_loaded": "ESX Reworked hasn't been loaded yet, please wait a moment and reconnect later...",
+    "player_create_failed": "Were failed to create an account for your, please contact the server owners...",
     "connecting_title": "Connecting with %s",
     "connecting_description": "You are currently connecting with %s please wait...",
     "connecting_error": "[ERROR] You cannot join because of an unknown error, please contact the server owners",
     "player_connecting": "Player '^3%s^7' is now connecting with your server.",
+    "player_create": "Player '^3%s^7' ^7(^3%s^7) is new and account has been created.",
+    "player_loaded": "Player '^3%s^7' ^7(^3%s^7) is now joining your server.",
     "missing_steam": "Your FiveM must have a Steam account linked to play on this server.",
     "missing_license": "Your FiveM must have a valid GTA5 license linked to play on this server.",
     "missing_license2": "Your FiveM must have a valid GTA5 license linked to play on this server.",

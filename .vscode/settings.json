@@ -38,6 +38,8 @@
         "GetPlayerToken",
         "GetInvokingResource",
         "AddEventHandler",
-        "source"
+        "source",
+        "RegisterNetEvent",
+        "MySQL"
     ]
 }

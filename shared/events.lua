@@ -107,11 +107,11 @@ function events.GetAllRegisterdEvents(event, params)
             ek = ESXR.Ensure(ek, 'unknown')
 
             if (ek == event) then
-                if (not hasParemeters) then
-                    for fk, fv in pairs(ESXR.Ensure(ev.always, {})) do
-                        table.insert(functions, ESXR.Ensure(fv, function() end))
-                    end
-                else
+                for fk, fv in pairs(ESXR.Ensure(ev.always, {})) do
+                    table.insert(functions, ESXR.Ensure(fv, function() end))
+                end
+
+                if (hasParemeters) then
                     local eventParameters = ESXR.Ensure(ev.params, {})
 
                     for pk, pv in pairs(params) do

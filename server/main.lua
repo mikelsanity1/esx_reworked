@@ -4,7 +4,7 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
     deferrals.defer()
 
     if (src <= 0) then
-        deferrals.done()
+        deferrals.done(_('connecting_error'))
         return
     end
 
@@ -59,9 +59,29 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
         end
     end
 
+    local playerObjects = MySQL.Sync.fetchAll('SELECT * FROM `players` WHERE `identifier` = @identifier LIMIT 1', {
+        ['identifier'] = player.identifier
+    })
+
+    local playerObject = ESXR.Ensure(ESXR.Ensure(playerObjects, {})[1], {})
+
+    CreatePlayerClass(playerObject, player.source)
+
     deferrals.done()
 end)
 
-local testTable = { name = "test", numb = 515.23123, allowed = false, test = { [1] = "Test 1", [2] = "Test 2", [3] = "Test 3" }, func = function(test) end }
+RegisterNetEvent('playerJoining')
+AddEventHandler('playerJoining', function()
+    local player_src = ESXR.Ensure(source, 0)
+    local identifiers = GetPlayerIdentifiersAsKeyValueTable(player_src)
+    local primaryIdentifier = ESXR.GetIdentifierType()
+    local playerObjects = MySQL.Sync.fetchAll('SELECT * FROM `players` WHERE `identifier` = @identifier LIMIT 1', {
+        ['identifier'] = ESXR.Ensure(identifiers[primaryIdentifier], 'unknown')
+    })
+    local playerObject = ESXR.Ensure(ESXR.Ensure(playerObjects, {})[1], {})
+    local xPlayer = CreatePlayerClass(playerObject, player_src)
 
-ESXR.Print(("\n%s"):format(ESXR.DumpColoredTable(testTable)))
+    repeat Citizen.Wait(0) until xPlayer ~= nil and xPlayer:IsLoaded() == true
+
+    ESXR.Events.TriggerOnEvent('playerJoining', xPlayer.identifier, xPlayer)
+end)

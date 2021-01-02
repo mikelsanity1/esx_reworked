@@ -10,3 +10,5 @@ Configuration.Storages = {
     'inventory',
     'safe'
 }
+
+Configuration.DefaultJob = 'unemployed'
