@@ -297,8 +297,8 @@ AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCo
 			sourceXPlayer.removeAccountMoney(itemName, itemCount)
 			targetXPlayer.addAccountMoney   (itemName, itemCount)
 
-			sourceXPlayer.showNotification(_U('gave_account_money', ESXR.Math.GroupDigits(itemCount), Config.Accounts[itemName], targetXPlayer.name))
-			targetXPlayer.showNotification(_U('received_account_money', ESXR.Math.GroupDigits(itemCount), Config.Accounts[itemName], sourceXPlayer.name))
+			sourceXPlayer.showNotification(_U('gave_account_money', ESXR.GroupDigits(itemCount), Config.Accounts[itemName], targetXPlayer.name))
+			targetXPlayer.showNotification(_U('received_account_money', ESXR.GroupDigits(itemCount), Config.Accounts[itemName], sourceXPlayer.name))
 		else
 			sourceXPlayer.showNotification(_U('imp_invalid_amount'))
 		end
@@ -383,9 +383,9 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 				xPlayer.showNotification(_U('imp_invalid_amount'))
 			else
 				xPlayer.removeAccountMoney(itemName, itemCount)
-				local pickupLabel = ('~y~%s~s~ [~g~%s~s~]'):format(account.label, _U('locale_currency', ESXR.Math.GroupDigits(itemCount)))
+				local pickupLabel = ('~y~%s~s~ [~g~%s~s~]'):format(account.label, _U('locale_currency', ESXR.GroupDigits(itemCount)))
 				ESXR.CreatePickup('item_account', itemName, itemCount, pickupLabel, playerId)
-				xPlayer.showNotification(_U('threw_account', ESXR.Math.GroupDigits(itemCount), string.lower(account.label)))
+				xPlayer.showNotification(_U('threw_account', ESXR.GroupDigits(itemCount), string.lower(account.label)))
 			end
 		end
 	elseif type == 'item_weapon' then
@@ -394,7 +394,7 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 		if xPlayer.hasWeapon(itemName) then
 			local _, weapon = xPlayer.getWeapon(itemName)
 			local _, weaponObject = ESXR.GetWeapon(itemName)
-			local components, pickupLabel = ESXR.Table.Clone(weapon.components)
+			local components, pickupLabel = ESXR.Clone(weapon.components)
 			xPlayer.removeWeapon(itemName)
 
 			if weaponObject.ammo and weapon.ammo > 0 then

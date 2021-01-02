@@ -10,5 +10,3 @@ Configuration.Storages = {
     'inventory',
     'safe'
 }
-
-Configuration.PrimaryIdentifier = 'license'

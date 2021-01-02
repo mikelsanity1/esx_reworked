@@ -33,12 +33,12 @@ function PlayerKilledByPlayer(killerServerId, killerClientId, deathCause)
 	local distance = #(victimCoords - killerCoords)
 
 	local data = {
-		victimCoords = {x = ESXR.Math.Round(victimCoords.x, 1), y = ESXR.Math.Round(victimCoords.y, 1), z = ESXR.Math.Round(victimCoords.z, 1)},
-		killerCoords = {x = ESXR.Math.Round(killerCoords.x, 1), y = ESXR.Math.Round(killerCoords.y, 1), z = ESXR.Math.Round(killerCoords.z, 1)},
+		victimCoords = {x = ESXR.Round(victimCoords.x, 1), y = ESXR.Round(victimCoords.y, 1), z = ESXR.Round(victimCoords.z, 1)},
+		killerCoords = {x = ESXR.Round(killerCoords.x, 1), y = ESXR.Round(killerCoords.y, 1), z = ESXR.Round(killerCoords.z, 1)},
 
 		killedByPlayer = true,
 		deathCause = deathCause,
-		distance = ESXR.Math.Round(distance, 1),
+		distance = ESXR.Round(distance, 1),
 
 		killerServerId = killerServerId,
 		killerClientId = killerClientId
@@ -53,7 +53,7 @@ function PlayerKilled(deathCause)
 	local victimCoords = GetEntityCoords(playerPed)
 
 	local data = {
-		victimCoords = {x = ESXR.Math.Round(victimCoords.x, 1), y = ESXR.Math.Round(victimCoords.y, 1), z = ESXR.Math.Round(victimCoords.z, 1)},
+		victimCoords = {x = ESXR.Round(victimCoords.x, 1), y = ESXR.Round(victimCoords.y, 1), z = ESXR.Round(victimCoords.z, 1)},
 
 		killedByPlayer = false,
 		deathCause = deathCause

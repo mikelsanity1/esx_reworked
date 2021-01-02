@@ -1,7 +1,7 @@
 local function CreatePlayerClass(playerInfo, source)
     playerInfo = ESXR.Ensure(playerInfo, {})
 
-    local identifierType = ESXR.Ensure(Configuration.PrimaryIdentifier, 'license')
+    local identifierType = ESXR.GetIdentifierType()
     local pos = ESXR.Ensure(playerInfo.position, {})
 
     ---@class xPlayer
@@ -87,7 +87,7 @@ local function CreatePlayerClass(playerInfo, source)
     end
 
     function xPlayer:Set(values)
-        self.variables = ESXR.Table.Concat(
+        self.variables = ESXR.Concat(
             ESXR.Ensure(self.variables, {}),
             ESXR.Ensure(values, {}))
 
@@ -118,14 +118,14 @@ local function CreatePlayerClass(playerInfo, source)
 
     function xPlayer:SetMoney(money)
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         return xPlayer:SetWallet('money', money)
     end
 
     function xPlayer:AddMoney(money)
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         if (money > 0) then
             return xPlayer:AddWallet('money', money)
@@ -136,7 +136,7 @@ local function CreatePlayerClass(playerInfo, source)
 
     function xPlayer:RemoveMoney(money)
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         if (money > 0) then
             return xPlayer:RemoveWallet('money', money)
@@ -157,14 +157,14 @@ local function CreatePlayerClass(playerInfo, source)
 
     function xPlayer:SetBank(money)
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         return xPlayer:SetWallet('bank', money)
     end
 
     function xPlayer:AddBank(money)
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         if (money > 0) then
             return xPlayer:AddWallet('bank', money)
@@ -175,7 +175,7 @@ local function CreatePlayerClass(playerInfo, source)
 
     function xPlayer:RemoveBank(money)
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         if (money > 0) then
             return xPlayer:RemoveWallet('bank', money)
@@ -193,7 +193,7 @@ local function CreatePlayerClass(playerInfo, source)
     function xPlayer:SetWallet(name, money)
         name = ESXR.Ensure(name, 'unknown')
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         local wallet = self:GetWallet(name)
 
@@ -207,7 +207,7 @@ local function CreatePlayerClass(playerInfo, source)
     function xPlayer:AddWallet(name, money)
         name = ESXR.Ensure(name, 'unknown')
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         local wallet = self:GetWallet(name)
 
@@ -221,7 +221,7 @@ local function CreatePlayerClass(playerInfo, source)
     function xPlayer:RemoveWallet(name, money)
         name = ESXR.Ensure(name, 'unknown')
         money = ESXR.Ensure(money, 0)
-        money = ESXR.Math.Round(money, 0)
+        money = ESXR.Round(money, 0)
 
         local wallet = self:GetWallet(name)
 

@@ -212,7 +212,17 @@
     "storage_safe": "Safe",
     
     "loaded": "Has loaded an updated the database, players can now connect with the server",
+    "not_loaded": "ESX Reworked hasn't been loaded yet, please wait a moment and reconnect later...",
     "connecting_title": "Connecting with %s",
     "connecting_description": "You are currently connecting with %s please wait...",
-    "connecting_error": "[ERROR] You cannot join because of an unknown error, please contact the server owners"
+    "connecting_error": "[ERROR] You cannot join because of an unknown error, please contact the server owners",
+    "player_connecting": "Player '^3%s^7' is now connecting with your server.",
+    "missing_steam": "Your FiveM must have a Steam account linked to play on this server.",
+    "missing_license": "Your FiveM must have a valid GTA5 license linked to play on this server.",
+    "missing_license2": "Your FiveM must have a valid GTA5 license linked to play on this server.",
+    "missing_xbl": "Your FiveM must have a XBOX account linked to play on this server.",
+    "missing_live": "Your FiveM must have a Microsoft account linked to play on this server.",
+    "missing_discord": "Your FiveM must have a Discord account linked to play on this server.",
+    "missing_fivem": "Your FiveM must have a FiveM Forum account linked to play on this server.",
+    "missing_ip": "You cannot join because we couldn't detect your IP, restart FiveM and try again."
 }

@@ -45,7 +45,7 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 	if Config.EnableHud then
 		for k,v in ipairs(playerData.accounts) do
 			local accountTpl = '<div><img src="img/accounts/' .. v.name .. '.png"/>&nbsp;{{money}}</div>'
-			ESXR.UI.HUD.RegisterElement('account_' .. v.name, k, 0, accountTpl, {money = ESXR.Math.GroupDigits(v.money)})
+			ESXR.UI.HUD.RegisterElement('account_' .. v.name, k, 0, accountTpl, {money = ESXR.GroupDigits(v.money)})
 		end
 
 		local jobTpl = '<div>{{job_label}} - {{grade_label}}</div>'
@@ -133,7 +133,7 @@ AddEventHandler('esx:setAccountMoney', function(account)
 
 	if Config.EnableHud then
 		ESXR.UI.HUD.UpdateElement('account_' .. account.name, {
-			money = ESXR.Math.GroupDigits(account.money)
+			money = ESXR.GroupDigits(account.money)
 		})
 	end
 end)
@@ -426,8 +426,8 @@ function StartServerSyncLoops()
 
 				if distance > 1 then
 					previousCoords = playerCoords
-					local playerHeading = ESXR.Math.Round(GetEntityHeading(playerPed), 1)
-					local formattedCoords = {x = ESXR.Math.Round(playerCoords.x, 1), y = ESXR.Math.Round(playerCoords.y, 1), z = ESXR.Math.Round(playerCoords.z, 1), heading = playerHeading}
+					local playerHeading = ESXR.Round(GetEntityHeading(playerPed), 1)
+					local formattedCoords = {x = ESXR.Round(playerCoords.x, 1), y = ESXR.Round(playerCoords.y, 1), z = ESXR.Round(playerCoords.z, 1), heading = playerHeading}
 					TriggerServerEvent('esx:updateCoords', formattedCoords)
 				end
 			end

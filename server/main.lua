@@ -8,10 +8,9 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
         return
     end
 
-    local config = ESXR.Ensure(Configuration, {})
     local name = ESXR.Ensure(playerName, 'Unknown')
-    local events = ESXR.Events:GetAllRegisterdEvents('playerConnecting')
-    local primaryIdentifier = ESXR.Ensure(config.PrimaryIdentifier, 'license')
+    local events = ESXR.Events.GetAllRegisterdEvents('playerConnecting')
+    local primaryIdentifier = ESXR.GetIdentifierType()
 
     if (#events <= 0) then
         deferrals.done()
@@ -62,3 +61,7 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
 
     deferrals.done()
 end)
+
+local testTable = { name = "test", numb = 515.23123, allowed = false, test = { [1] = "Test 1", [2] = "Test 2", [3] = "Test 3" }, func = function(test) end }
+
+ESXR.Print(("\n%s"):format(ESXR.DumpColoredTable(testTable)))

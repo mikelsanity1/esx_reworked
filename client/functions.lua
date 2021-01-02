@@ -551,15 +551,15 @@ ESXR.Game.GetVehicleProperties = function(vehicle)
 		return {
 			model             = GetEntityModel(vehicle),
 
-			plate             = ESXR.Math.Trim(GetVehicleNumberPlateText(vehicle)),
+			plate             = ESXR.Trim(GetVehicleNumberPlateText(vehicle)),
 			plateIndex        = GetVehicleNumberPlateTextIndex(vehicle),
 
-			bodyHealth        = ESXR.Math.Round(GetVehicleBodyHealth(vehicle), 1),
-			engineHealth      = ESXR.Math.Round(GetVehicleEngineHealth(vehicle), 1),
-			tankHealth        = ESXR.Math.Round(GetVehiclePetrolTankHealth(vehicle), 1),
+			bodyHealth        = ESXR.Round(GetVehicleBodyHealth(vehicle), 1),
+			engineHealth      = ESXR.Round(GetVehicleEngineHealth(vehicle), 1),
+			tankHealth        = ESXR.Round(GetVehiclePetrolTankHealth(vehicle), 1),
 
-			fuelLevel         = ESXR.Math.Round(GetVehicleFuelLevel(vehicle), 1),
-			dirtLevel         = ESXR.Math.Round(GetVehicleDirtLevel(vehicle), 1),
+			fuelLevel         = ESXR.Round(GetVehicleFuelLevel(vehicle), 1),
+			dirtLevel         = ESXR.Round(GetVehicleDirtLevel(vehicle), 1),
 			color1            = colorPrimary,
 			color2            = colorSecondary,
 
@@ -762,7 +762,7 @@ ESXR.ShowInventory = function()
 
 	for k,v in pairs(ESXR.PlayerData.accounts) do
 		if v.money > 0 then
-			local formattedMoney = _U('locale_currency', ESXR.Math.GroupDigits(v.money))
+			local formattedMoney = _U('locale_currency', ESXR.GroupDigits(v.money))
 			local canDrop = v.name ~= 'bank'
 
 			table.insert(elements, {
@@ -881,7 +881,7 @@ ESXR.ShowInventory = function()
 						}, function(data2, menu2)
 							local selectedPlayer, selectedPlayerId = GetPlayerFromServerId(data2.current.playerId), data2.current.playerId
 							playersNearby = ESXR.Game.GetPlayersInArea(GetEntityCoords(playerPed), 3.0)
-							playersNearby = ESXR.Table.Set(playersNearby)
+							playersNearby = ESXR.Set(playersNearby)
 
 							if playersNearby[selectedPlayer] then
 								local selectedPlayerPed = GetPlayerPed(selectedPlayer)

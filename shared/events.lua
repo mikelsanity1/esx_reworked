@@ -76,7 +76,7 @@ local function filterArguments(...)
     end
 end
 
-function events:On(event, ...)
+function events.On(event, ...)
     event = ESXR.Ensure(event, 'unknown')
 
     local resource = ESXR.Ensure(GetInvokingResource(), 'esx_reworked')
@@ -87,14 +87,14 @@ function events:On(event, ...)
     onEvent(resource, event, name, callback)
 end
 
-function events:AnyEventRegistered(event, resource)
+function events.AnyEventRegistered(event, resource)
     event = ESXR.Ensure(event, 'unknown')
     resource = ESXR.Ensure(resource, ESXR.Ensure(GetInvokingResource(), 'esx_reworked'))
 
     return ESXR.Ensure(cached_events[resource], {})[event] ~= nil
 end
 
-function events:GetAllRegisterdEvents(event, params)
+function events.GetAllRegisterdEvents(event, params)
     event = string.lower(ESXR.Ensure(event, 'unknown'))
     params = ESXR.Ensure(params, {})
 
@@ -129,8 +129,8 @@ function events:GetAllRegisterdEvents(event, params)
     return functions
 end
 
-function events:TriggerOnEvent(event, name, ...)
-    local allEvents = self:GetAllRegisterdEvents(event, ESXR.Ensure(name, {}))
+function events.TriggerOnEvent(event, name, ...)
+    local allEvents = ESXR.Events.GetAllRegisterdEvents(event, ESXR.Ensure(name, {}))
     local arguments = { ... }
 
     for k, v in pairs(allEvents) do

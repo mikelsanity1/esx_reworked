@@ -7,6 +7,7 @@ _G.ESXR = {
     Weapons = {},
     Items = {},
     Storages = {},
+    Cache = {},
     References = {
         Players = {},
         Jobs = {},

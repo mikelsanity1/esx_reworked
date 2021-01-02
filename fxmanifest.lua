@@ -1,10 +1,11 @@
-fx_version 'adamant'
-
+fx_version 'cerulean'
 game 'gta5'
 
-description 'ES Extended'
-
-version '1.2.0'
+name 'ESX Reworked'
+version '1.3.0'
+description 'A custom reworked version of es_extended (v1-final)'
+author 'ThymonA'
+url 'https://github.com/ThymonA/esx_reworked/'
 
 server_scripts {
 	'@fivem-mysql/lib/MySQL.lua',

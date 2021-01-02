@@ -27,7 +27,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.updateCoords = function(coords)
-		self.coords = {x = ESXR.Math.Round(coords.x, 1), y = ESXR.Math.Round(coords.y, 1), z = ESXR.Math.Round(coords.z, 1), heading = ESXR.Math.Round(coords.heading or 0.0, 1)}
+		self.coords = {x = ESXR.Round(coords.x, 1), y = ESXR.Round(coords.y, 1), z = ESXR.Round(coords.z, 1), heading = ESXR.Round(coords.heading or 0.0, 1)}
 	end
 
 	self.getCoords = function(vector)
@@ -43,7 +43,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.setMoney = function(money)
-		money = ESXR.Math.Round(money)
+		money = ESXR.Round(money)
 		self.setAccountMoney('money', money)
 	end
 
@@ -52,12 +52,12 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.addMoney = function(money)
-		money = ESXR.Math.Round(money)
+		money = ESXR.Round(money)
 		self.addAccountMoney('money', money)
 	end
 
 	self.removeMoney = function(money)
-		money = ESXR.Math.Round(money)
+		money = ESXR.Round(money)
 		self.removeAccountMoney('money', money)
 	end
 
@@ -168,7 +168,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 			if account then
 				local prevMoney = account.money
-				local newMoney = ESXR.Math.Round(money)
+				local newMoney = ESXR.Round(money)
 				account.money = newMoney
 
 				self.triggerEvent('esx:setAccountMoney', account)
@@ -181,7 +181,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			local account = self.getAccount(accountName)
 
 			if account then
-				local newMoney = account.money + ESXR.Math.Round(money)
+				local newMoney = account.money + ESXR.Round(money)
 				account.money = newMoney
 
 				self.triggerEvent('esx:setAccountMoney', account)
@@ -194,7 +194,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			local account = self.getAccount(accountName)
 
 			if account then
-				local newMoney = account.money - ESXR.Math.Round(money)
+				local newMoney = account.money - ESXR.Round(money)
 				account.money = newMoney
 
 				self.triggerEvent('esx:setAccountMoney', account)
@@ -216,7 +216,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local item = self.getInventoryItem(name)
 
 		if item then
-			count = ESXR.Math.Round(count)
+			count = ESXR.Round(count)
 			item.count = item.count + count
 			self.weight = self.weight + (item.weight * count)
 
@@ -229,7 +229,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local item = self.getInventoryItem(name)
 
 		if item then
-			count = ESXR.Math.Round(count)
+			count = ESXR.Round(count)
 			local newCount = item.count - count
 
 			if newCount >= 0 then
@@ -246,7 +246,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local item = self.getInventoryItem(name)
 
 		if item and count >= 0 then
-			count = ESXR.Math.Round(count)
+			count = ESXR.Round(count)
 
 			if count > item.count then
 				self.addInventoryItem(item.name, count - item.count)
@@ -276,8 +276,8 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 		local testItemObject = self.getInventoryItem(testItem)
 
 		if firstItemObject.count >= firstItemCount then
-			local weightWithoutFirstItem = ESXR.Math.Round(self.weight - (firstItemObject.weight * firstItemCount))
-			local weightWithTestItem = ESXR.Math.Round(weightWithoutFirstItem + (testItemObject.weight * testItemCount))
+			local weightWithoutFirstItem = ESXR.Round(self.weight - (firstItemObject.weight * firstItemCount))
+			local weightWithTestItem = ESXR.Round(weightWithoutFirstItem + (testItemObject.weight * testItemCount))
 
 			return weightWithTestItem <= self.maxWeight
 		end
