@@ -22,9 +22,11 @@ server_scripts {
 
 	'config/permissions.lua',
 
+	'server/functions.lua',
 	'server/load.lua',
 	'server/events.lua',
 	'server/main.lua',
+	'server/commands.lua',
 
 	'shared/exports.lua'
 }

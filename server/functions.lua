@@ -1,304 +1,153 @@
-ESXR.Trace = function(msg)
-	if Config.EnableDebug then
-		print(('[esx_reworked] [^2TRACE^7] %s^7'):format(msg))
-	end
-end
-
-ESXR.SetTimeout = function(msec, cb)
-	local id = ESXR.TimeoutCount + 1
-
-	SetTimeout(msec, function()
-		if ESXR.CancelledTimeouts[id] then
-			ESXR.CancelledTimeouts[id] = nil
-		else
-			cb()
-		end
-	end)
-
-	ESXR.TimeoutCount = id
-
-	return id
-end
-
-ESXR.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
-	if type(name) == 'table' then
-		for k,v in ipairs(name) do
-			ESXR.RegisterCommand(v, group, cb, allowConsole, suggestion)
-		end
-
-		return
-	end
-
-	if ESXR.RegisteredCommands[name] then
-		print(('[esx_reworked] [^3WARNING^7] An command "%s" is already registered, overriding command'):format(name))
-
-		if ESXR.RegisteredCommands[name].suggestion then
-			TriggerClientEvent('chat:removeSuggestion', -1, ('/%s'):format(name))
-		end
-	end
-
-	if suggestion then
-		if not suggestion.arguments then suggestion.arguments = {} end
-		if not suggestion.help then suggestion.help = '' end
-
-		TriggerClientEvent('chat:addSuggestion', -1, ('/%s'):format(name), suggestion.help, suggestion.arguments)
-	end
-
-	ESXR.RegisteredCommands[name] = {group = group, cb = cb, allowConsole = allowConsole, suggestion = suggestion}
-
-	RegisterCommand(name, function(playerId, args, rawCommand)
-		local command = ESXR.RegisteredCommands[name]
-
-		if not command.allowConsole and playerId == 0 then
-			print(('[esx_reworked] [^3WARNING^7] %s'):format(_U('commanderror_console')))
-		else
-			local xPlayer, error = ESXR.GetPlayerFromId(playerId), nil
-
-			if command.suggestion then
-				if command.suggestion.validate then
-					if #args ~= #command.suggestion.arguments then
-						error = _U('commanderror_argumentmismatch', #args, #command.suggestion.arguments)
-					end
-				end
-
-				if not error and command.suggestion.arguments then
-					local newArgs = {}
-
-					for k,v in ipairs(command.suggestion.arguments) do
-						if v.type then
-							if v.type == 'number' then
-								local newArg = tonumber(args[k])
-
-								if newArg then
-									newArgs[v.name] = newArg
-								else
-									error = _U('commanderror_argumentmismatch_number', k)
-								end
-							elseif v.type == 'player' or v.type == 'playerId' then
-								local targetPlayer = tonumber(args[k])
-
-								if args[k] == 'me' then targetPlayer = playerId end
-
-								if targetPlayer then
-									local xTargetPlayer = ESXR.GetPlayerFromId(targetPlayer)
-
-									if xTargetPlayer then
-										if v.type == 'player' then
-											newArgs[v.name] = xTargetPlayer
-										else
-											newArgs[v.name] = targetPlayer
-										end
-									else
-										error = _U('commanderror_invalidplayerid')
-									end
-								else
-									error = _U('commanderror_argumentmismatch_number', k)
-								end
-							elseif v.type == 'string' then
-								newArgs[v.name] = args[k]
-							elseif v.type == 'item' then
-								if ESXR.Items[args[k]] then
-									newArgs[v.name] = args[k]
-								else
-									error = _U('commanderror_invaliditem')
-								end
-							elseif v.type == 'weapon' then
-								if ESXR.GetWeapon(args[k]) then
-									newArgs[v.name] = string.upper(args[k])
-								else
-									error = _U('commanderror_invalidweapon')
-								end
-							elseif v.type == 'any' then
-								newArgs[v.name] = args[k]
-							end
-						end
-
-						if error then break end
-					end
-
-					args = newArgs
-				end
-			end
-
-			if error then
-				if playerId == 0 then
-					print(('[esx_reworked] [^3WARNING^7] %s^7'):format(error))
-				else
-					xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', error}})
-				end
-			else
-				cb(xPlayer or false, args, function(msg)
-					if playerId == 0 then
-						print(('[esx_reworked] [^3WARNING^7] %s^7'):format(msg))
-					else
-						xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', msg}})
-					end
-				end)
-			end
-		end
-	end, true)
-
-	if type(group) == 'table' then
-		for k,v in ipairs(group) do
-			ExecuteCommand(('add_ace group.%s command.%s allow'):format(v, name))
-		end
-	else
-		ExecuteCommand(('add_ace group.%s command.%s allow'):format(group, name))
-	end
-end
-
-ESXR.ClearTimeout = function(id)
-	ESXR.CancelledTimeouts[id] = true
-end
-
-ESXR.RegisterServerCallback = function(name, cb)
-	ESXR.ServerCallbacks[name] = cb
-end
-
-ESXR.TriggerServerCallback = function(name, requestId, source, cb, ...)
-	if ESXR.ServerCallbacks[name] then
-		ESXR.ServerCallbacks[name](source, cb, ...)
-	else
-		print(('[esx_reworked] [^3WARNING^7] Server callback "%s" does not exist. Make sure that the server sided file really is loading, an error in that file might cause it to not load.'):format(name))
-	end
-end
-
-ESXR.SavePlayer = function(xPlayer, cb)
-	local asyncTasks = {}
-
-	table.insert(asyncTasks, function(cb2)
-		MySQL.Async.execute('UPDATE users SET accounts = @accounts, job = @job, job_grade = @job_grade, `group` = @group, loadout = @loadout, position = @position, inventory = @inventory WHERE identifier = @identifier', {
-			['@accounts'] = json.encode(xPlayer.getAccounts(true)),
-			['@job'] = xPlayer.job.name,
-			['@job_grade'] = xPlayer.job.grade,
-			['@group'] = xPlayer.getGroup(),
-			['@loadout'] = json.encode(xPlayer.getLoadout(true)),
-			['@position'] = json.encode(xPlayer.getCoords()),
-			['@identifier'] = xPlayer.getIdentifier(),
-			['@inventory'] = json.encode(xPlayer.getInventory(true))
-		}, function(rowsChanged)
-			cb2()
-		end)
-	end)
-
-	Async.parallel(asyncTasks, function(results)
-		print(('[esx_reworked] [^2INFO^7] Saved player "%s^7"'):format(xPlayer.getName()))
-
-		if cb then
-			cb()
-		end
-	end)
-end
-
-ESXR.SavePlayers = function(cb)
-	local xPlayers, asyncTasks = ESXR.GetPlayers(), {}
-
-	for i=1, #xPlayers, 1 do
-		table.insert(asyncTasks, function(cb2)
-			local xPlayer = ESXR.GetPlayerFromId(xPlayers[i])
-			ESXR.SavePlayer(xPlayer, cb2)
-		end)
-	end
-
-	Async.parallelLimit(asyncTasks, 8, function(results)
-		print(('[esx_reworked] [^2INFO^7] Saved %s player(s)'):format(#xPlayers))
-		if cb then
-			cb()
-		end
-	end)
-end
-
-ESXR.StartDBSync = function()
-	function saveData()
-		ESXR.SavePlayers()
-		SetTimeout(10 * 60 * 1000, saveData)
-	end
-
-	SetTimeout(10 * 60 * 1000, saveData)
-end
-
-ESXR.GetPlayers = function()
-	local sources = {}
-
-	for k,v in pairs(ESXR.Players) do
-		table.insert(sources, k)
-	end
-
-	return sources
-end
-
 ESXR.GetPlayerById = function(playerId)
-	playerId = ESXR.Ensure(playerId, 0)
+    playerId = ESXR.Ensure(playerId, 0)
 
-	if (playerId <= 0) then return end
+    if (playerId > 0) then return nil end
+
+    return ESXR.Players[playerId] or nil
 end
 
-ESXR.GetJobById = function(jobId)
-	jobId = ESXR.Ensure(jobId, 0)
+ESXR.GetPlayerBySource = function(source)
+    source = ESXR.Ensure(source, 0)
 
-	if (jobId <= 0) then return end
+    if (source > 0) then return nil end
+
+    for k, v in pairs(ESXR.Players) do
+        if (v.source == source) then
+            return v
+        end
+    end
+
+    return nil
 end
 
-ESXR.GetStorageById = function(storageId)
-	storageId = ESXR.Ensure(storageId, 0)
+ESXR.ParseCommandInput = function(command, index, input, source)
+    command = ESXR.Ensure(command, 'unknown')
+    index = ESXR.Ensure(index, 0)
+    source = ESXR.Ensure(source, 0)
 
-	if (storageId <= 0) then return end
+    if (command == 'unknown' or index == 0) then
+        return nil
+    end
+
+    local cmd = ESXR.Commands[command]
+
+    if (cmd == nil) then return nil end
+
+    local arguments = ESXR.Ensure(cmd.arguments, {})
+    local argument = arguments ~= nil and arguments[index] or nil
+
+    if (argument == nil) then return nil end
+
+    local argumentType = ESXR.Ensure(argument.type, 'unknown')
+    argumentType = string.lower(argumentType)
+
+    if (argumentType == 'unknown') then return nil end
+    if (argumentType == 'any') then return input end
+
+    if (argumentType == 'number') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, 0))
+    elseif (argumentType == 'string') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, ''))
+    elseif (argumentType == 'boolean') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, false))
+    elseif (argumentType == 'table') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, { }))
+    elseif (argumentType == 'vector2') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, vector2(0, 0)))
+    elseif (argumentType == 'vector3') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, vector3(0, 0, 0)))
+    elseif (argumentType == 'vector4') then
+        return ESXR.Ensure(input, ESXR.Ensure(argument.default, vector4(0, 0, 0, 0)))
+    elseif (argumentType == 'me') then
+        return ESXR.GetPlayerBySource(source)
+    elseif (argumentType == 'player') then
+        return ESXR.GetPlayerBySource(ESXR.Ensure(input, 0))
+    elseif (argumentType == 'job') then
+        local name = ESXR.Ensure(input, 'unknown')
+        local jobId = ESXR.Ensure(ESXR.References.Jobs[name], 0)
+
+        return ESXR.Jobs[jobId] or nil
+    end
+
+    return nil
 end
 
-ESXR.GetPlayerFromId = function(source)
-	return ESXR.Players[tonumber(source)]
+ESXR.ExecuteCommand = function(command, playerId, args)
+    local cmd = ESXR.Commands[command]
+
+    if (cmd == nil) then return end
+
+    playerId = ESXR.Ensure(playerId, 0)
+    args = ESXR.Ensure(args, {})
+
+    if (playerId <= 0 and not cmd.consoleAllowed) then
+        ESXR.PrintError(_('commanderror_console'))
+        return
+    end
+
+    local xPlayer = playerId > 0 and ESXR.GetPlayerBySource(playerId) or nil
+    local arguments = {}
+
+    for k, v in pairs(cmd.arguments) do
+        local argumentName = ESXR.Ensure(v.name, 'unknown')
+
+        arguments[argumentName] = ESXR.ParseCommandInput(command, k, args[k] or nil, playerId)
+    end
+
+    local allowed = playerId <= 0 and true or (xPlayer ~= nil and xPlayer:HasPermission(('command.%s'):format(cmd.name)))
+
+    if (not allowed) then
+        return
+    end
+
+    ESXR.TryCatch(cmd.callback, ESXR.PrintError, xPlayer, arguments)
 end
 
-ESXR.GetPlayerFromIdentifier = function(identifier)
-	for k,v in pairs(ESXR.Players) do
-		if v.identifier == identifier then
-			return v
-		end
-	end
-end
+ESXR.RegisterCommand = function(command, inputs, callback, consoleAllowed)
+    if (ESXR.TypeOf(command) == 'table') then
+        for k, v in pairs(command) do
+            ESXR.RegisterCommand(v, callback, consoleAllowed, inputs)
+        end
+        return
+    end
 
-ESXR.RegisterUsableItem = function(item, cb)
-	ESXR.UsableItemsCallbacks[item] = cb
-end
+    command = ESXR.Ensure(command, 'unknown')
+    callback = ESXR.Ensure(callback, function() end)
+    inputs = ESXR.Ensure(inputs, {})
+    consoleAllowed = ESXR.Ensure(consoleAllowed, true)
 
-ESXR.UseItem = function(source, item)
-	ESXR.UsableItemsCallbacks[item](source, item)
-end
+    if (command == 'unknown') then
+        return
+    end
 
-ESXR.GetItemLabel = function(item)
-	if ESXR.Items[item] then
-		return ESXR.Items[item].label
-	end
-end
+    local _cmd = {
+        name = command,
+        arguments = {},
+        callback = callback,
+        consoleAllowed = consoleAllowed,
+        trigger = function(playerId, args)
+            ESXR.ExecuteCommand(command, playerId, args)
+        end
+    }
 
-ESXR.CreatePickup = function(type, name, count, label, playerId, components, tintIndex)
-	local pickupId = (ESXR.PickupId == 65635 and 0 or ESXR.PickupId + 1)
-	local xPlayer = ESXR.GetPlayerFromId(playerId)
-	local coords = xPlayer.getCoords()
+    local index = 0
 
-	ESXR.Pickups[pickupId] = {
-		type = type, name = name,
-		count = count, label = label,
-		coords = coords
-	}
+    for k, v in pairs(inputs) do
+        index = index + 1
+        v = ESXR.Ensure(v, {})
 
-	if type == 'item_weapon' then
-		ESXR.Pickups[pickupId].components = components
-		ESXR.Pickups[pickupId].tintIndex = tintIndex
-	end
+        local argument = {
+            type = ESXR.Ensure(v.type, 'any'),
+            default = v.default or nil,
+            index = index,
+            name = ESXR.Ensure(v.name, _(('%s_%s'):format(command, index))),
+            description = ESXR.Ensure(v.description, _(('%s_%s_description'):format(command, index)))
+        }
 
-	TriggerClientEvent('esx:createPickup', -1, pickupId, label, coords, type, name, components, tintIndex)
-	ESXR.PickupId = pickupId
-end
+        _cmd.arguments[index] = argument
+    end
 
-ESXR.DoesJobExist = function(job, grade)
-	grade = tostring(grade)
+    ESXR.Commands[command] = _cmd
 
-	if job and grade then
-		if ESXR.Jobs[job] and ESXR.Jobs[job].grades[grade] then
-			return true
-		end
-	end
-
-	return false
+    RegisterCommand(command, ESXR.Commands[command].trigger)
 end

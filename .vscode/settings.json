@@ -42,6 +42,7 @@
         "RegisterNetEvent",
         "MySQL",
         "IsPlayerAceAllowed",
-        "IsPrincipalAceAllowed"
+        "IsPrincipalAceAllowed",
+        "RegisterCommand"
     ]
 }

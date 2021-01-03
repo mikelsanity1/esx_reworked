@@ -425,13 +425,13 @@ ESXR.PrintError = function(msg)
 	print(error_message)
 end
 
-ESXR.TryCatch = function(func, catch)
+ESXR.TryCatch = function(func, catch, ...)
 	func = ESXR.Ensure(func, function() end)
 	catch = ESXR.Ensure(catch, function() end)
 
 	local ok = xpcall(func, function(...)
 		catch(...)
-	end)
+	end, ...)
 end
 
 ESXR.Round = function(value, numDecimalPlaces)

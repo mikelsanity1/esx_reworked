@@ -10,6 +10,7 @@ _G.ESXR = {
     Cache = {},
     Groups = {},
     Permissions = {},
+    Commands = {},
     References = {
         Players = {},
         Jobs = {},

@@ -1,7 +1,6 @@
 group 'user' {
     priority = 1,
     permissions = {
-        'command.user'
     },
     denies = {
         '**.superadmin',
@@ -12,7 +11,6 @@ group 'user' {
 group 'admin' {
     priority = 700,
     permissions = {
-        'command.admin'
     },
     denies = {
         '**.superadmin'
