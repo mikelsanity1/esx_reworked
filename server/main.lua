@@ -84,4 +84,5 @@ AddEventHandler('playerJoining', function()
     repeat Citizen.Wait(0) until xPlayer ~= nil and xPlayer:IsLoaded() == true
 
     ESXR.Events.TriggerOnEvent('playerJoining', xPlayer.identifier, xPlayer)
+    ESXR.Events.TriggerOnEvent('groupJoining', xPlayer.group, xPlayer)
 end)

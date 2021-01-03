@@ -44,6 +44,12 @@ local function CreatePlayerClass(playerInfo, source)
     function xPlayer:IsOnline()
         local src = ESXR.Ensure(self.source, 0)
 
+        return src > 0
+    end
+
+    function xPlayer:IsConnected()
+        local src = ESXR.Ensure(self.source, 0)
+
         return src > 0 and src < 65535
     end
 
@@ -54,7 +60,7 @@ local function CreatePlayerClass(playerInfo, source)
     function xPlayer:TriggerEvent(name, ...)
         name = ESXR.Ensure(name, 'unknown')
 
-        if (self:IsOnline()) then
+        if (self:IsConnected()) then
             TriggerClientEvent(name, self.source, ...)
         end
 
@@ -64,7 +70,7 @@ local function CreatePlayerClass(playerInfo, source)
     function xPlayer:Kick(reason)
         reason = ESXR.Ensure(reason, _('no_reason_specified'))
 
-        if (self:IsOnline()) then
+        if (self:IsConnected()) then
             DropPlayer(self.source, reason)
         end
 
@@ -284,6 +290,17 @@ local function CreatePlayerClass(playerInfo, source)
         end
 
         return weapons
+    end
+
+    function xPlayer:HasPermission(permission)
+        permission = ESXR.Ensure(permission, 'unknown')
+
+        local group = ESXR.Ensure(self.group, 'user')
+        local hasPerm = ESXR.Permissions.GroupHasPermission(group, permission)
+
+        if (hasPerm) then return true end
+
+        return ESXR.Ensure(IsPrincipalAceAllowed(('group.%s'):format(group), permission), false)
     end
 
     if (ESXR.Players == nil) then ESXR.Players = ESXR.Ensure(ESXR.Players, {}) end

@@ -40,6 +40,8 @@
         "AddEventHandler",
         "source",
         "RegisterNetEvent",
-        "MySQL"
+        "MySQL",
+        "IsPlayerAceAllowed",
+        "IsPrincipalAceAllowed"
     ]
 }

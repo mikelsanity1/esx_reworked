@@ -227,5 +227,6 @@
     "missing_live": "Your FiveM must have a Microsoft account linked to play on this server.",
     "missing_discord": "Your FiveM must have a Discord account linked to play on this server.",
     "missing_fivem": "Your FiveM must have a FiveM Forum account linked to play on this server.",
-    "missing_ip": "You cannot join because we couldn't detect your IP, restart FiveM and try again."
+    "missing_ip": "You cannot join because we couldn't detect your IP, restart FiveM and try again.",
+    "group_loaded": "^7Group '^3%s^7' has been loaded"
 }

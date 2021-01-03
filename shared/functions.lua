@@ -1,3 +1,5 @@
+local err = error
+
 ESXR.GetConfig = function()
     return ESXR.Ensure(Configuration, {})
 end
@@ -612,6 +614,56 @@ ESXR.Sort = function(t, order)
 	end
 end
 
+ESXR.Split = function(str, sep)
+	str = ESXR.Ensure(str, '')
+	sep = ESXR.Ensure(sep, ',')
+
+	local fields = {}
+	local pattern = ('([^%s]+)'):format(sep)
+
+	str:gsub(pattern, function(c)
+		table.insert(fields, ESXR.Trim(ESXR.Ensure(c, '')))
+	end)
+
+	return fields
+end
+
+ESXR.Replace = function(str, this, that, plain)
+	str = ESXR.Ensure(str, '')
+	this = ESXR.Ensure(this, '')
+	that = ESXR.Ensure(that, '')
+	plain = ESXR.Ensure(plain, false)
+
+	local b, e = str:find(this, 1, plain)
+
+	if (b == nil) then
+		return str
+	else
+		return str:sub(1, b - 1) .. that .. ESXR.Replace(str:sub(e + 1), this, that, plain)
+	end
+end
+
+ESXR.EscapePattern = function(str)
+	return ESXR.Ensure(str, ''):gsub("[%-%.%+%[%]%(%)%$%^%%%?%*]", "%%%1")
+end
+
+ESXR.Parse = function(str)
+	str = ESXR.Ensure(str, '')
+
+	local tokenized = str
+    	:gsub("%*%*", "__DOUBLE_WILDCARD__")
+    	:gsub("%*", "__WILDCARD__")
+		:gsub("%?", "__ANY_CHAR__")
+	local escaped = ESXR.EscapePattern(tokenized)
+	local pattern = escaped
+		:gsub("__DOUBLE_WILDCARD__", ".+")
+    	:gsub("__WILDCARD__", "[^/]+")
+		:gsub("__ANY_CHAR__", ".")
+
+	return "^" .. pattern
+end
+
 _G.error = function(...)
 	ESXR.PrintError(...)
+	err(...)
 end

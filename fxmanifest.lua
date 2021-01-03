@@ -19,6 +19,9 @@ server_scripts {
 
 	'server/classes/*.lua',
 	'server/helpers/*.lua',
+
+	'config/permissions.lua',
+
 	'server/load.lua',
 	'server/events.lua',
 	'server/main.lua',
