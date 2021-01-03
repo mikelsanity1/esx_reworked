@@ -395,6 +395,12 @@ ESXR.Print = function(...)
     print(('^7[INFO] ^7ESX_REWORKED^7 >^7%s^7'):format(str))
 end
 
+ESXR.PrintWarn = function(...)
+	local str = ESXR.ArgumentsToString(...)
+
+    print(('^7[^3WARN^7] ^7ESX_REWORKED^7 >^3%s^7'):format(str))
+end
+
 ESXR.PrintSuccess = function(...)
 	local str = ESXR.ArgumentsToString(...)
 

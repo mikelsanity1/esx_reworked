@@ -1,6 +1,8 @@
 _G.Configuration = {}
 
+---@class ESX_REWORKED
 _G.ESXR = {
+    IsServer = IsDuplicityVersion(),
     Players = {},
     Jobs = {},
     Wallets = {},
@@ -11,6 +13,7 @@ _G.ESXR = {
     Groups = {},
     Permissions = {},
     Commands = {},
+    RateLimits = {},
     References = {
         Players = {},
         Jobs = {},
@@ -19,5 +22,9 @@ _G.ESXR = {
         Items = {},
         Storages = {}
     },
-    IsLoaded = false
+    IsLoaded = false,
+    Clock = {
+        LastTime = nil,
+        CurrentTick = 0
+    }
 }

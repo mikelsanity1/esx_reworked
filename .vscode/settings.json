@@ -43,6 +43,12 @@
         "MySQL",
         "IsPlayerAceAllowed",
         "IsPrincipalAceAllowed",
-        "RegisterCommand"
+        "RegisterCommand",
+        "NetworkIsPlayerActive",
+        "PlayerId",
+        "TriggerServerEvent",
+        "GetGameTimer",
+        "IsDuplicityVersion",
+        "RegisterServerEvent"
     ]
 }

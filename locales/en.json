@@ -174,6 +174,7 @@
     "player_connecting": "Player '^3%s^7' is now connecting with your server.",
     "player_create": "Player '^3%s^7' ^7(^3%s^7) is new and account has been created.",
     "player_loaded": "Player '^3%s^7' ^7(^3%s^7) is now joining your server.",
+    "player_connected": "Player '^3%s^7' ^7(^3%s^7) is now fully connected to your server.",
     "missing_steam": "Your FiveM must have a Steam account linked to play on this server.",
     "missing_license": "Your FiveM must have a valid GTA5 license linked to play on this server.",
     "missing_license2": "Your FiveM must have a valid GTA5 license linked to play on this server.",
@@ -182,5 +183,6 @@
     "missing_discord": "Your FiveM must have a Discord account linked to play on this server.",
     "missing_fivem": "Your FiveM must have a FiveM Forum account linked to play on this server.",
     "missing_ip": "You cannot join because we couldn't detect your IP, restart FiveM and try again.",
-    "group_loaded": "^7Group '^3%s^7' has been loaded"
+    "group_loaded": "^7Group '^3%s^7' has been loaded",
+    "rate_limit_exceeded": "^7Rate limit '^3%s^7' exceeded by '^3%s^7'"
 }

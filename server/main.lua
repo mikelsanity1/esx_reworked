@@ -86,3 +86,7 @@ AddEventHandler('playerJoining', function()
     ESXR.Events.TriggerOnEvent('playerJoining', xPlayer.identifier, xPlayer)
     ESXR.Events.TriggerOnEvent('groupJoining', xPlayer.group, xPlayer)
 end)
+
+ESXR.RegisterServerEvent('esxr:onPlayerJoined', function(source)
+    ESXR.Print(_('player_connected', GetPlayerName(source), source))
+end, 0, 1)
