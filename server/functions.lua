@@ -1,25 +1,3 @@
-ESXR.GetPlayerById = function(playerId)
-    playerId = ESXR.Ensure(playerId, 0)
-
-    if (playerId > 0) then return nil end
-
-    return ESXR.Players[playerId] or nil
-end
-
-ESXR.GetPlayerBySource = function(source)
-    source = ESXR.Ensure(source, 0)
-
-    if (source > 0) then return nil end
-
-    for k, v in pairs(ESXR.Players) do
-        if (v.source == source) then
-            return v
-        end
-    end
-
-    return nil
-end
-
 ESXR.ParseCommandInput = function(command, index, input, source)
     command = ESXR.Ensure(command, 'unknown')
     index = ESXR.Ensure(index, 0)
@@ -59,9 +37,9 @@ ESXR.ParseCommandInput = function(command, index, input, source)
     elseif (argumentType == 'vector4') then
         return ESXR.Ensure(input, ESXR.Ensure(argument.default, vector4(0, 0, 0, 0)))
     elseif (argumentType == 'me') then
-        return ESXR.GetPlayerBySource(source)
+        return GetPlayerBySource(source)
     elseif (argumentType == 'player') then
-        return ESXR.GetPlayerBySource(ESXR.Ensure(input, 0))
+        return GetPlayerBySource(ESXR.Ensure(input, 0))
     elseif (argumentType == 'job') then
         local name = ESXR.Ensure(input, 'unknown')
         local jobId = ESXR.Ensure(ESXR.References.Jobs[name], 0)
@@ -85,7 +63,7 @@ ESXR.ExecuteCommand = function(command, playerId, args)
         return
     end
 
-    local xPlayer = playerId > 0 and ESXR.GetPlayerBySource(playerId) or nil
+    local xPlayer = playerId > 0 and GetPlayerBySource(playerId) or nil
     local arguments = {}
 
     for k, v in pairs(cmd.arguments) do
@@ -120,6 +98,7 @@ ESXR.RegisterCommand = function(command, inputs, callback, consoleAllowed)
         return
     end
 
+    ---@class command
     local _cmd = {
         name = command,
         arguments = {},

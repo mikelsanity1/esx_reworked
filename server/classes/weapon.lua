@@ -52,7 +52,7 @@ local function CreateWeaponClass(weaponInfo)
 
     function xWeapon:GetOwner()
         if (self.playerId > 0) then
-            return ESXR.GetPlayerById(self.playerId), self.ownerType
+            return GetPlayerById(self.playerId), self.ownerType
         end
 
         return ESXR.GetJobById(self.jobId), self.ownerType

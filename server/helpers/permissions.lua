@@ -3,6 +3,8 @@ local function LoadPermissions(name, groupInfo)
     groupInfo = ESXR.Ensure(groupInfo, {})
 
     local parentOf = ESXR.Ensure(groupInfo.parentOf, 'unknown')
+
+    ---@class group
     local group = {
         name = name,
         priority = 1,
@@ -44,6 +46,51 @@ local function LoadPermissions(name, groupInfo)
     ESXR.Groups[group.name] = group
 end
 
+local function LoadJobPermissions(name, jobInfo)
+    name = string.lower(ESXR.Ensure(name, 'unknown'))
+    jobInfo = ESXR.Ensure(jobInfo, {})
+
+    local parentOf = ESXR.Ensure(jobInfo.parentOf, 'unknown')
+
+    ---@class job
+    local job = {
+        name = name,
+        permissions = {},
+        denies = {},
+        parentOf = parentOf ~= 'unknown' and parentOf or nil
+    }
+
+    if (job.parentOf ~= nil and ESXR.JobPermissions[job.parentOf] == nil) then
+        error(("Job '%s' is loaded before '%s', make sure that job '%s' is loaded after '%'"):format(job.name, job.parentOf, job.parentOf, job.name))
+        return
+    end
+
+    for k, v in pairs(ESXR.Ensure(jobInfo.permissions, {})) do
+        v = ESXR.Ensure(v, 'unknown')
+
+        if (v ~= 'unknown') then
+            table.insert(job.permissions, v)
+        end
+    end
+
+    for k, v in pairs(ESXR.Ensure(jobInfo.denies, {})) do
+        v = ESXR.Ensure(v, 'unknown')
+
+        if (v ~= 'unknown') then
+            table.insert(job.denies, v)
+        end
+    end
+
+    if (job.parentOf ~= nil and ESXR.JobPermissions[job.parentOf] ~= nil) then
+        for k, v in pairs(ESXR.Ensure(ESXR.JobPermissions[job.parentOf].permissions, {})) do
+            table.insert(job.permissions, v)
+        end
+    end
+
+    ESXR.PrintSuccess(_('job_loaded', job.name))
+    ESXR.JobPermissions[job.name] = job
+end
+
 local function ListHasPerm(list, perm)
     list = ESXR.Ensure(list, {})
     perm = ESXR.Ensure(perm, 'unknown')
@@ -77,8 +124,25 @@ ESXR.Permissions.GroupHasPermission = function(group, permission)
     return isAllowed and not isDenied
 end
 
+ESXR.Permissions.JobHasPermission = function(job, permission)
+    job = ESXR.Ensure(job, 'unknown')
+    permission = ESXR.Ensure(permission, 'unknown')
+
+    if (job == 'unknown' or permission == 'unknown' or ESXR.JobPermissions[job] == nil) then
+        return false
+    end
+
+    local allows = ESXR.Ensure(ESXR.JobPermissions[job].permissions, {})
+    local denies = ESXR.Ensure(ESXR.JobPermissions[job].denies, {})
+    local isAllowed, isDenied = ListHasPerm(allows, permission), ListHasPerm(denies, permission)
+
+    return isAllowed and not isDenied
+end
+
 _G.group = function(name)
-    local group = { name = string.lower(ESXR.Ensure(name, 'unknown')) }
+    name = string.lower(ESXR.Ensure(name, 'unknown'))
+
+    local group = { name = name }
 
     if (ESXR.Groups == nil) then ESXR.Groups = {} end
 
@@ -98,6 +162,34 @@ _G.group = function(name)
 
             if (n ~= 'unknown') then
                 LoadPermissions(n, ESXR.Ensure(v, {}))
+            end
+        end
+    })
+end
+
+_G.job = function(name)
+    name = string.lower(ESXR.Ensure(name, 'unknown'))
+
+    local job = { name = name }
+
+    if (ESXR.JobPermissions == nil) then ESXR.JobPermissions = {} end
+
+    if (ESXR.JobPermissions[name] ~= nil) then
+        error("Job '%s' already exists, you can't override that job.")
+        return
+    end
+
+    return setmetatable(group, {
+        __call = function(t, v)
+            local n = ESXR.Ensure(ESXR.Ensure(t, {}).name, 'unknown')
+
+            if (ESXR.JobPermissions[n] ~= nil) then
+                error(("Job '%s' already exists, you can't override that job."):format(n))
+                return
+            end
+
+            if (n ~= 'unknown') then
+                LoadJobPermissions(n, ESXR.Ensure(v, {}))
             end
         end
     })

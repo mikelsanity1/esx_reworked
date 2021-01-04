@@ -2,10 +2,6 @@ Citizen.CreateThread(function()
     while true do
         if (NetworkIsPlayerActive(PlayerId())) then
             TriggerServerEvent('esxr:onPlayerJoined')
-            TriggerServerEvent('esxr:onPlayerJoined')
-            TriggerServerEvent('esxr:onPlayerJoined')
-            TriggerServerEvent('esxr:onPlayerJoined')
-            TriggerServerEvent('esxr:onPlayerJoined')
             return
         end
 

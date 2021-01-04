@@ -174,6 +174,7 @@
     "player_connecting": "Player '^3%s^7' is now connecting with your server.",
     "player_create": "Player '^3%s^7' ^7(^3%s^7) is new and account has been created.",
     "player_loaded": "Player '^3%s^7' ^7(^3%s^7) is now joining your server.",
+    "player_disconnect": "Player '^3%s^7' has left your server.",
     "player_connected": "Player '^3%s^7' ^7(^3%s^7) is now fully connected to your server.",
     "missing_steam": "Your FiveM must have a Steam account linked to play on this server.",
     "missing_license": "Your FiveM must have a valid GTA5 license linked to play on this server.",

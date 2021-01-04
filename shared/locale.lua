@@ -47,7 +47,7 @@ local function Ensure(input, default, ignoreDefault)
 	if (output_type == 'string') then
 		if (input_type == 'number') then return tostring(input) or (not ignoreDefault and default or nil) end
 		if (input_type == 'boolean') then return input and 'yes' or 'no' end
-		if (input_type == 'table') then return json.encode(input) or (not ignoreDefault and default or nil) end
+		if (input_type == 'table') then return ESXR.Encode(input) or (not ignoreDefault and default or nil) end
 
 		return tostring(input) or (not ignoreDefault and default or nil)
 	end

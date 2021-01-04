@@ -49,6 +49,7 @@
         "TriggerServerEvent",
         "GetGameTimer",
         "IsDuplicityVersion",
-        "RegisterServerEvent"
+        "RegisterServerEvent",
+        "msgpack"
     ]
 }

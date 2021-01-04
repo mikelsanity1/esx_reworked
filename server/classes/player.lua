@@ -6,7 +6,9 @@ local function CreatePlayerClass(playerInfo, source)
     local playerId = ESXR.Ensure(playerInfo.id, 0)
 
     if (ESXR.Players ~= nil and ESXR.Players[playerId] ~= nil) then
-        ESXR.Players[playerId].source = ESXR.Ensure(source, ESXR.Players[playerId].source)
+        local prefValue = ESXR.Ensure(ESXR.Players[playerId].source, -1)
+
+        ESXR.Players[playerId].source = ESXR.Ensure(source, prefValue)
 
         return ESXR.Players[playerId]
     end
@@ -34,7 +36,7 @@ local function CreatePlayerClass(playerInfo, source)
         tokens = {},
     }
 
-    if (xPlayer.id <= 0) then
+    if (playerId <= 0) then
         error('xPlayer must have an valid `id` and must exsist in `players` table')
         return
     end
@@ -307,23 +309,59 @@ local function CreatePlayerClass(playerInfo, source)
     if (ESXR.References == nil) then ESXR.References = ESXR.Ensure(ESXR.References, {}) end
     if (ESXR.References.Players == nil) then ESXR.References.Players = ESXR.Ensure(ESXR.References.Players, {}) end
 
-    ESXR.Players[xPlayer.id] = xPlayer
-    ESXR.References.Players[xPlayer.identifier] = xPlayer.id
+    ESXR.Players[playerId] = xPlayer
+    ESXR.References.Players[xPlayer.identifier] = playerId
 
-    LoadPlayerDataAsync(xPlayer.id)
+    if (xPlayer.source > 0) then
+        ESXR.References.SourceToIds[xPlayer.source] = playerId
+    end
+
+    LoadPlayerDataAsync(playerId)
 
     ESXR.Print(('^7Player "^3%s^7" has been loaded!'):format(xPlayer.name))
 
-    return ESXR.Players[xPlayer.id]
+    return ESXR.Players[playerId]
+end
+
+local function AddMissingData(pId, callback)
+    Citizen.CreateThread(function()
+        pId = ESXR.Ensure(pId, 0)
+        callback = ESXR.Ensure(callback, function() end)
+
+        if (pId <= 0) then
+            callback()
+            return
+        end
+
+        MySQL.Sync.execute('INSERT IGNORE INTO `inventory` (`player_id`, `item_id`, `amount`) SELECT @playerId AS `player_id`, `id` AS `item_id`, 0 AS `amount` FROM `items`', {
+            ['playerId'] = pId
+        })
+
+        for k, v in pairs(ESXR.Wallets) do
+            MySQL.Sync.execute('INSERT IGNORE INTO `player_wallets` (`wallet_id`, `player_id`, `saldo`) VALUES (@walletId, @playerId, @saldo)', {
+                ['walletId'] = ESXR.Ensure(v.id, 0),
+                ['playerId'] = pId,
+                ['saldo'] = ESXR.Ensure(v.default, 0)
+            })
+        end
+
+        callback()
+    end)
 end
 
 local function LoadPlayerDataAsync(pId)
     Citizen.CreateThread(function()
         local playerId = ESXR.Ensure(pId, 0)
-        local loaded = { wallets = false, inventory = false }
+        local loaded = { wallets = false, inventory = false, added = false }
         local xPlayer = ESXR.Ensure(ESXR.Ensure(ESXR.Players, {})[playerId], {})
 
         if (pId <= 0 or xPlayer == nil or xPlayer.loaded == true) then return end
+
+        AddMissingData(pId, function()
+            loaded.added = true
+        end)
+
+        repeat Citizen.Wait(0) until loaded.added == true
 
         MySQL.Async.fetchAll('SELECT * FROM `player_wallets` WHERE `player_id` = @playerId', {
             ['playerId'] = playerId
@@ -421,6 +459,84 @@ local function LoadPlayerDataAsync(pId)
     end)
 end
 
+local function UpdatePlayerSource(source)
+    source = ESXR.Ensure(source, -1)
+
+    local identifier = GetPrimaryIdentifier(source)
+
+    if (identifier == nil or source <= 0) then
+        return nil
+    end
+
+    if (ESXR.References.Players == nil or ESXR.References.Players[identifier] == nil) then
+        local playerObjects = MySQL.Sync.fetchAll('SELECT * FROM `players` WHERE `identifier` = @identifier LIMIT 1', {
+            ['identifier'] = identifier
+        })
+        local playerObject = ESXR.Ensure(ESXR.Ensure(playerObjects, {})[1], {})
+
+        return CreatePlayerClass(playerObject, source)
+    else
+        local playerId = ESXR.Ensure(ESXR.References.Players[identifier], 0)
+
+        if (playerId > 0) then
+            ESXR.Players[playerId].source = source
+
+            return ESXR.Players[playerId]
+        else
+            local playerObjects = MySQL.Sync.fetchAll('SELECT * FROM `players` WHERE `identifier` = @identifier LIMIT 1', {
+                ['identifier'] = identifier
+            })
+            local playerObject = ESXR.Ensure(ESXR.Ensure(playerObjects, {})[1], {})
+
+            return CreatePlayerClass(playerObject, source)
+        end
+    end
+end
+
+local function GetPlayerByIdentifier(identifier)
+    identifier = ESXR.Ensure(identifier, 'unknown')
+
+    if (identifier == 'unknown') then return nil end
+    if (ESXR.References.Players == nil or ESXR.References.Players[identifier]) then return nil end
+
+    local playerId = ESXR.Ensure(ESXR.References.Players[identifier], 0)
+
+    if (playerId <= 0) then return nil end
+
+    return ESXR.Players[playerId] or nil
+end
+
+local function GetPlayerById(playerId)
+    playerId = ESXR.Ensure(playerId, 0)
+
+    if (playerId > 0) then return nil end
+
+    return ESXR.Players[playerId] or nil
+end
+
+local function GetPlayerBySource(source)
+    source = ESXR.Ensure(source, 0)
+
+    if (source <= 0) then return nil end
+
+    local playerId = ESXR.Ensure(ESXR.References.SourceToIds[source], -1)
+
+    if (playerId > 0) then
+        return ESXR.Players[playerId] or nil
+    end
+
+    for k, v in pairs(ESXR.Players) do
+        if (v.source == source) then
+            return v
+        end
+    end
+
+    return nil
+end
+
 --- Assign local as global variable
-_G.CreatePlayerClass = CreatePlayerClass
 _G.LoadPlayerDataAsync = LoadPlayerDataAsync
+_G.UpdatePlayerSource = UpdatePlayerSource
+_G.GetPlayerByIdentifier = GetPlayerByIdentifier
+_G.GetPlayerById = GetPlayerById
+_G.GetPlayerBySource = GetPlayerBySource

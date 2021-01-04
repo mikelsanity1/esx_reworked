@@ -38,7 +38,7 @@ if (ESXR.IsServer) then
             local numTriggered = ESXR.Ensure(ESXR.RateLimits[src][event].Triggered, 0)
 
             if (maxCalls > 0 and numTriggered >= maxCalls) then
-                local xPlayer = ESXR.GetPlayerBySource(src)
+                local xPlayer = GetPlayerBySource(src)
 
                 ESXR.PrintWarn(_('rate_limit_exceeded', event, xPlayer ~= nil and xPlayer.name or GetPlayerName(src)))
                 return
@@ -53,7 +53,7 @@ if (ESXR.IsServer) then
             if ((prevCall - currentCall) < limit) then
                 cb(src, ...)
             else
-                local xPlayer = ESXR.GetPlayerBySource(src)
+                local xPlayer = GetPlayerBySource(src)
 
                 ESXR.PrintWarn(_('rate_limit_exceeded', event, xPlayer ~= nil and xPlayer.name or GetPlayerName(src)))
             end

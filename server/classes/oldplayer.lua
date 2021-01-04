@@ -292,7 +292,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 	self.setJob = function(job, grade)
 		grade = tostring(grade)
-		local lastJob = json.decode(json.encode(self.job))
+		local lastJob = msgpack.unpack(msgpack.pack(self.job))
 
 		if ESXR.DoesJobExist(job, grade) then
 			local jobObject, gradeObject = ESXR.Jobs[job], ESXR.Jobs[job].grades[grade]

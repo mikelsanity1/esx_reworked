@@ -10,7 +10,6 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
 
     local name = ESXR.Ensure(playerName, 'Unknown')
     local events = ESXR.Events.GetAllRegisterdEvents('playerConnecting')
-    local primaryIdentifier = ESXR.GetIdentifierType()
 
     if (#events <= 0) then
         deferrals.done()
@@ -24,7 +23,7 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
     local player = {
         source = src,
         name = name,
-        identifier = ESXR.Ensure(identifiers[primaryIdentifier], 'unknown'),
+        identifier = GetPrimaryIdentifier(src),
         identifiers = identifiers,
         tokens = tokens
     }
@@ -59,13 +58,7 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
         end
     end
 
-    local playerObjects = MySQL.Sync.fetchAll('SELECT * FROM `players` WHERE `identifier` = @identifier LIMIT 1', {
-        ['identifier'] = player.identifier
-    })
-
-    local playerObject = ESXR.Ensure(ESXR.Ensure(playerObjects, {})[1], {})
-
-    CreatePlayerClass(playerObject, player.source)
+    UpdatePlayerSource(player.source)
 
     deferrals.done()
 end)
@@ -73,13 +66,7 @@ end)
 RegisterNetEvent('playerJoining')
 AddEventHandler('playerJoining', function()
     local player_src = ESXR.Ensure(source, 0)
-    local identifiers = GetPlayerIdentifiersAsKeyValueTable(player_src)
-    local primaryIdentifier = ESXR.GetIdentifierType()
-    local playerObjects = MySQL.Sync.fetchAll('SELECT * FROM `players` WHERE `identifier` = @identifier LIMIT 1', {
-        ['identifier'] = ESXR.Ensure(identifiers[primaryIdentifier], 'unknown')
-    })
-    local playerObject = ESXR.Ensure(ESXR.Ensure(playerObjects, {})[1], {})
-    local xPlayer = CreatePlayerClass(playerObject, player_src)
+    local xPlayer = UpdatePlayerSource(player_src)
 
     repeat Citizen.Wait(0) until xPlayer ~= nil and xPlayer:IsLoaded() == true
 
@@ -87,6 +74,18 @@ AddEventHandler('playerJoining', function()
     ESXR.Events.TriggerOnEvent('groupJoining', xPlayer.group, xPlayer)
 end)
 
+AddEventHandler('playerDropped', function(reason)
+    local player_src = ESXR.Ensure(source, 0)
+    local xPlayer = GetPlayerBySource(player_src)
+
+    ESXR.Events.TriggerOnEvent('playerDropped', xPlayer.identifier, xPlayer, reason)
+    ESXR.Events.TriggerOnEvent('groupDropped', xPlayer.group, xPlayer, reason)
+end)
+
 ESXR.RegisterServerEvent('esxr:onPlayerJoined', function(source)
+    local xPlayer = UpdatePlayerSource(source)
+
+    repeat Citizen.Wait(0) until xPlayer ~= nil and xPlayer:IsLoaded() == true
+
     ESXR.Print(_('player_connected', GetPlayerName(source), source))
 end, 0, 1)

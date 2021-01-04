@@ -142,3 +142,15 @@ end)
 ESXR.Events.On('playerJoining', function(xPlayer)
     ESXR.Print(_('player_loaded', xPlayer.name, xPlayer.source))
 end)
+
+ESXR.Events.On('playerDropped', function(xPlayer)
+    local playerId = ESXR.Ensure(xPlayer.id, -1)
+
+    if (playerId > 0 and ESXR.Players[playerId] ~= nil) then
+        ESXR.Players[playerId].source = -1
+
+        ESXR.Print(_('player_disconnect', xPlayer.name))
+    else
+        ESXR.Print(_('player_disconnect', ESXR.Ensure(xPlayer.name, 'Unknown')))
+    end
+end)

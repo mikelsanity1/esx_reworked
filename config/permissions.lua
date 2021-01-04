@@ -1,6 +1,7 @@
 group 'user' {
     priority = 1,
     permissions = {
+        'command.news'
     },
     denies = {
         '**.superadmin',
@@ -11,6 +12,7 @@ group 'user' {
 group 'admin' {
     priority = 700,
     permissions = {
+        'command.news'
     },
     denies = {
         '**.superadmin'
@@ -23,4 +25,11 @@ group 'superadmin' {
     permissions = { '**' },
     denies = { },
     parentOf = 'admin'
+}
+
+job 'unemployed' {
+    permissions = {
+    },
+    denies = {
+    }
 }
