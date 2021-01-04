@@ -170,6 +170,11 @@ fabric.properties
 # See https://github.com/joeblau/gitignore.io/issues/186 and https://github.com/joeblau/gitignore.io/issues/360
 
 .idea/
+.idea/*
+.idea/*.*
+.idea/**
+.idea/**/*
+.idea/**/*.*
 
 # Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023
 
@@ -415,8 +420,10 @@ dist
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/tasks.json
-!.vscode/launch.json
+.vscode/*.*
+.vscode/**
+.vscode/**/*
+.vscode/**/*.*
 *.code-workspace
 
 ### VisualStudioCode Patch ###
