@@ -185,5 +185,6 @@
     "missing_fivem": "Your FiveM must have a FiveM Forum account linked to play on this server.",
     "missing_ip": "You cannot join because we couldn't detect your IP, restart FiveM and try again.",
     "group_loaded": "^7Group '^3%s^7' has been loaded",
+    "job_loaded": "^7Job '^3%s^7' has been loaded",
     "rate_limit_exceeded": "^7Rate limit '^3%s^7' exceeded by '^3%s^7'"
 }

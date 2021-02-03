@@ -179,7 +179,7 @@ _G.job = function(name)
         return
     end
 
-    return setmetatable(group, {
+    return setmetatable(job, {
         __call = function(t, v)
             local n = ESXR.Ensure(ESXR.Ensure(t, {}).name, 'unknown')
 

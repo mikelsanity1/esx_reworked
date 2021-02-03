@@ -25,9 +25,7 @@ local function GenerateCard(title, description, banner)
 end
 
 local function CreateNewPresentCard(deferrals)
-    ---@class presentCard
     local presentCard = setmetatable({
-        __class = 'presentCard',
         title = nil,
         description = nil,
         banner = nil,

@@ -30,10 +30,13 @@ CREATE TABLE `players` (
 	`group` VARCHAR(50) NOT NULL DEFAULT 'user',
 	`job` INT NOT NULL,
 	`grade` INT NOT NULL,
+	`job2` INT NOT NULL,
+	`grade2` INT NOT NULL,
 	`position` VARCHAR(100) NULL DEFAULT '[-206.79,-1015.12,29.14]',
 
 	CONSTRAINT `players_identifier` UNIQUE (`identifier`),
-    CONSTRAINT `fk_job` FOREIGN KEY (`job`,`grade`) REFERENCES `job_grades`(`job_id`,`grade`)
+    CONSTRAINT `fk_players_job` FOREIGN KEY (`job`,`grade`) REFERENCES `job_grades`(`job_id`,`grade`),
+	CONSTRAINT `fk_players_job2` FOREIGN KEY (`job2`,`grade2`) REFERENCES `job_grades`(`job_id`,`grade`)
 );
 
 CREATE TABLE `items` (

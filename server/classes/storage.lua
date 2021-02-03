@@ -1,10 +1,7 @@
 local function CreateStorageClass(storageInfo)
     storageInfo = ESXR.Ensure(storageInfo, {})
 
-    ---@class xStorage
     local xStorage = {
-        __class = 'xItem',
-        __type = 'xItem',
         id = ESXR.Ensure(storageInfo.id, 0),
         name = ESXR.Ensure(storageInfo.name, 'unknown'),
         label = ESXR.Ensure(storageInfo.label, 'Unknown')

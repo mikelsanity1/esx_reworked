@@ -1,0 +1,83 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ESX Reworked</title>
+    <meta name="description" content="A custom reworked version of es_extended (v1-final)">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="ESX Reworked">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/ThymonA/esx_reworked">
+    <meta property="og:image" content="https://i.imgur.com/JHJt60T.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <meta name="theme-color" content="#0071ff">
+</head>
+<body>
+    <div class="hud" id="hud">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script type="text/x-template" id="hud_template">
+        <div class="hud" id="hud" :class="[{ 'hidden': !show }]">
+            <div class="general">
+                <div class="job">
+                    <span class="initials">01</span>
+                    <span class="name">
+                        <span class="small">{{job.name}}</span>
+                        {{job.grade}}
+                    </span>
+                </div>
+                <div class="job">
+                    <span class="initials">02</span>
+                    <span class="name">
+                        <span class="small">{{job2.name}}</span>
+                        {{job2.grade}}
+                    </span>
+                </div>
+                <div class="status">
+                    <div class="icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="label">Health</div>
+                    <span class="bar">
+                        <div class="innerbar" style="width: {{status.health}}%; background-color: rgb(255, 50, 50);"></div>
+                    </span>
+                </div>
+                <div class="status">
+                    <div class="icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="label">Armor</div>
+                    <span class="bar">
+                        <div class="innerbar" style="width: {{status.armor}}%; background-color: rgb(255, 255, 50);"></div>
+                    </span>
+                </div>
+                <div class="status">
+                    <div class="icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="label">Hunger</div>
+                    <span class="bar">
+                        <div class="innerbar" style="width: {{status.hunger}}%; background-color: rgb(255 125 75);"></div>
+                    </span>
+                </div>
+                <div class="status">
+                    <div class="icon">
+                        <i class="fas fa-glass-whiskey"></i>
+                    </div>
+                    <div class="label">Thirst</div>
+                    <span class="bar">
+                        <div class="innerbar" style="width: {{status.thirst}}%; background-color: rgb(50, 150, 255);"></div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>

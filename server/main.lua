@@ -28,6 +28,8 @@ AddEventHandler('playerConnecting', function(playerName, _, deferrals)
         tokens = tokens
     }
 
+    repeat Citizen.Wait(0) until ESXR.IsLoaded == true
+
     for k, v in pairs(events) do
         local continue, canConnect, rejectMessage = false, false, nil
 
@@ -65,6 +67,8 @@ end)
 
 RegisterNetEvent('playerJoining')
 AddEventHandler('playerJoining', function()
+    repeat Citizen.Wait(0) until ESXR.IsLoaded == true
+
     local player_src = ESXR.Ensure(source, 0)
     local xPlayer = UpdatePlayerSource(player_src)
 
@@ -83,9 +87,22 @@ AddEventHandler('playerDropped', function(reason)
 end)
 
 ESXR.RegisterServerEvent('esxr:onPlayerJoined', function(source)
+    repeat Citizen.Wait(0) until ESXR.IsLoaded == true
+
     local xPlayer = UpdatePlayerSource(source)
 
     repeat Citizen.Wait(0) until xPlayer ~= nil and xPlayer:IsLoaded() == true
 
     ESXR.Print(_('player_connected', GetPlayerName(source), source))
+
+    if (xPlayer == nil) then return end
+
+    xPlayer:TriggerEvent('esxr:playerInfo', {
+        source = xPlayer.source,
+        name = xPlayer.name,
+        group = xPlayer.group,
+        job = xPlayer.job,
+        job2 = xPlayer.job2,
+        position = xPlayer.position
+    })
 end, 0, 1)

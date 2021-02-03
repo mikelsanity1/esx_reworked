@@ -3,8 +3,6 @@ local function CreateItemClass(itemInfo)
 
     ---@class xItem
     local xItem = {
-        __class = 'xItem',
-        __type = 'xItem',
         id = ESXR.Ensure(itemInfo.id, 0),
         name = ESXR.Ensure(itemInfo.name, 'unknown'),
         label = ESXR.Ensure(itemInfo.label, 'Unknown'),

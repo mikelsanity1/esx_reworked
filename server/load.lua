@@ -19,7 +19,7 @@ Citizen.CreateThread(function()
     for k, v in pairs(jobs) do
         local job = ESXR.Ensure(v, {})
 
-        job.grades = MySQL.Sync.fetchAll('SELECT * FROM `job_grades` WHERE `job_id` = @jobid', {
+        job.grades = MySQL.Sync.fetchAll('SELECT * FROM `job_grades` WHERE `job_id` = @jobId', {
             ['jobId'] = ESXR.Ensure(v.id, 0)
         })
 

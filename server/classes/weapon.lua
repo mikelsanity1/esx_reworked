@@ -1,10 +1,7 @@
 local function CreateWeaponClass(weaponInfo)
     weaponInfo = ESXR.Ensure(weaponInfo, {})
 
-    ---@class xWeapon
     local xWeapon = {
-        __class = 'xWeapon',
-        __type = 'xWeapon',
         id = ESXR.Ensure(weaponInfo.id, 0),
         uuid = ESXR.Ensure(weaponInfo.uuid, 'unknown'),
         playerId = ESXR.Ensure(weaponInfo.player_id, -1),

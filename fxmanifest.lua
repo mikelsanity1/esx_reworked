@@ -48,27 +48,16 @@ client_scripts {
 }
 
 ui_page {
-	'html/ui.html'
+	'html/index.html'
 }
 
 files {
 	'locales/*.json',
-
-	'locale.js',
-	'html/ui.html',
-
-	'html/css/app.css',
-
-	'html/js/mustache.min.js',
-	'html/js/wrapper.js',
-	'html/js/app.js',
-
-	'html/fonts/pdown.ttf',
-	'html/fonts/bankgothic.ttf',
-
-	'html/img/accounts/bank.png',
-	'html/img/accounts/black_money.png',
-	'html/img/accounts/money.png'
+	'html/index.html',
+	'html/assets/css/*.css',
+	'html/assets/js/*.js',
+	'html/assets/fonts/borda/*.woff',
+	'html/assets/fonts/titillium/*.woff'
 }
 
 dependencies {

@@ -15,8 +15,6 @@ local function CreatePlayerClass(playerInfo, source)
 
     ---@class xPlayer
     local xPlayer = {
-        __class = 'xPlayer',
-        __type = 'xPlayer',
         loaded = false,
         source = ESXR.Ensure(source, -1),
         id = playerId,
@@ -24,10 +22,11 @@ local function CreatePlayerClass(playerInfo, source)
         name = ESXR.Ensure(playerInfo.name, 'Unknown'),
         group = ESXR.Ensure(playerInfo.group, 'user'),
         job = CreateJobObject(playerInfo.job, playerInfo.grade),
+        job2 = CreateJobObject(playerInfo.job2, playerInfo.grade2),
         position = vector3(
-            ESXR.Ensure(pos[1], -206.79),
-            ESXR.Ensure(pos[2], -1015.12),
-            ESXR.Ensure(pos[3], 29.14)
+            ESXR.Ensure(pos[1], Configuration.DefaultSpawn.x),
+            ESXR.Ensure(pos[2], Configuration.DefaultSpawn.y),
+            ESXR.Ensure(pos[3], Configuration.DefaultSpawn.z)
         ),
         wallets = {},
         inventory = {},
@@ -318,8 +317,6 @@ local function CreatePlayerClass(playerInfo, source)
 
     LoadPlayerDataAsync(playerId)
 
-    ESXR.Print(('^7Player "^3%s^7" has been loaded!'):format(xPlayer.name))
-
     return ESXR.Players[playerId]
 end
 
@@ -377,8 +374,6 @@ local function LoadPlayerDataAsync(pId)
 
                 ---@class xPlayerWallet
                 local xPlayerWallet = {
-                    __class = 'xPlayerWallet',
-                    __item = 'xPlayerWallet',
                     id = ESXR.Ensure(wallet.id, 0),
                     playerId = playerId,
                     name = ESXR.Ensure(wallet.name, 'unknown'),
@@ -419,8 +414,6 @@ local function LoadPlayerDataAsync(pId)
 
                 ---@class xPlayerInventory
                 local xPlayerInventory = {
-                    __class = 'xPlayerInventory',
-                    __item = 'xPlayerInventory',
                     id = ESXR.Ensure(item.id, 0),
                     playerId = playerId,
                     name = ESXR.Ensure(item.name, 'unknown'),

@@ -108,11 +108,13 @@ ESXR.Events.On('newPlayerConnecting', function(player, doneCallback, presentCard
         return
     end
 
-    local playerId = MySQL.Sync.insert('INSERT INTO `players` (`identifier`, `name`, `job`, `grade`) VALUES (@identifier, @name, @job, @grade)', {
+    local playerId = MySQL.Sync.insert('INSERT INTO `players` (`identifier`, `name`, `job`, `grade`, `job2`, `grade2`) VALUES (@identifier, @name, @job, @grade, @job2, @grade2)', {
         ['identifier'] = player.identifier,
         ['name'] = player.name,
         ['job'] = jobId,
-        ['grade'] = 0
+        ['grade'] = 0,
+        ['job2'] = jobId,
+        ['grade2'] = 0
     })
 
     playerId = ESXR.Ensure(playerId, 0)

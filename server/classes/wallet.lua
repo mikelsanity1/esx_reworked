@@ -4,10 +4,7 @@ local function CreateWalletClass(walletInfo)
     local wallets = ESXR.Ensure(ESXR.GetConfig().Wallets, {})
     local name = ESXR.Ensure(walletInfo.name, 'unknown')
 
-    ---@class xWallet
     local xWallet = {
-        __class = 'xWallet',
-        __type = 'xWallet',
         id = ESXR.Ensure(walletInfo.id, 0),
         name = name,
         label = ESXR.Ensure(walletInfo.label, 'Unknown'),

@@ -1,7 +1,5 @@
 local cached_events = {}
-
----@class Events
-local events = { __class = 'Events', __type = 'Events' }
+local events = { }
 
 local function onEvent(resource, event, names, func)
     resource = ESXR.Ensure(resource, 'unknown')

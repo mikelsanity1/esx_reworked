@@ -3,8 +3,6 @@ local function CreateJobClass(jobInfo)
 
     ---@class xJob
     local xJob = {
-        __class = 'xJob',
-        __type = 'xJob',
         id = ESXR.Ensure(jobInfo.id, 0),
         name = ESXR.Ensure(jobInfo.name, 'unknown'),
         label = ESXR.Ensure(jobInfo.label, 'Unknown'),
@@ -20,8 +18,6 @@ local function CreateJobClass(jobInfo)
         v = ESXR.Ensure(v, {})
 
         local xGrade = {
-            __class = 'xJobGrade',
-            __type = 'xJobGrade',
             job_id = ESXR.Ensure(xJob.id, 0),
             grade = ESXR.Ensure(v.grade, 0),
             name = ESXR.Ensure(v.name, 'unknown'),
@@ -50,9 +46,7 @@ local function CreateJobObject(jobId, gradeId)
         return nil
     end
 
-    if (ESXR.Jobs == nil) then
-        ESXR.Jobs = ESXR.Ensure(ESXR.Jobs, {})
-    end
+    ESXR.Jobs = ESXR.Ensure(ESXR.Jobs, {})
 
     local job = ESXR.Ensure(ESXR.Jobs[jobId], {})
     local grades = ESXR.Ensure(job.grades, {})

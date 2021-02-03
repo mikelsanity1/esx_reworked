@@ -1,0 +1,374 @@
+@font-face {
+    font-family: 'Borda Regular 6';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 6'), url('../fonts/borda/Borda Bold Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 5';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 5'), url('../fonts/borda/Borda Bold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 7';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 7'), url('../fonts/borda/Borda DemiBold Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 3';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 3'), url('../fonts/borda/Borda DemiBold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 2';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 2'), url('../fonts/borda/Borda ExtraBold Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 4';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 4'), url('../fonts/borda/Borda ExtraBold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 11';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 11'), url('../fonts/borda/Borda Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 10';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 10'), url('../fonts/borda/Borda Light Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular'), url('../fonts/borda/Borda Light.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 8';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 8'), url('../fonts/borda/Borda Medium Italic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 12';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 12'), url('../fonts/borda/Borda Medium.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Borda Regular 9';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Borda Regular 9'), url('../fonts/borda/Borda.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Titillium Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Regular'), url('../fonts/titillium/Titillium-Regular.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Regular Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Regular Italic'), url('../fonts/titillium/Titillium-RegularItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Regular Upright';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Regular Upright'), url('../fonts/titillium/Titillium-RegularUpright.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Thin';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Thin'), url('../fonts/titillium/Titillium-Thin.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Thin Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Thin Italic'), url('../fonts/titillium/Titillium-ThinItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Thin Upright';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Thin Upright'), url('../fonts/titillium/Titillium-ThinUpright.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Light';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Light'), url('../fonts/titillium/Titillium-Light.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Light Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Light Italic'), url('../fonts/titillium/Titillium-LightItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Light Upright';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Light Upright'), url('../fonts/titillium/Titillium-LightUpright.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Semibold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Semibold'), url('../fonts/titillium/Titillium-Semibold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Semibold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Semibold Italic'), url('../fonts/titillium/Titillium-SemiboldItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Semibold Upright';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Semibold Upright'), url('../fonts/titillium/Titillium-SemiboldUpright.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Bold'), url('../fonts/titillium/Titillium-Bold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Bold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Bold Italic'), url('../fonts/titillium/Titillium-BoldItalic.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium Bold Upright';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium Bold Upright'), url('../fonts/titillium/Titillium-BoldUpright.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'Titillium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Titillium'), url('../fonts/titillium/Titillium-Black.woff') format('woff');
+}
+
+.hidden {
+    display: none !important;
+}
+
+.hud {
+    position: fixed;
+}
+
+.hud .general {
+    position: fixed;
+    left: 1em;
+    top: 45%;
+    bottom: 50%;
+    transform: perspective(30vw) rotateY(5deg) translateY(-50%);
+    -ms-transform: perspective(30vw) rotateY(5deg) translateY(-50%);
+}
+
+.hud .general .job {
+    display: flex;
+    max-height: 2em;
+    min-height: 2em;
+    height: 2em;
+    max-width: 12.5em;
+    min-width: 12.5em;
+    width: 100%;
+    margin-bottom: 0.25em;
+}
+
+.hud .general .job:first-child {
+    margin-bottom: 0.45em;
+}
+
+.hud .general .job .initials {
+    text-align: center;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: inline-grid;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: rgba(66, 66, 66, 0.65);
+    max-height: 2em;
+    min-height: 2em;
+    height: 2em;
+    min-width: 2em;
+    max-width: 2em;
+    width: 100%;
+    font-family: 'Borda Regular 5', sans-serif;
+    color: white;
+    text-shadow: 0.15em 0.15em rgba(255, 255, 255, 0.10);
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hud .general .job .name {
+    text-align: left;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: inline-grid;
+    -ms-flex-align: left;
+    -webkit-align-items: left;
+    -webkit-box-align: left;
+    align-items: left;
+    background-color: rgba(0, 0, 0, 0.25);
+    max-height: 2em;
+    min-height: 2em;
+    height: 2em;
+    width: 100%;
+    margin-left: 0.25em;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    font-family: 'Titillium Regular', sans-serif;
+    font-size: 0.8em;
+    padding: 0.25em;
+}
+
+.hud .general .job .name .small {
+    font-size: 0.8em;
+    color: rgb(0, 175, 255);
+    letter-spacing: 0.15em;
+}
+
+.hud .general .status {
+    display: flex;
+    max-height: 1.8em;
+    min-height: 1.8em;
+    height: 1.8em;
+    max-width: 12.5em;
+    min-width: 12.5em;
+    width: 100%;
+    margin-bottom: 0.65em;
+}
+
+.hud .general .status .icon {
+    max-height: 2em;
+    min-height: 2em;
+    height: 2em;
+    max-width: 2em;
+    min-width: 2em;
+    width: 2em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 2.2em;
+    margin-top: 0.15em;
+    background-color: rgba(66, 66, 66, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hud .general .status .icon i {
+    color: white;
+    font-size: 1.15em;
+    text-shadow: 0.15em 0.15em rgba(255, 255, 255, 0.10);
+}
+
+.hud .general .status .label {
+    font-family: 'Titillium Regular', sans-serif;
+    color: white;
+    width: 100%;
+    max-height: 1em;
+    min-height: 1em;
+    height: 1em;
+    font-size: 0.8em;
+    padding: 0.10em;
+    margin-left: 0.45em;
+    line-height: 1.6em;
+    letter-spacing: 0.1em;
+}
+
+.hud .general .status .bar {
+    right: 0;
+    position: absolute;
+    max-height: 0.65em;
+    min-height: 0.65em;
+    height: 0.65em;
+    max-width: 10em;
+    min-width: 10em;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    margin-top: 1.45em;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.hud .general .status .bar .innerbar {
+    content: '';
+    background-color: rgb(66, 66, 66);
+    max-height: 0.65em;
+    min-height: 0.65em;
+    height: 0.65em;
+}
