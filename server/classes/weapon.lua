@@ -226,7 +226,6 @@ local function GetNewWeaponOwners(input, _jobId, _playerId, _ownerType)
     return _jobId, _playerId, _ownerType
 end
 
---- Assign local as global variable
 _G.CreateWeaponClass = CreateWeaponClass
 _G.GenerateNewWeaponAsync = GenerateNewWeaponAsync
 _G.GetNewWeaponOwners = GetNewWeaponOwners

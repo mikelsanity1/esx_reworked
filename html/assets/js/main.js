@@ -16,12 +16,18 @@ const ESXR = new Vue({
                     grade: 'Unemployed'
                 },
                 status: {
-                    health: 100,
-                    armor: 100,
-                    hunger: 100,
-                    thirst: 100
+                    health: 0,
+                    armor: 0,
+                    hunger: 0,
+                    thirst: 0
                 },
-                listener: null
+                listener: null,
+                translations: {
+                    health: 'Unknown',
+                    armor: 'Unknown',
+                    hunger: 'Unknown',
+                    thirst: 'Unknown'
+                }
             }
         },
         destroyed() {
@@ -30,19 +36,46 @@ const ESXR = new Vue({
             }
         },
         mounted() {
-            this.listener = (event) => {
+            const self = this;
+
+            self.listener = (event) => {
                 const data = event.data || event.detail || null;
 
                 if (typeof data == 'undefined' || data == null || !data || !data.action) { return; }
 
-                if (this[data.action]) {
-                    this[data.action](data);
+                if (self[data.action]) {
+                    self[data.action](data);
                 }
             };
 
-            window.addEventListener('message', this.listener);
+            window.addEventListener('message', self.listener);
 
-            this.POST('https://esx_reworked/loaded', {});
+            self.POST('https://esx_reworked/loaded', {});
+            self.GET('https://cfx-nui-esx_reworked/config/shared_config.lua', function(response) {
+                let language = 'en';
+
+                response = response || '';
+
+                const defaultLanguage = /(?<=Configuration.DefaultLanguage = ')(.*)(?=')/gm
+                const languages = response.match(defaultLanguage);
+
+                if (languages.length > 0) {
+                    language = languages[0].toLowerCase();
+                } else {
+                    language = 'en';
+                }
+
+                self.GET(`https://cfx-nui-esx_reworked/locales/${language}.json`, function(response) {
+                    response = response || '[]';
+
+                    const data = JSON.parse(response) || [];
+
+                    if (data['status_health'] !== undefined) { self.translations.health = data['status_health']; }
+                    if (data['status_armor'] !== undefined) { self.translations.armor = data['status_armor']; }
+                    if (data['status_hunger'] !== undefined) { self.translations.hunger = data['status_hunger']; }
+                    if (data['status_thirst'] !== undefined) { self.translations.thirst = data['status_thirst']; }
+                });
+            });
         },
         watch: {
             show() {},
@@ -55,6 +88,10 @@ const ESXR = new Vue({
                 handler() { }
             },
             status: {
+                deep: true,
+                handler() { }
+            },
+            translations: {
                 deep: true,
                 handler() { }
             }
@@ -70,8 +107,8 @@ const ESXR = new Vue({
                 this.show = true;
             },
             UPDATE_STATS({ key, value }) {
-                if (this.status[key]) {
-                    this.status[key] = Math.round(value)
+                if (this.status[key] !== undefined) {
+                    this.status[key] = value
                 }
             },
             UPDATE_JOB({ label, grade }) {
@@ -95,6 +132,20 @@ const ESXR = new Vue({
                 request.open('POST', url, true);
                 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 request.send(JSON.stringify(data));
+            },
+            GET: function(url, callback, type) {
+                type = type || 'text';
+
+                var request = new XMLHttpRequest();
+
+                request.open('GET', url, true);
+                request.responseText = type;
+                request.onload = function() {
+                    if (request.status === 200) {
+                        callback(request.response);
+                    }
+                }
+                request.send();
             }
         }
     })

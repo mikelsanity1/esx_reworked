@@ -186,5 +186,9 @@
     "missing_ip": "You cannot join because we couldn't detect your IP, restart FiveM and try again.",
     "group_loaded": "^7Group '^3%s^7' has been loaded",
     "job_loaded": "^7Job '^3%s^7' has been loaded",
-    "rate_limit_exceeded": "^7Rate limit '^3%s^7' exceeded by '^3%s^7'"
+    "rate_limit_exceeded": "^7Rate limit '^3%s^7' exceeded by '^3%s^7'",
+    "status_health": "Health",
+    "status_armor": "Armor",
+    "status_hunger": "Hunger",
+    "status_thirst": "Thirst"
 }

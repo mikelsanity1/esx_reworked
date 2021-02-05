@@ -4,7 +4,6 @@ local function LoadPermissions(name, groupInfo)
 
     local parentOf = ESXR.Ensure(groupInfo.parentOf, 'unknown')
 
-    ---@class group
     local group = {
         name = name,
         priority = 1,
@@ -52,7 +51,6 @@ local function LoadJobPermissions(name, jobInfo)
 
     local parentOf = ESXR.Ensure(jobInfo.parentOf, 'unknown')
 
-    ---@class job
     local job = {
         name = name,
         permissions = {},

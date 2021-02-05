@@ -74,7 +74,6 @@ local function GetPlayerTokens(source)
     return tokens
 end
 
---- Assign local as global variable
 _G.GetPlayerIdentifiersAsKeyValueTable = GetPlayerIdentifiersAsKeyValueTable
 _G.GetPlayerTokens = GetPlayerTokens
 _G.GetPrimaryIdentifier = GetPrimaryIdentifier

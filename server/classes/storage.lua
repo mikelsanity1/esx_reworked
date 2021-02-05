@@ -26,5 +26,4 @@ local function CreateStorageClass(storageInfo)
     return ESXR.Storages[xStorage.id]
 end
 
---- Assign local as global variable
 _G.CreateStorageClass = CreateStorageClass

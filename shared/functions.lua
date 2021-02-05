@@ -225,11 +225,6 @@ ESXR.TypeOf = function(input)
 	return t
 end
 
---- @generic T
---- @param input any
---- @param default T
---- @param ignoreDefault any
---- @return T
 ESXR.Ensure = function(input, default, ignoreDefault)
 	if (ignoreDefault == nil) then
 		ignoreDefault = false

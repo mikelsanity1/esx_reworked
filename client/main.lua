@@ -12,9 +12,6 @@ end)
 RegisterNetEvent('esxr:playerInfo')
 AddEventHandler('esxr:playerInfo', function(data)
     data = ESXR.Ensure(data, { })
-
-    print(json.encode(data))
-
     data.job = ESXR.Ensure(data.job, { })
     data.job2 = ESXR.Ensure(data.job2, { })
     data.job.grade = ESXR.Ensure(data.job.grade, { })
@@ -62,7 +59,7 @@ AddEventHandler('esxr:playerInfo', function(data)
         Citizen.Wait(0)
     end
 
-    SendNuiMessage(json.encode({
+    SendNuiMessage(ESXR.Encode({
         action = 'LOADED',
         job_label = ESXR.PlayerData.job.label,
         job_grade = ESXR.PlayerData.job.grade.label,
@@ -75,4 +72,36 @@ RegisterNUICallback('loaded', function(_, cb)
     ESXR.HudLoaded = true
 
     cb('ok')
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        if (ESXR.HudLoaded) then
+            local playerPedId = PlayerPedId()
+            local shouldBeHidden = false
+
+            if (IsScreenFadedOut() or IsPauseMenuActive()) then
+                shouldBeHidden = true
+            end
+
+            SendNUIMessage({
+                action = 'HIDE_SHOW',
+                status = not shouldBeHidden
+            })
+
+            SendNUIMessage({
+                action = 'UPDATE_STATS',
+                key = 'health',
+                value = ESXR.Round(GetEntityHealth(playerPedId) - 100) + 0.0
+            })
+
+            SendNUIMessage({
+                action = 'UPDATE_STATS',
+                key = 'armor',
+                value = ESXR.Round(GetPedArmour(playerPedId)) + 0.0
+            })
+        end
+
+        Citizen.Wait(50)
+    end
 end)

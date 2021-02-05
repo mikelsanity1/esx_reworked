@@ -98,7 +98,6 @@ ESXR.RegisterCommand = function(command, inputs, callback, consoleAllowed)
         return
     end
 
-    ---@class command
     local _cmd = {
         name = command,
         arguments = {},

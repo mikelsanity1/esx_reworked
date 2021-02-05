@@ -1,7 +1,6 @@
 local function CreateJobClass(jobInfo)
     jobInfo = ESXR.Ensure(jobInfo, {})
 
-    ---@class xJob
     local xJob = {
         id = ESXR.Ensure(jobInfo.id, 0),
         name = ESXR.Ensure(jobInfo.name, 'unknown'),
@@ -66,6 +65,5 @@ local function CreateJobObject(jobId, gradeId)
     }
 end
 
---- Assign local as global variable
 _G.CreateJobClass = CreateJobClass
 _G.CreateJobObject = CreateJobObject

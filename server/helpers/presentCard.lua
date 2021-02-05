@@ -90,6 +90,5 @@ local function CreateNewPresentCard(deferrals)
     return presentCard
 end
 
---- Assign local as global variable
 _G.GenerateCard = GenerateCard
 _G.CreateNewPresentCard = CreateNewPresentCard

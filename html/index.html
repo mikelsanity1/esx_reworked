@@ -43,36 +43,36 @@
                     <div class="icon">
                         <i class="fas fa-heart"></i>
                     </div>
-                    <div class="label">Health</div>
+                    <div class="label">{{translations.health}}</div>
                     <span class="bar">
-                        <div class="innerbar" style="width: {{status.health}}%; background-color: rgb(255, 50, 50);"></div>
+                        <div class="innerbar" style="background-color: rgb(255, 50, 50);" :style="{ width: status.health + '%' }"></div>
                     </span>
                 </div>
                 <div class="status">
                     <div class="icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <div class="label">Armor</div>
+                    <div class="label">{{translations.armor}}</div>
                     <span class="bar">
-                        <div class="innerbar" style="width: {{status.armor}}%; background-color: rgb(255, 255, 50);"></div>
+                        <div class="innerbar" style="background-color: rgb(255, 255, 50);" :style="{ width: status.armor + '%' }"></div>
                     </span>
                 </div>
                 <div class="status">
                     <div class="icon">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <div class="label">Hunger</div>
+                    <div class="label">{{translations.hunger}}</div>
                     <span class="bar">
-                        <div class="innerbar" style="width: {{status.hunger}}%; background-color: rgb(255 125 75);"></div>
+                        <div class="innerbar" style="background-color: rgb(255 125 75);" :style="{ width: status.hunger + '%' }"></div>
                     </span>
                 </div>
                 <div class="status">
                     <div class="icon">
                         <i class="fas fa-glass-whiskey"></i>
                     </div>
-                    <div class="label">Thirst</div>
+                    <div class="label">{{translations.thirst}}</div>
                     <span class="bar">
-                        <div class="innerbar" style="width: {{status.thirst}}%; background-color: rgb(50, 150, 255);"></div>
+                        <div class="innerbar" style="background-color: rgb(50, 150, 255);" :style="{ width: status.thirst + '%' }"></div>
                     </span>
                 </div>
             </div>

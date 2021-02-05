@@ -13,7 +13,6 @@ local function CreatePlayerClass(playerInfo, source)
         return ESXR.Players[playerId]
     end
 
-    ---@class xPlayer
     local xPlayer = {
         loaded = false,
         source = ESXR.Ensure(source, -1),
@@ -371,8 +370,6 @@ local function LoadPlayerDataAsync(pId)
                 local name = ESXR.Ensure(wallet.name, 'unknown')
                 local wallets = ESXR.Ensure(Configuration.Wallets, {})
                 local defaultSaldo = ESXR.Ensure(wallets[name], 0)
-
-                ---@class xPlayerWallet
                 local xPlayerWallet = {
                     id = ESXR.Ensure(wallet.id, 0),
                     playerId = playerId,
@@ -411,8 +408,6 @@ local function LoadPlayerDataAsync(pId)
 
                 local itemId = ESXR.Ensure(v.item_id, 0)
                 local item = ESXR.Ensure(ESXR.Ensure(ESXR.Items, {})[itemId], {})
-
-                ---@class xPlayerInventory
                 local xPlayerInventory = {
                     id = ESXR.Ensure(item.id, 0),
                     playerId = playerId,
@@ -527,7 +522,6 @@ local function GetPlayerBySource(source)
     return nil
 end
 
---- Assign local as global variable
 _G.LoadPlayerDataAsync = LoadPlayerDataAsync
 _G.UpdatePlayerSource = UpdatePlayerSource
 _G.GetPlayerByIdentifier = GetPlayerByIdentifier

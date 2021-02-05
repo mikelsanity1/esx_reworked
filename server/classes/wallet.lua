@@ -30,5 +30,4 @@ local function CreateWalletClass(walletInfo)
     return ESXR.Wallets[xWallet.id]
 end
 
---- Assign local as global variable
 _G.CreateWalletClass = CreateWalletClass

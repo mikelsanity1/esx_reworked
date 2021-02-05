@@ -57,7 +57,8 @@ files {
 	'html/assets/css/*.css',
 	'html/assets/js/*.js',
 	'html/assets/fonts/borda/*.woff',
-	'html/assets/fonts/titillium/*.woff'
+	'html/assets/fonts/titillium/*.woff',
+	'config/shared_config.lua'
 }
 
 dependencies {

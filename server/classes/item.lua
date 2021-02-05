@@ -1,7 +1,6 @@
 local function CreateItemClass(itemInfo)
     itemInfo = ESXR.Ensure(itemInfo, {})
 
-    ---@class xItem
     local xItem = {
         id = ESXR.Ensure(itemInfo.id, 0),
         name = ESXR.Ensure(itemInfo.name, 'unknown'),
@@ -28,5 +27,4 @@ local function CreateItemClass(itemInfo)
     return ESXR.Items[xItem.id]
 end
 
---- Assign local as global variable
 _G.CreateItemClass = CreateItemClass
